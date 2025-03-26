@@ -8,17 +8,18 @@ The Agile-Cursor workflow combines traditional Agile methodologies with AI-assis
 
 1. **Rule-Based Implementation** (Automatic)
 
-   - Uses `.cursor/rules/workflow-agile-manual` and `.cursor/templates`
+   - Uses `./docs/workflow-agile.md`
    - Automatically applies standards to matching files
    - Provides consistent structure enforcement
 
 2. **Notepad-Based Implementation** (Flexible)
+
    - Uses ``.cursor/documentation` templates
    - Lighter weight and more adaptable
    - Ideal for focused development sessions
 
 3. **Cursor-Based Implementation** (Flexible)
-   - Uses `.cursor/reference` and `.cursor/templates`
+   - Uses `.cursor/reference`
    - Automatically applies standards to matching files
    - Provides consistent structure enforcement
 

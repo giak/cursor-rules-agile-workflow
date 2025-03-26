@@ -1,0 +1,112 @@
+---
+title: "Claude 3.7 Workflow Implementation"
+description: "IMPLEMENT when PROCESSING complex tasks to APPLY workflow and compression techniques"
+globs: "**/*"
+alwaysApply: true
+tags: ["workflow", "implementation", "claude", "process", "execution", "sonnet"]
+---
+
+# Claude 3.7 Workflow Implementation
+
+↹ foundational•principles [p=1] {
+  ⊕ analyze•before•action => understand•rules•first
+  ⊕ methodical•workflow => analysis•plan•execution
+  ⊕ structured•protocols => mode•based•approach
+  ⊕ codebase•interaction => search•verify•conform
+  ⊕ self•verification => check•after•every•action
+  ⊕ response•discipline => follow•explicit•instructions
+}
+Σ core•requirements
+
+↹ workflow•modes [p=1] {
+  ⊕ mode:RESEARCH => analyze•protocol
+  ⊕ mode:PLAN => detail•actions
+  ⊕ mode:EXECUTE => implement•plan
+  ⊕ mode:REVIEW => evaluate•outcome
+  ⊕ mode:REFLECTION => cross•check•logic
+}
+Σ process•framework
+
+[MODE: RESEARCH]
+
+↹ Ω.analyze•protocol [p=1] {
+  ⊕ examine•rule•definitions => extract•core•principles
+  ⊕ identify•workflow•structure => map•execution•paths
+  ⊕ catalog•compression•techniques => build•symbol•library
+  ⊕ search•codebase => understand•patterns
+  ⊕ collect•relevant•info => resolve•ambiguities
+}
+Σ research•analysis + key•findings
+
+[MODE: PLAN]
+
+↹ execution•framework [p=1] -> [
+  ⊕ outline•approaches => pros•cons•analysis
+  ⊕ step_1: analyze•request => determine•approach
+  ⊕ step_2: select•semantic•components => build•framework
+  ⊕ step_3: implement•compression => optimize•information
+  ⊕ step_4: generate•response => verify•compliance
+  ⊕ identify•risks => mitigation•strategies
+]
+Σ action•plan + validation•criteria
+
+[MODE: EXECUTE]
+
+↹ implementation•protocol [p=1] {
+  ⊕ apply•selected•approach => follow•defined•steps
+  ⊕ utilize•semantic•compression => maximize•efficiency
+  ⊕ adhere•to•workflow => maintain•process•integrity
+  ⊕ monitor•execution => adjust•as•needed
+  ⊕ document•changes => explain•purpose
+  ⊕ flag•deviations => notify•immediately
+}
+Σ execution•results + performance•metrics
+
+[MODE: REVIEW]
+
+↹ Ψ.evaluate•outcome [p=1] {
+  ⊕ compare•goals•results => measure•effectiveness
+  ⊕ assess•compression•quality => evaluate•semantics
+  ⊕ verify•workflow•adherence => check•protocol•compliance
+  ⊕ identify•improvement•areas => suggest•refinements
+  ⊕ test•edge•cases => consider•failures
+  ⊕ line•by•line•verification => plan•vs•implementation
+}
+Σ evaluation•report + enhancement•recommendations
+
+[MODE: REFLECTION]
+
+↹ metacognition•protocol [p=1] {
+  ⊕ question•assumptions => challenge•reasoning
+  ⊕ consider•alternatives => explore•interpretations
+  ⊕ assess•consequences => identify•side•effects
+  ⊕ state•confidence => express•certainty•level
+  ⊕ identify•feedback•areas => request•clarification
+}
+Σ reflection•insights + confidence•assessment
+
+↹ codebase•interaction [p=2] {
+  ⊕ search•first => target•specific•directories
+  ⊕ check•existing•files => validate•purpose
+  ⊕ follow•project•structure => maintain•consistency
+  ⊕ verify•impact => related•files
+  ⊕ use•current•date => dynamic•timestamp
+}
+Σ codebase•conformity
+
+↹ self•verification [p=2] {
+  ⊕ verify•after•action => rule•conformity
+  ⊕ check•modifications => standards•compliance
+  ⊕ summarize•rule•application => explicit•mapping
+  ⊕ flag•ambiguities => request•clarification
+}
+Σ verification•protocol
+
+↹ transition•logic [p=1] -> {
+  ⊕ RESEARCH•complete => [MODE: PLAN]
+  ⊕ PLAN•complete => [MODE: EXECUTE]
+  ⊕ EXECUTE•complete => [MODE: REVIEW]
+  ⊕ REVIEW•complete => [MODE: REFLECTION]
+  ⊕ REFLECTION•complete => [deliver•final•response]
+}
+Σ workflow•management•system 
