@@ -1,0 +1,707 @@
+---
+title: "Project Foundation Document (PFD) Standard"
+description: "GENERATE when INITIATING project to ENSURE comprehensive and aligned documentation"
+globs: "docs/foundation/**/*.md"
+alwaysApply: false
+tags: ["documentation", "project", "foundation", "workflow", "template"]
+---
+
+# 📑 Project Foundation Document Framework
+
+## Σ Context•Alignment [p=1]
+- PFD = authoritative•reference(scope+requirements+architecture)
+- document → single•source•of•truth(stakeholders+developers+operations)
+- aligns(technical•implementation ⇌ business•objectives)
+- provides•structure(all•project•dimensions)
+- balances(comprehensiveness ⇌ clarity ⇌ conciseness)
+- basis•for(related•documents+iterative•development)
+
+## Γ Document•Relationships [p=1]
+
+↹ foundation•triad {
+  components: [
+    PFD: high•level•foundation(complete•project•vision),
+    PRD: refined•requirements(user•stories+features+validation•criteria),
+    Architecture: technical•blueprint(components+patterns+interfaces)
+  ]
+  
+  flow: PFD → [PRD, Architecture] → implementation
+  
+  relationships: {
+    PFD⇌PRD: vision•to•requirements+business•alignment,
+    PFD⇌Architecture: constraints•to•solutions+technical•decisions,
+    PRD⇌Architecture: features•to•components+validation•methods
+  }
+  
+  lifecycle: {
+    PFD: foundational+evolving(major•changes),
+    PRD: dynamic+iterative(regular•updates),
+    Architecture: living•document(technical•decisions+patterns)
+  }
+}
+
+↹ agile•mapping {
+  storage•convention: project•folder→.ai/,
+  documents: [
+    foundational: pfd.md(this•document),
+    requirements: prd.md(product•requirements•document),
+    technical: arch.md(architecture•document)
+  ],
+  
+  stories: {
+    structure: epics→stories→tasks,
+    location: .ai/epic-{n}/{m}-{code}.story.md,
+    content: [
+      purpose+scope,
+      acceptance•criteria,
+      implementation•steps,
+      risks+mitigations,
+      hypotheses+validation•methods,
+      test•coverage(minimum•80%)
+    ]
+  }
+  
+  traceability: [
+    PFD→business•objectives,
+    PRD→user•requirements,
+    Architecture→technical•decisions,
+    Stories→implementation•details
+  ]
+}
+
+## Ω₁ Document•Architecture [p=1]
+
+↹ hierarchy•structure {
+  format: markdown•professional
+  organization: hierarchical•sections(numbered•headings)
+  navigation: table•of•contents(auto•generated)
+  accessibility: technical+non_technical
+  components: [
+    frontmatter(metadata+version+status)
+    → toc(detailed+links)
+    → main•sections(core+supporting)
+    → appendices(reference+supplemental)
+  ]
+}
+
+↹ metadata•requirements {
+  elements: [
+    title: project•name+document•type,
+    version: semver+date,
+    status: draft|review|approved,
+    authors: names+roles,
+    approvers: authorities+sign•off,
+    classification: public|internal|confidential,
+    changelog: version•history(date+author+changes)
+  ]
+  
+  schema: YAML|JSON
+  placement: document•start
+}
+
+## Ω₂ Content•Framework [p=1]
+
+↹ core•sections [p=1] → [
+  ⊕ introduction {
+    purpose: document•objectives+usage,
+    scope: inclusion+exclusion+boundaries,
+    glossary: terminology+acronyms+definitions
+  }
+  
+  ⊕ vision {
+    statement: concise•value•proposition,
+    strategic•alignment: business•goals+objectives,
+    success•criteria: measurable•outcomes
+  }
+  
+  ⊕ technical•vision {
+    principles: architectural•values+guidelines,
+    quality•attributes: performance+security+scalability+maintainability,
+    constraints: technical+business+regulatory
+  }
+  
+  ⊕ overview {
+    context: background+justification+purpose,
+    objectives: specific+measurable+achievable+relevant+time-bound,
+    audience: user•types+stakeholders+needs
+  }
+  
+  ⊕ requirements {
+    functional: capabilities+features+user•stories,
+    non•functional: qualities+constraints+performance•criteria,
+    use•cases: actor+flow+outcomes
+  }
+  
+  ⊕ architecture {
+    system: components+interfaces+patterns,
+    data: entities+relationships+storage,
+    ui: layouts+interactions+wireframes
+  }
+  
+  ⊕ technical {
+    stack: frontend+backend+infrastructure,
+    integrations: apis+services+third•party,
+    security: authentication+authorization+data•protection
+  }
+  
+  ⊕ planning {
+    timeline: phases+milestones+deadlines,
+    resources: team+tools+infrastructure,
+    risks: assessment+mitigation+contingencies
+  }
+  
+  ⊕ kpi {
+    metrics: success•indicators+measurement•methods,
+    targets: specific•values+thresholds,
+    tracking: frequency+tools+reporting
+  }
+  
+  ⊕ testing {
+    strategy: approach+coverage+types,
+    environments: dev+staging+prod,
+    acceptance: criteria+verification+validation
+  }
+  
+  ⊕ operations {
+    deployment: environments+process+cadence,
+    maintenance: support+updates+monitoring,
+    disaster•recovery: backups+restoration+continuity
+  }
+  
+  ⊕ development {
+    standards: code•conventions+quality+review,
+    collaboration: branching+pr+communication,
+    documentation: inline+api+user
+  }
+  
+  ⊕ appendices {
+    references: sources+standards+inspiration,
+    detailed•specs: technical•deep•dives,
+    artifacts: models+diagrams+prototypes
+  }
+]
+
+↹ section•attributes [p=2] {
+  clarity: unambiguous+precise+structured
+  completeness: comprehensive+thorough+no•assumptions
+  traceability: requirements⇌business•goals
+  measurability: quantified+verifiable+objective
+  actionability: directly•implementable+practical
+  consistency: terminology+formatting+voice
+}
+
+## Λ Content•Enrichment [p=1]
+
+↹ Λ₁•ArchitecturalDetails [p=1] {
+  views: [
+    logical: layers+components+modules,
+    physical: deployment+infrastructure+networks,
+    process: sequences+activities+states,
+    development: packages+dependencies+builds
+  ]
+  
+  patterns: [
+    architectural: high•level•design•approaches,
+    design: implementation•level•solutions,
+    anti-patterns: explicitly•avoided•approaches
+  ]
+  
+  interfaces: [
+    apis: contracts+parameters+responses,
+    ui: screens+flows+interactions,
+    integration: third•party+systems+protocols
+  ]
+  
+  diagrams: [
+    C4•Model: context+containers+components+code,
+    UML: class+sequence+activity+state,
+    ERD: entities+relationships+attributes,
+    infrastructure: networks+servers+services
+  ]
+}
+
+↹ Λ₂•TechnicalStack [p=1] {
+  frontend: {
+    framework: library+version+justification,
+    ui•components: design•system+library,
+    state•management: approach+tools,
+    build•tools: compiler+bundler+optimizers
+  }
+  
+  backend: {
+    languages: versions+compatibility,
+    frameworks: core+utilities+extensions,
+    apis: rest+graphql+grpc+webhooks,
+    databases: relational+nosql+caching
+  }
+  
+  infrastructure: {
+    hosting: cloud+on•premise+hybrid,
+    containers: orchestration+registry+composition,
+    ci•cd: pipelines+automation+environments,
+    monitoring: logging+metrics+alerting
+  }
+  
+  security: {
+    authentication: mechanisms+providers+flows,
+    authorization: rbac+permissions+policies,
+    data•protection: encryption+masking+compliance,
+    auditing: logging+forensics+reporting
+  }
+  
+  selection•criteria: [
+    team•expertise,
+    ecosystem•maturity,
+    performance•characteristics,
+    scalability•potential,
+    maintenance•overhead,
+    security•posture,
+    licensing•constraints,
+    vendor•support
+  ]
+}
+
+↹ Λ₃•RiskManagement [p=1] {
+  dimensions: [
+    technical: complexity+integrations+performance+security,
+    operational: deployment+availability+maintenance+scaling,
+    resource: skills+availability+dependencies+vendors,
+    business: requirements•changes+market•shifts+regulatory
+  ]
+  
+  assessment: [
+    identification: systematic•discovery+brainstorming,
+    analysis: probability+impact+exposure,
+    prioritization: ranking+criticality+urgency
+  ]
+  
+  response: [
+    mitigation: preventive•measures+controls,
+    contingency: reactive•plans+triggers,
+    acceptance: thresholds+monitoring,
+    transfer: insurance+contracts+outsourcing
+  ]
+  
+  framework: {
+    risk•id: unique•identifier,
+    description: clear•statement•of•risk,
+    category: risk•dimension+type,
+    probability: high|medium|low+percentage,
+    impact: high|medium|low+quantified•effect,
+    exposure: probability×impact,
+    owner: responsible•individual+team,
+    mitigation: preventive•actions+deadline,
+    contingency: reactive•measures+trigger•conditions,
+    status: tracking+updates+resolution
+  }
+  
+  validation: {
+    hypotheses: explicit•assumptions+testable•predictions,
+    verification: experiments+tests+evidence,
+    tracking: validated|invalidated+confidence•level,
+    adaptation: strategy•adjustments•based•on•results
+  }
+  
+  cadence: {
+    reviews: sprint•based+milestone•based,
+    reporting: stakeholder•updates+dashboards,
+    escalation: threshold•triggers+management•involvement
+  }
+}
+
+↹ Λ₄•IterativeDevelopment [p=1] {
+  stories: {
+    granularity: user•focused+deliverable+testable,
+    creation: from•requirements+incremental+prioritized,
+    approval: stakeholder•review+acceptance•criteria,
+    implementation: test•driven+feature•complete
+  }
+  
+  cycles: {
+    planning: objectives+scope+stories•selection,
+    development: implementation+testing+documentation,
+    review: demonstration+feedback+acceptance,
+    retrospective: learnings+improvements+adaptations
+  }
+  
+  feedback: {
+    sources: users+stakeholders+team+metrics,
+    incorporation: requirements•update+scope•adjustment+technical•refinement,
+    documentation: decisions+changes+rationale
+  }
+  
+  adaptation: {
+    PFD: reflect•major•pivots+scope•changes,
+    PRD: capture•evolving•requirements+priorities,
+    Architecture: update•with•technical•learnings+decisions
+  }
+}
+
+## Δ Quality•Validation [p=1]
+
+↹ Δ₁•DocumentMetrics [p=1] {
+  completeness: [
+    all•required•sections•present,
+    depth•appropriate•to•project•complexity,
+    no•placeholders•or•TBDs,
+    all•risks•addressed•with•mitigations,
+    all•requirements•have•acceptance•criteria
+  ]
+  
+  clarity: [
+    consistent•terminology,
+    appropriate•technical•depth,
+    effective•visual•elements,
+    logical•information•hierarchy,
+    accessible•to•target•audience
+  ]
+  
+  alignment: [
+    business•goals→technical•approach,
+    requirements→architecture,
+    risks→mitigation•strategies,
+    timeline→resources→scope
+  ]
+  
+  actionability: [
+    specific•enough•for•implementation,
+    clear•ownership•and•responsibilities,
+    testable•requirements•and•outcomes,
+    practical•timelines•and•dependencies
+  ]
+}
+
+↹ Δ₂•ValidationFramework [p=1] {
+  checklists: {
+    per•section: specific•validation•criteria,
+    stakeholder•specific: role•based•verification•points,
+    quality•gates: criteria•for•stage•progression
+  }
+  
+  reviews: {
+    technical: architecture+implementation•feasibility,
+    business: value•alignment+resource•commitment,
+    operational: supportability+maintainability,
+    security: compliance+protection•mechanisms
+  }
+  
+  approval•process: {
+    reviewers: required•roles+expertise,
+    sign•off: formal•acknowledgment+commitment,
+    versioning: tracking•approval•per•version,
+    escalation: process•for•resolving•conflicts
+  }
+}
+
+## ⚠️ Critical•Requirements [p=1]
+
+↹ imperatives → [
+  ALWAYS: [
+    align•with•business•objectives,
+    include•all•required•sections,
+    use•precise•language,
+    include•diagrams•for•complex•concepts,
+    document•assumptions•and•constraints,
+    quantify•acceptance•criteria,
+    define•terminology•in•glossary,
+    include•version•and•date(cmd: `date +"%Y-%m-%d"`),
+    secure•stakeholder•approval,
+    specify•technology•versions,
+    document•alternatives•considered,
+    include•comprehensive•risk•assessment,
+    define•architectural•boundaries,
+    provide•implementation•plan,
+    establish•measurable•KPIs,
+    maintain•traceability•to•stories,
+    validate•critical•hypotheses,
+    update•after•significant•changes
+  ]
+  
+  NEVER: [
+    leave•critical•sections•incomplete,
+    use•ambiguous•terminology,
+    include•premature•implementation•details,
+    omit•acceptance•criteria,
+    ignore•security•considerations,
+    proceed•without•formal•approval,
+    leave•technical•decisions•unjustified,
+    include•placeholder•content•in•final•version,
+    ignore•operational•concerns,
+    overlook•integration•points,
+    separate•business•goals•from•technical•decisions,
+    underestimate•complexity,
+    neglect•maintainability,
+    ignore•feedback•from•implementation,
+    leave•risks•without•mitigation•strategies,
+    allow•stories•without•validation•criteria
+  ]
+]
+
+## ϴ Creation•Process [p=2]
+
+↹ workflow → (
+  prepare(gather•inputs+define•scope+identify•stakeholders)
+  → draft(core•sections+initial•content+placeholders)
+  → review(stakeholder•feedback+technical•validation+business•alignment)
+  → revise(incorporate•feedback+refine•content+address•gaps)
+  → finalize(complete•all•sections+obtain•approvals+publish)
+  → evolve(update•based•on•implementation•feedback+learnings)
+)
+
+↹ collaboration → {
+  contributors: [
+    product•owners: business•value+requirements+priorities,
+    architects: technical•vision+design+patterns,
+    developers: implementation•concerns+feasibility,
+    operations: deployment+support+monitoring,
+    security: protection•mechanisms+compliance,
+    QA: testing•strategy+acceptance•criteria
+  ]
+  
+  tools: [
+    documentation: markdown+diagramming+version•control,
+    review: comments+change•tracking+feedback•collection,
+    approval: electronic•sign•off+workflow•management
+  ]
+  
+  practices: [
+    workshops: collaborative•content•creation,
+    reviews: structured•feedback•sessions,
+    iterative: progressive•refinement+validation,
+    agile: regular•updates+alignment•with•sprints
+  ]
+}
+
+↹ iteration•management → {
+  triggers: [
+    sprint•completion: review+reflect+update,
+    major•changes: scope+direction+requirements,
+    technical•discoveries: constraints+opportunities+patterns
+  ]
+  
+  updates: {
+    metadata: version+date+change•summary,
+    content: affected•sections+rationale,
+    approvals: review+sign•off+communication
+  }
+  
+  versioning: {
+    major: significant•changes•to•scope•or•approach,
+    minor: refinements•to•existing•sections,
+    patch: corrections+clarifications+small•additions
+  }
+}
+
+## Φ Template•Adaptation [p=2]
+
+↹ project•types → {
+  software•product: emphasis(user•needs+features+experience),
+  enterprise•system: emphasis(integration+security+scalability),
+  data•platform: emphasis(storage+analytics+governance),
+  mobile•application: emphasis(platforms+offline•capability+user•experience),
+  api•service: emphasis(contracts+versioning+documentation),
+  infrastructure: emphasis(reliability+scalability+security)
+}
+
+↹ methodology•alignment → {
+  agile: {
+    approach: iterative+incremental+adaptive,
+    sections: prioritized+modular+evolving,
+    updates: regular+versioned+collaborative,
+    integration: [
+      stories•from•requirements,
+      architecture•evolution•with•learning,
+      risk•monitoring•each•iteration,
+      validation•of•hypotheses•through•mvps
+    ],
+    ceremonies: [
+      refinement: elaborate•requirements+technical•approach,
+      planning: select•stories+define•sprint•goals,
+      review: demonstrate•progress+collect•feedback,
+      retrospective: update•pfd•elements•as•needed
+    ],
+    artifacts: [
+      pfd: foundation•document,
+      prd: detailed•requirements,
+      architecture: technical•decisions,
+      stories: implementation•units
+    ]
+  },
+  
+  waterfall: {
+    approach: comprehensive+sequential+detailed,
+    sections: complete+exhaustive+upfront,
+    updates: formal•change•management
+  },
+  
+  hybrid: {
+    approach: tailored+flexible+pragmatic,
+    sections: core•upfront+details•progressive,
+    updates: milestone•based+adaptive
+  }
+}
+
+## Ψ PFD•Lifecycle [p=2]
+
+↹ ongoing•management → (
+  maintain(regular•updates+version•control+change•tracking)
+  → enforce(governance+compliance+alignment)
+  → evolve(incorporate•lessons+adapt•to•changes+continuous•improvement)
+)
+
+↹ usage•patterns → {
+  onboarding: orientation+context+understanding,
+  decision•making: reference+justification+consistency,
+  implementation: guidance+standards+requirements,
+  verification: validation+conformance+quality•assurance,
+  agile•development: [
+    story•creation: derive•from•pfd•sections,
+    refinement: elaborate•with•pfd•context,
+    prioritization: align•with•pfd•objectives,
+    acceptance: verify•against•pfd•criteria
+  ]
+}
+
+↹ feedback•loops → {
+  implementation→pfd: technical•learnings+constraints+opportunities,
+  stories→prd: refinements+scope•adjustments+priority•shifts,
+  architecture→technical•vision: patterns+decisions+adaptations,
+  metrics→success•criteria: performance+progress+alignment
+}
+
+## 🧩 Examples
+
+<example>
+### Comprehensive PFD Example
+
+# Project Foundation Document: Customer Portal Redesign
+Version: 1.0 | Date: 2023-06-15 | Status: Approved
+
+## 1. Introduction
+
+### 1.1 Purpose
+This document defines the foundation for the Customer Portal Redesign project, serving as the authoritative reference for requirements, technical decisions, and project planning.
+
+### 1.2 Scope
+The project encompasses the redesign of the customer self-service portal, including authentication, dashboard, account management, and support request workflows.
+
+### 1.3 Glossary
+- **SLA**: Service Level Agreement
+- **SSO**: Single Sign-On
+- **KPI**: Key Performance Indicator
+
+## 2. Vision
+
+### 2.1 Vision Statement
+Create an intuitive, responsive customer portal that increases self-service usage by 40% while reducing support call volume by 25%.
+
+### 2.2 Strategic Alignment
+This initiative supports our 2023 strategic goal of improving customer satisfaction while reducing operational costs.
+
+## 3. Technical Vision
+
+### 3.1 Guiding Principles
+- **User-Centric Design**: All interfaces prioritize user experience over technical convenience
+- **API-First Architecture**: All functionality exposed through well-documented APIs
+- **Progressive Enhancement**: Core functionality works on all devices with enhanced experiences on modern browsers
+- **Performance by Default**: 90% of interactions complete in under 1 second
+
+### 3.2 Quality Attributes
+| Attribute | Requirement | Measurement |
+|-----------|------------|-------------|
+| Performance | Page load < 2s | Lighthouse, RUM |
+| Security | OWASP Top 10 compliance | Automated security scans |
+| Accessibility | WCAG 2.1 AA compliance | Automated + manual testing |
+| Reliability | 99.9% uptime | Monitoring system |
+
+## 4. Overview
+
+### 4.1 Project Context
+The current customer portal was built 5 years ago and suffers from usability issues, performance problems, and maintenance challenges. Customer satisfaction scores for the portal are at 65%, below our target of 85%.
+
+### 4.2 Objectives
+1. Increase customer satisfaction scores to 85%+ by Q4 2023
+2. Reduce support call volume by 25% by Q2 2024
+3. Increase self-service transaction completion rate from 70% to 90% by Q3 2023
+4. Reduce maintenance costs by 40% through modern architecture
+
+### 4.3 Target Audience
+- **Primary Users**: Customers (B2B and B2C)
+  - Technical sophistication: Varied (novice to expert)
+  - Usage frequency: Weekly to monthly
+  - Key needs: Account management, support requests, purchase history
+- **Secondary Users**: Support agents
+  - Usage context: Assisting customers, troubleshooting issues
+  - Key needs: Quick access to customer context, streamlined assistance tools
+
+[Content continues with remaining required sections...]
+
+## 10. Approval
+| Role | Name | Signature | Date |
+|---|---|-----|---|
+| Product Owner | Jane Smith | Approved | 2023-06-15 |
+| Tech Lead | John Doe | Approved | 2023-06-15 |
+| UX Design Lead | Ana Garcia | Approved | 2023-06-14 |
+</example>
+
+<example type="invalid">
+### Inadequate PFD Example
+
+# Customer Portal Project
+Created: June 2023
+
+## Introduction
+We need to build a new customer portal.
+
+## Features
+- Login
+- Dashboard
+- Settings
+- Support
+
+## Tech Stack
+We'll use React and Node.js.
+
+## Timeline
+We should complete this in Q3.
+
+## Resources
+- 2 developers
+- 1 designer
+
+### Issues with this example:
+1. Missing critical sections (vision, requirements, architecture, testing, etc.)
+2. No version number or precise date
+3. Vague descriptions without measurable outcomes
+4. No alignment with business objectives
+5. Missing acceptance criteria and KPIs
+6. No risk assessment or mitigation strategies
+7. No approval process or stakeholder sign-off
+8. Lacks proper structure and organization
+9. No glossary or clear terminology
+10. Missing diagrams or visual representations
+</example>
+
+## Σ PFD•Validation [p=1]
+
+PFD.validate = (
+  structure → all•required•sections•present
+  → content → alignment•with•business•goals
+  → metrics → measurable•success•criteria
+  → technical → appropriate•detail•level
+  → diagrams → clarify•complex•concepts
+  → approvals → stakeholder•signoff
+  → completeness → comprehensiveness•without•ambiguity
+  → compliance → organization•standards
+  → timeline → realistic•with•dependencies
+  → scope → clearly•defined•boundaries
+  → risks → identified•with•mitigations
+  → integrations → external•dependencies•documented
+  → technologies → versions•specified+alternatives•justified
+  → architecture → patterns•documented+boundaries•defined
+  → operations → deployment+monitoring+maintenance•specified
+  → date → use•current(`date +"%Y-%m-%d"`)
+  → agile•readiness → supports•iterative•development+story•mapping
+  → traceability → requirements⇌stories⇌architectural•components
+  → hypothesis•tracking → critical•assumptions•identified+testable
+) 
