@@ -27,6 +27,7 @@ graph TD
     E --> E1[Références]
     E --> E2[Spécifications Détaillées]
     E --> E3[Artefacts]
+    E --> E4[Registres de Décisions]
 ```
 
 ## Triade Documentaire et Flux Agile
@@ -100,6 +101,62 @@ graph LR
     E -.-> H
 ```
 
+## Structure des Décisions Architecturales
+
+```mermaid
+graph TD
+    ADR[Registre de Décisions] --> ID[ID et Titre]
+    ADR --> STATUS[Statut: Proposé/Accepté/\nRejeté/Remplacé]
+    ADR --> DATE[Date de Décision]
+    ADR --> CONTEXT[Contexte et Problématique]
+    ADR --> DECISION[Décision et Justification]
+    ADR --> CONSEQ[Conséquences: Positives,\nNégatives, Neutres]
+    ADR --> ALTER[Alternatives Considérées]
+
+    DECISION --> TRACE[Traçabilité d'Implémentation]
+    STATUS --> HISTORY[Historique des Statuts]
+    CONTEXT --> REQ[Lien vers Exigences]
+    DECISION --> OTHER[Liens vers Autres ADRs]
+
+    style ADR fill:#f5a742,stroke:#333,stroke-width:2px
+    style DECISION fill:#42adf5,stroke:#333,stroke-width:1px
+    style CONTEXT fill:#f542a7,stroke:#333,stroke-width:1px
+    style ALTER fill:#42f586,stroke:#333,stroke-width:1px
+```
+
+## Transition de Phases du Projet et le PFD
+
+```mermaid
+graph LR
+    INCEP[Inception] --> ELAB[Élaboration]
+    ELAB --> CONST[Construction]
+    CONST --> TRANS[Transition]
+    TRANS --> OPER[Opération]
+    OPER --> EVOL[Évolution]
+    EVOL -.-> INCEP
+
+    INCEP -.-> INCEP_PFD[Vision validée\nExigences délimitées]
+    ELAB -.-> ELAB_PFD[Fondation architecturale\nPlan détaillé]
+    CONST -.-> CONST_PFD[Fonctionnalités complètes\nQualité vérifiée]
+    TRANS -.-> TRANS_PFD[Déploiement\nAcceptation, Support]
+    OPER -.-> OPER_PFD[Données de performance\nOpportunités d'amélioration]
+    EVOL -.-> EVOL_PFD[Planification évolution\nNouveau cycle]
+
+    style INCEP fill:#f5a742,stroke:#333,stroke-width:2px
+    style ELAB fill:#f5a742,stroke:#333,stroke-width:2px
+    style CONST fill:#f5a742,stroke:#333,stroke-width:2px
+    style TRANS fill:#f5a742,stroke:#333,stroke-width:2px
+    style OPER fill:#f5a742,stroke:#333,stroke-width:2px
+    style EVOL fill:#f5a742,stroke:#333,stroke-width:2px
+
+    style INCEP_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+    style ELAB_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+    style CONST_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+    style TRANS_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+    style OPER_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+    style EVOL_PFD fill:#ffd699,stroke:#333,stroke-width:1px
+```
+
 ## Processus de Création du PFD
 
 ```mermaid
@@ -145,6 +202,190 @@ graph TD
     style ARCH fill:#6699ff,stroke:#333,stroke-width:2px
 ```
 
+## Adaptation à la Taille de l'Équipe
+
+```mermaid
+graph TD
+    A[Taille de l'Équipe] --> B[Petite\n2-5 personnes]
+    A --> C[Moyenne\n6-15 personnes]
+    A --> D[Grande\n15+ personnes]
+
+    B --> B1[Focus: Sections essentielles\nMise à jour fréquente]
+    B --> B2[Collaboration: Directe\nInformelle, Haute bande passante]
+
+    C --> C1[Focus: Détail équilibré\nCommunication structurée]
+    C --> C2[Collaboration: Mixte\nSync régulières]
+
+    D --> D1[Focus: Documentation complète\nProcessus formels]
+    D --> D2[Collaboration: Basée sur les rôles\nGouvernance établie]
+
+    style B fill:#66cc99,stroke:#333,stroke-width:2px
+    style C fill:#ff9900,stroke:#333,stroke-width:2px
+    style D fill:#ff6666,stroke:#333,stroke-width:2px
+```
+
+## Métriques et Suivi
+
+```mermaid
+graph TD
+    A[Métriques du Projet] --> B[Performance]
+    A --> C[Qualité]
+    A --> D[Projet]
+    A --> E[Business]
+
+    B --> B1[Baseline: Mesures initiales\nBenchmarks]
+    B --> B2[Targets: Valeurs cibles\nObjectifs d'amélioration]
+    B --> B3[Monitoring: Outils, Fréquence\nReporting]
+
+    C --> C1[Code: Couverture, Complexité\nDuplication, Standards]
+    C --> C2[Tests: Unitaires, Intégration\nE2E, Sécurité]
+    C --> C3[Documentation: Complétude\nPrécision, Usabilité]
+
+    D --> D1[Vélocité: Story points\nTaux de complétion]
+    D --> D2[Prévisibilité: Précision d'estimation\nConsistance de livraison]
+
+    E --> E1[Valeur: ROI, Économies\nImpact sur revenus]
+    E --> E2[Adoption: Acquisition utilisateurs\nRétention, Engagement]
+
+    style A fill:#42adf5,stroke:#333,stroke-width:2px
+```
+
+## Pratiques de Documentation
+
+```mermaid
+graph TD
+    A[Documentation] --> B[Code]
+    A --> C[API]
+    A --> D[Utilisateur]
+    A --> E[Architecture]
+
+    B --> B1[Inline: Objectif, Paramètres\nRetours, Exemples]
+    B --> B2[Style: Consistant\nLisible, Maintenable]
+    B --> B3[Standards: Spécifiques au langage\nConventions du projet]
+
+    C --> C1[Contrats: Endpoints, Paramètres\nRéponses, Erreurs]
+    C --> C2[Versioning: Compatibilité\nDépréciation, Migration]
+    C --> C3[Exemples: Requêtes, Réponses\nCas limites, Erreurs]
+
+    D --> D1[Guides: Installation\nConfiguration, Opération]
+    D --> D2[Tutoriels: Étape par étape\nCaptures d'écran, Vidéos]
+
+    E --> E1[Diagrammes: État actuel\nCible, Transition]
+    E --> E2[Décisions: Justification\nAlternatives, Conséquences]
+
+    style A fill:#f542a7,stroke:#333,stroke-width:2px
+```
+
+## Principes de Développement SOLID
+
+```mermaid
+graph TD
+    SOLID[Principes SOLID] --> SRP[S: Single Responsibility]
+    SOLID --> OCP[O: Open/Closed]
+    SOLID --> LSP[L: Liskov Substitution]
+    SOLID --> ISP[I: Interface Segregation]
+    SOLID --> DIP[D: Dependency Inversion]
+
+    SRP --> SRP_DESC["Une classe doit avoir une seule raison de changer"]
+    OCP --> OCP_DESC["Ouvert à l'extension,\nfermé à la modification"]
+    LSP --> LSP_DESC["Les sous-types doivent être\nsubstituables aux types de base"]
+    ISP --> ISP_DESC["Interfaces spécifiques meilleures\nque les interfaces générales"]
+    DIP --> DIP_DESC["Dépendre des abstractions,\nnon des implémentations"]
+
+    SRP_DESC --> SRP_EX["Ex: Classe UserRepository gère\nuniquement les opérations de données utilisateur"]
+    OCP_DESC --> OCP_EX["Ex: Ajouter de nouveaux formatters\nsans modifier le code existant"]
+    LSP_DESC --> LSP_EX["Ex: Toute IShape doit pouvoir\nêtre utilisée où Shape est attendue"]
+    ISP_DESC --> ISP_EX["Ex: Séparer IReadable et IWritable\nplutôt qu'une seule interface"]
+    DIP_DESC --> DIP_EX["Ex: Service dépend de IRepository\nnon de SQLRepository"]
+
+    style SOLID fill:#f5a742,stroke:#333,stroke-width:2px
+    style SRP fill:#42adf5,stroke:#333,stroke-width:1px
+    style OCP fill:#42adf5,stroke:#333,stroke-width:1px
+    style LSP fill:#42adf5,stroke:#333,stroke-width:1px
+    style ISP fill:#42adf5,stroke:#333,stroke-width:1px
+    style DIP fill:#42adf5,stroke:#333,stroke-width:1px
+```
+
+## Autres Principes de Design
+
+```mermaid
+graph TD
+    PRINCIPLES[Principes de Design] --> KISS[KISS:\nKeep It Simple]
+    PRINCIPLES --> DRY[DRY:\nDon't Repeat Yourself]
+    PRINCIPLES --> YAGNI[YAGNI:\nYou Aren't Gonna Need It]
+    PRINCIPLES --> CLEAN[Clean Code]
+
+    KISS --> KISS_DESC["Éviter la complexité inutile\nFavoriser la lisibilité"]
+    DRY --> DRY_DESC["Éviter la duplication de code\nAbstraction & réutilisation"]
+    YAGNI --> YAGNI_DESC["Implémenter quand nécessaire\nPas avant"]
+    CLEAN --> CLEAN_DESC["Code lisible, maintenable,\nrobuste et efficace"]
+
+    CLEAN_DESC --> READ["Lisibilité:\nNoms significatifs\nFormatage cohérent"]
+    CLEAN_DESC --> MAINT["Maintenabilité:\nModularité\nTestabilité"]
+    CLEAN_DESC --> ROBUST["Robustesse:\nGestion d'erreurs\nValidation des entrées"]
+
+    style PRINCIPLES fill:#f5a742,stroke:#333,stroke-width:2px
+    style KISS fill:#42adf5,stroke:#333,stroke-width:1px
+    style DRY fill:#42adf5,stroke:#333,stroke-width:1px
+    style YAGNI fill:#42adf5,stroke:#333,stroke-width:1px
+    style CLEAN fill:#42adf5,stroke:#333,stroke-width:1px
+```
+
+## Conventions de Nommage et Standards
+
+```mermaid
+graph TD
+    STANDARDS[Standards de Code] --> NAMING[Conventions de Nommage]
+    STANDARDS --> FORMAT[Formatage]
+    STANDARDS --> REVIEW[Revue de Code]
+    STANDARDS --> VERSION[Contrôle de Version]
+
+    NAMING --> VAR["Variables:\ncamelCase\ndescriptif"]
+    NAMING --> FUNC["Fonctions:\ncamelCase\nverbe + objectif"]
+    NAMING --> CLASS["Classes:\nPascalCase\nnom + responsabilité"]
+    NAMING --> CONST["Constantes:\nUPPER_SNAKE_CASE"]
+
+    FORMAT --> INDENT["Indentation:\nconsistante"]
+    FORMAT --> LINE["Longueur de ligne:\n80-120 caractères"]
+    FORMAT --> GROUP["Groupement:\nlogique & cohérent"]
+
+    REVIEW --> CRITERIA["Critères:\nfonctionnalité\nsécurité\nperformance"]
+    REVIEW --> PROC["Processus:\nPR\nreviewers définis\nchecklist"]
+
+    VERSION --> BRANCH["Branches:\nstratégie claire"]
+    VERSION --> COMMIT["Commits:\nconventions\ngranularité"]
+
+    style STANDARDS fill:#f5a742,stroke:#333,stroke-width:2px
+    style NAMING fill:#42adf5,stroke:#333,stroke-width:1px
+    style FORMAT fill:#42adf5,stroke:#333,stroke-width:1px
+    style REVIEW fill:#42adf5,stroke:#333,stroke-width:1px
+    style VERSION fill:#42adf5,stroke:#333,stroke-width:1px
+```
+
+## Stratégie de Contrôle de Version
+
+```mermaid
+gitGraph
+   commit id: "Initial PFD" tag: "v0.1"
+   branch feature/auth
+   checkout feature/auth
+   commit id: "Auth design"
+   commit id: "Auth implementation"
+   checkout main
+   merge feature/auth id: "Add authentication" tag: "v0.2"
+   branch fix/validation
+   checkout fix/validation
+   commit id: "Fix validation error"
+   checkout main
+   merge fix/validation id: "Fix validation issue" tag: "v0.3"
+   branch feature/reporting
+   checkout feature/reporting
+   commit id: "Reporting design"
+   commit id: "Reporting implementation"
+   checkout main
+   merge feature/reporting id: "Add reporting" tag: "v1.0"
+```
+
 ## Vue d'Ensemble des Symboles
 
 | Symbole | Nom                     | Signification dans le PFD                  |
@@ -164,7 +405,7 @@ graph TD
 | `+`     | Plus                    | Combinaison d'Éléments Similaires          |
 | `Γ`     | Gamma                   | Relations entre Documents                  |
 
-## Checklist de Qualité PFD
+## Checklist de Qualité PFD Étendue
 
 ```mermaid
 graph TD
@@ -178,11 +419,13 @@ graph TD
     H -->|Non| I[Ajuster Niveau\nde Détail]
     H -->|Oui| J{Diagrammes\nClairs?}
     J -->|Non| K[Améliorer\nVisualisations]
-    J -->|Oui| L{Approbations\nObtenues?}
-    L -->|Non| M[Obtenir\nApprobations]
+    J -->|Oui| L{Décisions\nDocumentées?}
+    L -->|Non| M[Ajouter Registres\nde Décisions]
     L -->|Oui| N{Support\nAgile?}
     N -->|Non| O[Améliorer\nTraçabilité]
-    N -->|Oui| P[PFD\nValidé!]
+    N -->|Oui| P{Version et\nChangelog?}
+    P -->|Non| Q[Compléter\nHistorique]
+    P -->|Oui| R[PFD\nValidé!]
 ```
 
 ## Structure d'une Story Issue du PFD
@@ -285,7 +528,10 @@ docs/
     │   └── supplements/             # Documents supplémentaires
     │       ├── risk-assessment.md
     │       ├── api-spec.md
-    │       └── ui-mockups.md
+    │       ├── ui-mockups.md
+    │       └── decisions/           # Registres de décisions
+    │           ├── ADR-001-architecture.md
+    │           └── ADR-002-technology.md
     └── project-b/
         ├── pfd.md
         ├── diagrams/
@@ -317,6 +563,10 @@ docs/
 12. **Validez les hypothèses critiques** aussi tôt que possible dans le cycle de développement
 13. **Prévoyez des points de synchronisation** avec les cycles agiles pour maintenir l'alignement
 14. **Dérivez les stories** directement des sections pertinentes du PFD pour assurer la cohérence
+15. **Adaptez le niveau de détail** en fonction de la taille de l'équipe et de la complexité du projet
+16. **Maintenez un registre de décisions** pour documenter les choix architecturaux et techniques
+17. **Intégrez une méthodologie de suivi des métriques** pour mesurer objectivement la progression
+18. **Documentez l'historique des versions** pour suivre l'évolution du document
 
 ---
 
@@ -351,8 +601,30 @@ docs/
 - **Functional**: Capacités, fonctionnalités, user stories
 - **Non-functional**: Qualités, contraintes, critères de performance
 - **Use Cases**: Acteur, flux, résultats
+- **Priorities**: Haute, moyenne, basse avec justification
 
-### 6-12. [Suite des sections...]
+### 6. Architecture
+
+- **System**: Composants, interfaces, patterns
+- **Data**: Entités, relations, stockage
+- **UI**: Layouts, interactions, wireframes
+- **Views**: Vue logique, physique, processus, développement
+
+### 7. Approche Technique
+
+- **Stack**: Frontend, backend, infrastructure
+- **Integrations**: APIs, services, tiers
+- **Security**: Authentication, autorisation, protection des données
+- **Versions**: Versions spécifiques et compatibilité
+
+### 8-12. [Suite des sections...]
+
+### 13. Annexes
+
+- **References**: Sources, standards, inspiration
+- **Detailed Specs**: Approfondissements techniques
+- **Artifacts**: Modèles, diagrammes, prototypes
+- **Decision Records**: Décisions architecturales, justification, statut
 
 ---
 

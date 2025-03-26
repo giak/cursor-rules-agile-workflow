@@ -18,6 +18,8 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 | 1.3 | Les sections sont organisées hiérarchiquement avec des titres numérotés                                                       |        |              |
 | 1.4 | Une table des matières complète est incluse                                                                                   |        |              |
 | 1.5 | Le document est accessible aux publics techniques et non techniques                                                           |        |              |
+| 1.6 | Le frontmatter inclut les références aux documents associés (PRD, ARCH)                                                       |        |              |
+| 1.7 | Les métadonnées incluent la taille de l'équipe et la méthodologie utilisée                                                    |        |              |
 
 ## 2. Contenu Essentiel
 
@@ -35,6 +37,9 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 | 2.10 | **Stratégie de Test**: Types, environnements et critères d'acceptation              |        |              |
 | 2.11 | **Opérations**: Déploiement, support et reprise après sinistre                      |        |              |
 | 2.12 | **Développement**: Standards, collaboration et documentation                        |        |              |
+| 2.13 | **Principes de Développement**: SOLID, KISS, DRY, YAGNI et pratiques de clean code  |        |              |
+| 2.14 | **Adaptation selon Taille d'Équipe**: Recommandations spécifiques par taille        |        |              |
+| 2.15 | **Transitions de Phase**: Évolution du PFD à travers les phases du projet           |        |              |
 
 ## 3. Qualité du Contenu
 
@@ -45,6 +50,8 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 | 3.3 | Des éléments visuels (diagrammes, tableaux) sont utilisés pour clarifier les concepts complexes |        |              |
 | 3.4 | La hiérarchie d'information est logique et facilite la navigation                               |        |              |
 | 3.5 | Aucun jargon n'est utilisé sans définition dans le glossaire                                    |        |              |
+| 3.6 | Les diagrammes suivent une notation standard et cohérente                                       |        |              |
+| 3.7 | Les vues d'architecture couvrent les différentes perspectives requises                          |        |              |
 
 ## 4. Alignement Business
 
@@ -58,23 +65,31 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 
 ## 5. Mesurabilité et Objectivité
 
-| #   | Critère                                                            | Statut | Commentaires |
-| --- | ------------------------------------------------------------------ | ------ | ------------ |
-| 5.1 | Les critères de succès sont quantifiables et mesurables            |        |              |
-| 5.2 | Les exigences non fonctionnelles ont des métriques spécifiques     |        |              |
-| 5.3 | Les KPIs ont des cibles claires et des méthodes de mesure définies |        |              |
-| 5.4 | Les critères d'acceptation sont objectifs et vérifiables           |        |              |
-| 5.5 | Les contraintes de performance et de sécurité sont quantifiées     |        |              |
+| #   | Critère                                                                               | Statut | Commentaires |
+| --- | ------------------------------------------------------------------------------------- | ------ | ------------ |
+| 5.1 | Les critères de succès sont quantifiables et mesurables                               |        |              |
+| 5.2 | Les exigences non fonctionnelles ont des métriques spécifiques                        |        |              |
+| 5.3 | Les KPIs ont des cibles claires et des méthodes de mesure définies                    |        |              |
+| 5.4 | Les critères d'acceptation sont objectifs et vérifiables                              |        |              |
+| 5.5 | Les contraintes de performance et de sécurité sont quantifiées                        |        |              |
+| 5.6 | Une méthodologie de suivi des métriques est clairement définie                        |        |              |
+| 5.7 | Les tableaux de bord et rapports sont spécifiés avec leur audience                    |        |              |
+| 5.8 | Les seuils d'alerte pour les métriques critiques sont définis                         |        |              |
+| 5.9 | Une méthodologie pour la collecte et l'analyse des métriques de qualité est spécifiée |        |              |
 
 ## 6. Exhaustivité et Clarté
 
-| #   | Critère                                                        | Statut | Commentaires |
-| --- | -------------------------------------------------------------- | ------ | ------------ |
-| 6.1 | Aucune section critique n'est incomplète ou marquée "TBD"      |        |              |
-| 6.2 | La profondeur du contenu est adaptée à la complexité du projet |        |              |
-| 6.3 | Tous les risques identifiés ont des stratégies d'atténuation   |        |              |
-| 6.4 | Toutes les exigences ont des critères d'acceptation            |        |              |
-| 6.5 | Les dépendances externes sont documentées                      |        |              |
+| #   | Critère                                                                     | Statut | Commentaires |
+| --- | --------------------------------------------------------------------------- | ------ | ------------ |
+| 6.1 | Aucune section critique n'est incomplète ou marquée "TBD"                   |        |              |
+| 6.2 | La profondeur du contenu est adaptée à la complexité du projet              |        |              |
+| 6.3 | Tous les risques identifiés ont des stratégies d'atténuation                |        |              |
+| 6.4 | Toutes les exigences ont des critères d'acceptation                         |        |              |
+| 6.5 | Les dépendances externes sont documentées                                   |        |              |
+| 6.6 | Les priorités des exigences sont clairement établies                        |        |              |
+| 6.7 | Les décisions architecturales majeures sont documentées                     |        |              |
+| 6.8 | Les principes de développement sont clairement énoncés et justifiés         |        |              |
+| 6.9 | Les stratégies d'adaptation pour différentes tailles d'équipe sont définies |        |              |
 
 ## 7. Spécificité Technique
 
@@ -85,6 +100,10 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 | 7.3 | Les patterns architecturaux sont documentés                                     |        |              |
 | 7.4 | Les limites architecturales sont clairement définies                            |        |              |
 | 7.5 | Les aspects opérationnels (déploiement, monitoring, maintenance) sont spécifiés |        |              |
+| 7.6 | Les stratégies d'automatisation des tests sont détaillées                       |        |              |
+| 7.7 | Les standards de documentation de code sont spécifiés                           |        |              |
+| 7.8 | Les conventions de nommage sont clairement définies                             |        |              |
+| 7.9 | La stratégie de contrôle de version est détaillée                               |        |              |
 
 ## 8. Approbations et Formalités
 
@@ -115,10 +134,46 @@ Cette checklist permet de vérifier rapidement si un Document Fondation de Proje
 | 10.3 | Il existe une stratégie claire pour maintenir le PFD à jour pendant les cycles agiles   |        |              |
 | 10.4 | Les hypothèses critiques sont clairement identifiées pour validation précoce            |        |              |
 | 10.5 | Le document définit comment les métriques seront suivies et évaluées à chaque itération |        |              |
+| 10.6 | La convention de nommage des stories est alignée avec le workflow agile                 |        |              |
+| 10.7 | Le document définit comment gérer les transitions entre les phases du projet            |        |              |
+
+## 11. Registre des Décisions Architecturales
+
+| #    | Critère                                                                       | Statut | Commentaires |
+| ---- | ----------------------------------------------------------------------------- | ------ | ------------ |
+| 11.1 | Les principales décisions architecturales sont documentées au format ADR      |        |              |
+| 11.2 | Chaque ADR inclut contexte, décision, justification et alternatives           |        |              |
+| 11.3 | Les conséquences positives et négatives sont documentées pour chaque décision |        |              |
+| 11.4 | L'historique des statuts est maintenu pour chaque ADR                         |        |              |
+| 11.5 | Les ADRs sont liés aux exigences et contraintes qu'ils adressent              |        |              |
+| 11.6 | La structure des ADRs est cohérente et suit un template standardisé           |        |              |
+| 11.7 | Les ADRs sont versionnés et archivés avec le PFD                              |        |              |
+
+## 12. Pratiques de Documentation
+
+| #    | Critère                                                                                              | Statut | Commentaires |
+| ---- | ---------------------------------------------------------------------------------------------------- | ------ | ------------ |
+| 12.1 | Les standards de documentation de code sont spécifiés                                                |        |              |
+| 12.2 | La documentation API est structurée et complète                                                      |        |              |
+| 12.3 | Les exigences de documentation utilisateur sont clairement définies                                  |        |              |
+| 12.4 | Il existe un plan de génération et de maintenance de la documentation                                |        |              |
+| 12.5 | Les processus de revue de documentation sont établis                                                 |        |              |
+| 12.6 | Les standards pour les commentaires inline sont définis (style, contenu, déclencheurs)               |        |              |
+| 12.7 | Les exigences pour la documentation d'architecture sont spécifiées (diagrammes, décisions, patterns) |        |              |
+
+## 13. Adaptation au Contexte
+
+| #    | Critère                                                                         | Statut | Commentaires |
+| ---- | ------------------------------------------------------------------------------- | ------ | ------------ |
+| 13.1 | Des recommandations spécifiques sont fournies pour différentes tailles d'équipe |        |              |
+| 13.2 | L'évolution du PFD à travers les phases du projet est clairement définie        |        |              |
+| 13.3 | Des adaptations selon la méthodologie du projet sont spécifiées                 |        |              |
+| 13.4 | Les sections critiques sont identifiées par phase de projet                     |        |              |
+| 13.5 | Le niveau de détail est adapté au contexte du projet                            |        |              |
 
 ## Résumé de l'Évaluation
 
-**Score Global**: [Nombre d'éléments conformes] / 50 = [Pourcentage] %
+**Score Global**: [Nombre d'éléments conformes] / 75 = [Pourcentage] %
 
 **Évaluation Qualitative**:
 

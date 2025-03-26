@@ -3,7 +3,7 @@ title: "Project Foundation Document (PFD) Standard"
 description: "GENERATE when INITIATING project to ENSURE comprehensive and aligned documentation"
 globs: "docs/foundation/**/*.md"
 alwaysApply: false
-tags: ["documentation", "project", "foundation", "workflow", "template"]
+tags: ["documentation", "project", "foundation", "workflow", "template", "agile"]
 ---
 
 # 📑 Project Foundation Document Framework
@@ -15,6 +15,7 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
 - provides•structure(all•project•dimensions)
 - balances(comprehensiveness ⇌ clarity ⇌ conciseness)
 - basis•for(related•documents+iterative•development)
+- foundation•for(epics+stories+tasks)
 
 ## Γ Document•Relationships [p=1]
 
@@ -38,6 +39,30 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     PRD: dynamic+iterative(regular•updates),
     Architecture: living•document(technical•decisions+patterns)
   }
+  
+  visual•representation: ```mermaid
+    graph TD
+      PFD[Project Foundation Document] --> PRD[Product Requirements Document]
+      PFD --> ARCH[Architecture Document]
+      PRD --> EPICS[Epics]
+      ARCH --> EPICS
+      EPICS --> STORIES[Stories]
+      STORIES --> TASKS[Tasks]
+      
+      classDef pfd fill:#ff9900,stroke:#333,stroke-width:2px
+      classDef prd fill:#66cc99,stroke:#333,stroke-width:2px
+      classDef arch fill:#6699ff,stroke:#333,stroke-width:2px
+      classDef epic fill:#cc99ff,stroke:#333,stroke-width:2px
+      classDef story fill:#ff99cc,stroke:#333,stroke-width:2px
+      classDef task fill:#ffcc66,stroke:#333,stroke-width:2px
+      
+      class PFD pfd
+      class PRD prd
+      class ARCH arch
+      class EPICS epic
+      class STORIES story
+      class TASKS task
+    ```
 }
 
 ↹ agile•mapping {
@@ -51,6 +76,11 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   stories: {
     structure: epics→stories→tasks,
     location: .ai/epic-{n}/{m}-{code}.story.md,
+    naming•convention: {
+      n: sequential•epic•number,
+      m: sequential•story•number•within•epic,
+      code: kebab•case•summary•of•story•title
+    },
     content: [
       purpose+scope,
       acceptance•criteria,
@@ -67,6 +97,44 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     Architecture→technical•decisions,
     Stories→implementation•details
   ]
+  
+  workflow: {
+    initialization: validate•PRD+create•if•missing+identify•initial•risks,
+    refinement: improve•PRD+document•architecture+identify•hypotheses,
+    story•creation: create•first•story+follow•naming•convention+include•risks,
+    development: test•driven+validate•hypotheses+update•stories,
+    iteration: continuous•improvement+story•updates+risk•reassessment
+  }
+  
+  visual•representation: ```mermaid
+    flowchart LR
+      subgraph Documents
+        direction TB
+        PFD[PFD: Project Foundation]
+        PRD[PRD: Requirements Detail]
+        ARCH[ARCH: Technical Design]
+      end
+      
+      subgraph Implementation
+        direction TB
+        EPICS[Epics]
+        STORIES[Stories]
+        TASKS[Tasks]
+      end
+      
+      PFD --> PRD
+      PFD --> ARCH
+      PRD --> EPICS
+      ARCH --> EPICS
+      EPICS --> STORIES
+      STORIES --> TASKS
+      
+      TASKS -.-> |Feedback| STORIES
+      STORIES -.-> |Adjustments| PRD
+      STORIES -.-> |Technical Insights| ARCH
+      PRD -.-> |Major Changes| PFD
+      ARCH -.-> |Constraints| PFD
+  ```
 }
 
 ## Ω₁ Document•Architecture [p=1]
@@ -82,6 +150,71 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     → main•sections(core+supporting)
     → appendices(reference+supplemental)
   ]
+  
+  visual•representation: ```mermaid
+    graph TD
+      subgraph PFD[Project Foundation Document]
+        direction TB
+        FM[Frontmatter/Metadata]
+        TOC[Table of Contents]
+        MS[Main Sections]
+        APP[Appendices]
+      end
+      
+      FM --> TOC
+      TOC --> MS
+      MS --> APP
+      
+      subgraph "Main Sections Detail"
+        direction TB
+        INTRO[1. Introduction]
+        VISION[2. Vision]
+        TVISION[3. Technical Vision]
+        OVERVIEW[4. Overview]
+        REQ[5. Requirements]
+        ARCH[6. Architecture]
+        TECH[7. Technical Stack]
+        PLAN[8. Planning]
+        KPI[9. KPIs]
+        TEST[10. Testing]
+        OPS[11. Operations]
+        DEV[12. Development]
+      end
+      
+      MS --> INTRO
+      INTRO --> VISION
+      VISION --> TVISION
+      TVISION --> OVERVIEW
+      OVERVIEW --> REQ
+      REQ --> ARCH
+      ARCH --> TECH
+      TECH --> PLAN
+      PLAN --> KPI
+      KPI --> TEST
+      TEST --> OPS
+      OPS --> DEV
+      
+      subgraph "Appendices Detail"
+        direction TB
+        REF[References]
+        SPECS[Detailed Specs]
+        ARTIFACTS[Artifacts & Diagrams]
+        ADR[Architectural Decision Records]
+      end
+      
+      APP --> REF
+      APP --> SPECS
+      APP --> ARTIFACTS
+      APP --> ADR
+      
+      classDef main fill:#f5f5f5,stroke:#333,stroke-width:1px
+      classDef section fill:#ffffff,stroke:#333,stroke-width:1px
+      classDef appendix fill:#f0f0f0,stroke:#333,stroke-width:1px
+      
+      class PFD,FM,TOC,MS,APP main
+      class INTRO,VISION,TVISION,OVERVIEW,REQ,ARCH,TECH,PLAN,KPI,TEST,OPS,DEV section
+      class REF,SPECS,ARTIFACTS,ADR appendix
+  ```
 }
 
 ↹ metadata•requirements {
@@ -92,11 +225,79 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     authors: names+roles,
     approvers: authorities+sign•off,
     classification: public|internal|confidential,
-    changelog: version•history(date+author+changes)
+    changelog: version•history(date+author+changes),
+    related_documents: references•to•prd+architecture+other•key•documents,
+    team_size: small(2-5)|medium(6-15)|large(15+),
+    methodology: agile|waterfall|hybrid+specific•framework
   ]
   
   schema: YAML|JSON
   placement: document•start
+  
+  example: ```yaml
+    ---
+    title: "Project Foundation Document: Customer Portal"
+    version: "1.0.0"
+    date: "2024-11-10"
+    status: "Approved"
+    authors:
+      - name: "Jane Smith"
+        role: "Product Owner"
+      - name: "John Doe"
+        role: "Technical Lead"
+    approvers:
+      - name: "Sarah Johnson"
+        role: "CTO"
+      - name: "Michael Chen"
+        role: "VP of Product"
+    classification: "Internal"
+    related_documents:
+      - document_type: "PRD"
+        path: ".ai/prd.md"
+        description: "Detailed product requirements"
+      - document_type: "ARCH"
+        path: ".ai/arch.md"
+        description: "Technical architecture"
+    team_size: "Medium"
+    methodology: "Agile/Scrum"
+    ---
+  ```
+}
+
+↹ table•of•contents {
+  generation: auto•generated|manual
+  format: numbered•sections+links
+  depth: h1+h2+h3(minimum)
+  navigation: clickable•anchors+reference•links
+  updating: maintain•with•content•changes
+  
+  requirements: [
+    comprehensive•coverage,
+    logical•organization,
+    hierarchical•structure,
+    consistent•formatting,
+    automated•generation•preferred
+  ]
+  
+  example: ```markdown
+    ## Table of Contents
+    
+    1. [Introduction](#1-introduction)
+       1.1 [Purpose](#11-purpose)
+       1.2 [Scope](#12-scope)
+       1.3 [Glossary](#13-glossary)
+    2. [Vision](#2-vision)
+       2.1 [Vision Statement](#21-vision-statement)
+       2.2 [Strategic Alignment](#22-strategic-alignment)
+    3. [Technical Vision](#3-technical-vision)
+       ...
+    ```
+  
+  tools: [
+    vscode•markdown•toc•extension,
+    markdown•toc•cli•tools,
+    automated•doc•generation•systems
+  ]
 }
 
 ## Ω₂ Content•Framework [p=1]
@@ -129,37 +330,202 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   ⊕ requirements {
     functional: capabilities+features+user•stories,
     non•functional: qualities+constraints+performance•criteria,
-    use•cases: actor+flow+outcomes
+    use•cases: actor+flow+outcomes,
+    priorities: high|medium|low+reasoning,
+    validation•criteria: measurable•acceptance•criteria,
+    dependencies: external•systems+services+constraints,
+    visual•representation: ```mermaid
+      graph TD
+        subgraph Functional
+          F1[Core Functions]
+          F2[User Interactions]
+          F3[Business Processes]
+          F4[System Interfaces]
+        end
+        
+        subgraph Non-Functional
+          NF1[Performance]
+          NF2[Security]
+          NF3[Reliability]
+          NF4[Usability]
+          NF5[Maintainability]
+          NF6[Scalability]
+        end
+        
+        subgraph Use Cases
+          UC1[Primary Flows]
+          UC2[Alternative Flows]
+          UC3[Exception Flows]
+        end
+        
+        Requirement --> Functional
+        Requirement --> Non-Functional
+        Requirement --> Use-Cases
+        
+        F1 -.-> Priorities
+        F2 -.-> Priorities
+        F3 -.-> Priorities
+        F4 -.-> Priorities
+        
+        NF1 -.-> Validation
+        NF2 -.-> Validation
+        NF3 -.-> Validation
+        NF4 -.-> Validation
+        NF5 -.-> Validation
+        NF6 -.-> Validation
+        
+        UC1 --> AC1[Acceptance Criteria]
+        UC2 --> AC2[Acceptance Criteria]
+        UC3 --> AC3[Acceptance Criteria]
+        
+        classDef func fill:#d4f1f9,stroke:#333,stroke-width:1px
+        classDef nonfunc fill:#ffecb3,stroke:#333,stroke-width:1px
+        classDef usecase fill:#e1f5fe,stroke:#333,stroke-width:1px
+        
+        class F1,F2,F3,F4,Functional func
+        class NF1,NF2,NF3,NF4,NF5,NF6,Non-Functional nonfunc
+        class UC1,UC2,UC3,Use-Cases,AC1,AC2,AC3 usecase
+    ```
   }
   
   ⊕ architecture {
     system: components+interfaces+patterns,
     data: entities+relationships+storage,
-    ui: layouts+interactions+wireframes
+    ui: layouts+interactions+wireframes,
+    views: logical+physical+process+development,
+    patterns: architectural•patterns+design•patterns+anti•patterns,
+    security•model: authentication+authorization+data•protection,
+    visual•c4•model: ```mermaid
+      C4Context
+        title System Context Diagram for [System Name]
+        
+        Person(customer, "Customer", "A customer of the system with specific goals")
+        Person(admin, "Administrator", "System administrator")
+        
+        System(system, "System Name", "Provides core business capabilities")
+        
+        System_Ext(payment_system, "Payment System", "Processes payments")
+        System_Ext(email_system, "Email System", "Sends notifications")
+        
+        Rel(customer, system, "Uses")
+        Rel(admin, system, "Manages")
+        Rel(system, payment_system, "Makes payments using")
+        Rel(system, email_system, "Sends emails using")
+    ```,
+    visual•data•model: ```mermaid
+      erDiagram
+        CUSTOMER {
+          string customer_id PK
+          string name
+          string email
+          date registered_date
+        }
+        
+        ORDER {
+          string order_id PK
+          string customer_id FK
+          decimal total_amount
+          date order_date
+          string status
+        }
+        
+        PRODUCT {
+          string product_id PK
+          string name
+          string description
+          decimal price
+          int inventory
+        }
+        
+        ORDER_ITEM {
+          string order_id PK,FK
+          string product_id PK,FK
+          int quantity
+          decimal unit_price
+        }
+        
+        CUSTOMER ||--o{ ORDER : places
+        ORDER ||--|{ ORDER_ITEM : contains
+        PRODUCT ||--o{ ORDER_ITEM : "ordered in"
+    ```
   }
   
   ⊕ technical {
     stack: frontend+backend+infrastructure,
     integrations: apis+services+third•party,
-    security: authentication+authorization+data•protection
+    security: authentication+authorization+data•protection,
+    versions: specific•versions+compatibility,
+    technical•constraints: limitations+dependencies+compatibilities,
+    performance•requirements: latency+throughput+resource•utilization,
+    ui•frameworks: responsive•design+accessibility+localization,
+    version•requirements: ```markdown
+      | Component                 | Technology                 | Version       | Purpose                            |
+      |---------------------------|----------------------------|---------------|-----------------------------------|
+      | **Frontend**              |                            |               |                                   |
+      | UI Framework              | React                      | 18.2.0+       | User interface components         |
+      | State Management          | Redux Toolkit              | 1.9.5+        | Application state                 |
+      | CSS Framework             | Tailwind CSS               | 3.3.3+        | Styling and responsive design     |
+      | **Backend**               |                            |               |                                   |
+      | API Framework             | Express.js                 | 4.18.2+       | REST API implementation           |
+      | Database                  | PostgreSQL                 | 15.4+         | Data persistence                  |
+      | ORM                       | Prisma                     | 5.1.1+        | Database access layer             |
+      | Authentication            | OAuth 2.0 / JWT            | -             | User authentication               |
+      | **Infrastructure**        |                            |               |                                   |
+      | Containerization          | Docker                     | 24.0.5+       | Application containerization      |
+      | Container Orchestration   | Kubernetes                 | 1.27.3+       | Container management              |
+      | CI/CD                     | GitHub Actions             | -             | Continuous integration/deployment |
+      | Cloud Provider            | AWS                        | -             | Infrastructure hosting            |
+    ```
   }
   
   ⊕ planning {
     timeline: phases+milestones+deadlines,
     resources: team+tools+infrastructure,
-    risks: assessment+mitigation+contingencies
+    risks: assessment+mitigation+contingencies,
+    dependencies: external•systems+teams+deliverables,
+    phased•approach: inception+elaboration+construction+transition,
+    visual•timeline: ```mermaid
+      gantt
+        title Project Timeline
+        dateFormat  YYYY-MM-DD
+        
+        section Planning
+        Project Setup           :a1, 2024-01-01, 15d
+        Requirements Analysis   :a2, after a1, 20d
+        Architecture Design     :a3, after a2, 15d
+        
+        section Development Phase 1
+        Core Infrastructure     :b1, after a3, 30d
+        API Development         :b2, after b1, 25d
+        Database Implementation :b3, after b1, 20d
+        
+        section Development Phase 2
+        UI Implementation       :c1, after b2, 30d
+        Integration             :c2, after b3, 20d
+        
+        section Testing
+        Unit Testing            :d1, 2024-01-15, 120d
+        Integration Testing     :d2, after c2, 20d
+        UAT                     :d3, after d2, 15d
+        
+        section Deployment
+        Staging Deployment      :e1, after d2, 10d
+        Production Deployment   :e2, after d3, 5d
+    ```
   }
   
   ⊕ kpi {
     metrics: success•indicators+measurement•methods,
     targets: specific•values+thresholds,
-    tracking: frequency+tools+reporting
+    tracking: frequency+tools+reporting,
+    methodology: data•collection+analysis+presentation
   }
   
   ⊕ testing {
     strategy: approach+coverage+types,
     environments: dev+staging+prod,
-    acceptance: criteria+verification+validation
+    acceptance: criteria+verification+validation,
+    automation: ci•cd+test•coverage+reports
   }
   
   ⊕ operations {
@@ -171,13 +537,81 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   ⊕ development {
     standards: code•conventions+quality+review,
     collaboration: branching+pr+communication,
-    documentation: inline+api+user
+    documentation: inline+api+user,
+    practices: code•reviews+pair•programming+testing,
+    principles: SOLID+KISS+DRY+YAGNI,
+    quality•gates: linting+tests+coverage+reviews,
+    ci•cd: pipelines+environments+deployments,
+    tooling: version•control+issue•tracking+documentation•generation,
+    dev•environment: local•setup+containerization+dependencies,
+    team•workflow: ```mermaid
+      flowchart LR
+        subgraph "Development Workflow"
+          direction LR
+          FEATURE[Feature Branch]
+          PR[Pull Request]
+          REVIEW[Code Review]
+          CI[CI Tests]
+          MERGE[Merge]
+          DEPLOY[Deploy]
+        end
+        
+        FEATURE --> PR
+        PR --> REVIEW
+        PR --> CI
+        REVIEW -- Approved --> MERGE
+        CI -- Passing --> MERGE
+        MERGE --> DEPLOY
+        
+        REVIEW -- Feedback --> FEATURE
+        CI -- Failing --> FEATURE
+        
+        classDef start fill:#c9e6ff,stroke:#333
+        classDef process fill:#e6f5d0,stroke:#333
+        classDef end fill:#e9d5ff,stroke:#333
+        
+        class FEATURE start
+        class PR,REVIEW,CI process
+        class MERGE,DEPLOY end
+    ```,
+    code•standards: ```markdown
+      ### Coding Standards
+      
+      #### Naming Conventions
+      - **Variables**: camelCase, descriptive of purpose (e.g., `userData`, `paymentAmount`)
+      - **Functions**: camelCase, verb-based (e.g., `getUserData()`, `calculateTotal()`)
+      - **Classes**: PascalCase, noun-based (e.g., `UserRepository`, `PaymentProcessor`)
+      - **Constants**: UPPER_SNAKE_CASE (e.g., `MAX_RETRY_ATTEMPTS`, `API_BASE_URL`)
+      - **Files**: kebab-case for files, PascalCase for component files (e.g., `api-utils.js`, `UserProfile.jsx`)
+      
+      #### Formatting
+      - Indentation: 2 spaces
+      - Line length: Maximum 100 characters
+      - Trailing commas: Required in multiline lists/objects
+      - Semicolons: Required
+      - Quotes: Single quotes for strings, double quotes for JSX attributes
+      
+      #### Documentation
+      - All public APIs must have JSDoc comments
+      - Document parameters, return values, and thrown exceptions
+      - Explain complex algorithms or business logic with inline comments
+      - Maintain up-to-date README files for all modules
+      
+      #### Quality Gates
+      - Linting must pass with no errors (warnings allowed with justification)
+      - Unit test coverage minimum: 80% (100% for critical paths)
+      - Integration tests for all API endpoints
+      - End-to-end tests for critical user flows
+      - Security scanning with no high/critical issues
+      - Performance benchmarks within acceptable thresholds
+    ```
   }
   
   ⊕ appendices {
     references: sources+standards+inspiration,
     detailed•specs: technical•deep•dives,
-    artifacts: models+diagrams+prototypes
+    artifacts: models+diagrams+prototypes,
+    decision•records: architecture•decisions+rationale+status
   }
 ]
 
@@ -216,7 +650,8 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     C4•Model: context+containers+components+code,
     UML: class+sequence+activity+state,
     ERD: entities+relationships+attributes,
-    infrastructure: networks+servers+services
+    infrastructure: networks+servers+services,
+    flow: user•journeys+data•flows+processes
   ]
 }
 
@@ -337,6 +772,122 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   }
 }
 
+↹ Λ₅•DocumentationPractices [p=1] {
+  code: {
+    inline: purpose+parameters+returns+examples,
+    style: consistent+readable+maintainable,
+    standards: language•specific+project•conventions,
+    generation: auto•doc+type•inference+examples
+  }
+  
+  api: {
+    contracts: endpoints+parameters+responses+errors,
+    versioning: compatibility+deprecation+migration,
+    examples: request•response+edge•cases+errors,
+    testing: automation+coverage+validation
+  }
+  
+  user: {
+    guides: installation+configuration+operation,
+    tutorials: step•by•step+screenshots+videos,
+    references: complete•api+options+settings,
+    faq: common•issues+troubleshooting
+  }
+  
+  architecture: {
+    diagrams: current•state+target•state+transition,
+    decisions: rationale+alternatives+consequences,
+    patterns: reusable•solutions+context+trade•offs,
+    constraints: limitations+boundaries+assumptions
+  }
+}
+
+↹ Λ₆•DevelopmentPrinciples [p=1] {
+  design•principles: {
+    SOLID: {
+      S: single•responsibility(class•has•one•reason•to•change),
+      O: open•closed(open•for•extension+closed•for•modification),
+      L: liskov•substitution(subtypes•must•be•substitutable•for•base•types),
+      I: interface•segregation(specific•interfaces•better•than•general),
+      D: dependency•inversion(depend•on•abstractions+not•implementations)
+    },
+    
+    KISS: keep•it•simple(avoid•unnecessary•complexity+favor•readability),
+    DRY: don't•repeat•yourself(abstraction+reuse+avoid•duplication),
+    YAGNI: you•aren't•gonna•need•it(implement•when•needed+not•before),
+    
+    clean•code: {
+      readability: intuitive•names+consistent•formatting+self•explaining,
+      maintainability: modular+testable+well•documented,
+      efficiency: optimized•but•not•prematurely+appropriate•algorithms,
+      robustness: error•handling+boundary•cases+input•validation
+    }
+  },
+  
+  coding•standards: {
+    naming•conventions: {
+      variables: descriptive+camelCase+purpose•in•name,
+      functions: verb•based+descriptive+single•responsibility,
+      classes: noun•based+single•responsibility+cohesive,
+      constants: UPPER_SNAKE_CASE+meaningful+well•documented,
+      interfaces: descriptive+purpose•driven+well•defined
+    },
+    
+    formatting: {
+      indentation: consistent•spacing+logical•nesting,
+      line•length: reasonable•limit(80-120•characters),
+      grouping: related•code•together+logical•separation,
+      whitespace: consistent•usage+improved•readability
+    },
+    
+    documentation: {
+      inline•comments: explain•why+not•what,
+      function•docs: purpose+parameters+return•values+exceptions,
+      class•docs: responsibility+usage+lifecycle,
+      example•usage: clear•demonstrations+edge•cases
+    }
+  },
+  
+  testing•practices: {
+    coverage: minimum•80%+critical•paths•100%,
+    methodology: {
+      TDD: test•first+red•green•refactor,
+      BDD: behavior•specifications+user•stories,
+      unit•testing: isolated•components+mocked•dependencies,
+      integration•testing: component•interactions+real•dependencies,
+      e2e•testing: complete•user•flows+production•like•environment
+    },
+    
+    quality•assurance: {
+      automated•testing: CI•pipeline+pre•commit•hooks,
+      manual•testing: exploratory+usability+accessibility,
+      performance•testing: load+stress+endurance,
+      security•testing: penetration+vulnerability•assessment
+    }
+  },
+  
+  code•review: {
+    process: pull•request+defined•reviewers+checklist,
+    focus•areas: functionality+security+performance+maintainability,
+    feedback: constructive+specific+actionable,
+    approval•criteria: test•coverage+quality•standards+no•critical•issues
+  },
+  
+  version•control: {
+    branching•strategy: {
+      git•flow: develop+feature+release+hotfix+master,
+      github•flow: feature•branches+pull•requests+main,
+      trunk•based: short•lived•branches+frequent•integration
+    },
+    
+    commit•practices: {
+      conventional•commits: type+scope+description,
+      granularity: atomic+focused+purpose•driven,
+      messages: clear+concise+descriptive
+    }
+  }
+}
+
 ## Δ Quality•Validation [p=1]
 
 ↹ Δ₁•DocumentMetrics [p=1] {
@@ -393,6 +944,36 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   }
 }
 
+↹ Δ₃•MetricsTracking [p=1] {
+  performance: {
+    baseline: initial•measurements+benchmarks,
+    targets: specific•values+improvement•goals,
+    monitoring: tools+frequency+reporting,
+    thresholds: acceptable•ranges+alert•levels
+  }
+  
+  quality: {
+    code: coverage+complexity+duplication+standards,
+    testing: unit+integration+e2e+security,
+    documentation: completeness+accuracy+usability,
+    user•experience: usability+accessibility+performance
+  }
+  
+  project: {
+    velocity: story•points+completion•rate,
+    predictability: estimation•accuracy+delivery•consistency,
+    efficiency: resource•utilization+output•ratio,
+    adaptation: pivot•speed+feedback•incorporation
+  }
+  
+  business: {
+    value: roi+cost•savings+revenue•impact,
+    adoption: user•acquisition+retention+engagement,
+    satisfaction: nps+csat+user•feedback,
+    alignment: objectives•met+business•impact
+  }
+}
+
 ## ⚠️ Critical•Requirements [p=1]
 
 ↹ imperatives → [
@@ -414,7 +995,14 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     establish•measurable•KPIs,
     maintain•traceability•to•stories,
     validate•critical•hypotheses,
-    update•after•significant•changes
+    update•after•significant•changes,
+    include•decision•records•with•rationale,
+    document•all•external•dependencies,
+    follow•SOLID•principles•in•design,
+    adhere•to•clean•code•standards,
+    enforce•versioning•strategy,
+    maintain•minimum•80%•test•coverage,
+    document•coding•standards
   ]
   
   NEVER: [
@@ -433,7 +1021,15 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
     neglect•maintainability,
     ignore•feedback•from•implementation,
     leave•risks•without•mitigation•strategies,
-    allow•stories•without•validation•criteria
+    allow•stories•without•validation•criteria,
+    omit•version•history•and•changelog,
+    exclude•key•stakeholders•from•reviews,
+    violate•SOLID•principles,
+    repeat•code•unnecessarily,
+    implement•features•not•yet•needed,
+    overcomplicate•solutions,
+    deploy•without•proper•test•coverage,
+    ignore•coding•standards
   ]
 ]
 
@@ -492,6 +1088,32 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   }
 }
 
+↹ decision•tracking → {
+  structure: {
+    id: sequential•identifier,
+    title: concise•description,
+    status: proposed|accepted|rejected|superseded,
+    date: when•decided,
+    context: problem•statement+background,
+    decision: clear•outcome+rationale,
+    consequences: positive+negative+neutral,
+    alternatives: options•considered+rejection•reasons
+  }
+  
+  management: {
+    storage: alongside•PFD+version•controlled,
+    referencing: citations•in•relevant•sections,
+    updates: status•changes+revisions+superseding,
+    traceability: implementation•verification
+  }
+  
+  templates: {
+    ADR: lightweight•decision•records,
+    RFC: detailed•request•for•comments,
+    spike: exploration•outcome•documentation
+  }
+}
+
 ## Φ Template•Adaptation [p=2]
 
 ↹ project•types → {
@@ -541,6 +1163,26 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   }
 }
 
+↹ team•size•adaptation → {
+  small: {
+    focus: core•sections+minimal•formality,
+    collaboration: direct+informal+high•bandwidth,
+    updating: frequent+lightweight+collaborative
+  },
+  
+  medium: {
+    focus: balanced•detail+structured•communication,
+    collaboration: mixed•formal•informal+regular•sync,
+    updating: scheduled+documented+reviewed
+  },
+  
+  large: {
+    focus: comprehensive+formal+structured,
+    collaboration: role•based+documented+tracked,
+    updating: governed+approved+communicated
+  }
+}
+
 ## Ψ PFD•Lifecycle [p=2]
 
 ↹ ongoing•management → (
@@ -567,6 +1209,14 @@ tags: ["documentation", "project", "foundation", "workflow", "template"]
   stories→prd: refinements+scope•adjustments+priority•shifts,
   architecture→technical•vision: patterns+decisions+adaptations,
   metrics→success•criteria: performance+progress+alignment
+}
+
+↹ phase•transitions → {
+  inception→elaboration: validated•vision+scoped•requirements,
+  elaboration→construction: architectural•foundation+detailed•plan,
+  construction→transition: feature•complete+quality•verified,
+  transition→operation: deployed+accepted+supported,
+  operation→evolution: performance•data+improvement•opportunities
 }
 
 ## 🧩 Examples
@@ -636,7 +1286,17 @@ The current customer portal was built 5 years ago and suffers from usability iss
 
 [Content continues with remaining required sections...]
 
-## 10. Approval
+## 13. Decision Records
+
+| ID      | Decision                       | Status   | Date       |
+| ------- | ------------------------------ | -------- | ---------- |
+| ADR-001 | Adopt API-First Architecture   | Approved | 2023-04-01 |
+| ADR-002 | Use React for Frontend         | Approved | 2023-04-15 |
+| ADR-003 | Implement Containerization     | Approved | 2023-05-01 |
+| ADR-004 | Use GraphQL for API Layer      | Approved | 2023-05-15 |
+| ADR-005 | Implement Feature Flags        | Approved | 2023-06-01 |
+
+## 14. Approval
 | Role | Name | Signature | Date |
 |---|---|-----|---|
 | Product Owner | Jane Smith | Approved | 2023-06-15 |
@@ -644,42 +1304,350 @@ The current customer portal was built 5 years ago and suffers from usability iss
 | UX Design Lead | Ana Garcia | Approved | 2023-06-14 |
 </example>
 
-<example type="invalid">
-### Inadequate PFD Example
+<example>
+### Technical Infrastructure PFD Example
 
-# Customer Portal Project
-Created: June 2023
+# Project Foundation Document: Cloud-Native Microservices Platform
+Version: 2.0.0 | Date: 2024-11-10 | Status: Approved
 
-## Introduction
-We need to build a new customer portal.
+## 1. Introduction
 
-## Features
-- Login
-- Dashboard
-- Settings
-- Support
+### 1.1 Purpose
+This document establishes the foundation for our Cloud-Native Microservices Platform, defining the architecture, technologies, standards, and implementation approach. It serves as the authoritative reference for all technical decisions and implementation guidance.
 
-## Tech Stack
-We'll use React and Node.js.
+### 1.2 Scope
+The platform will provide a standardized infrastructure for deploying, scaling, monitoring, and maintaining microservices across all company products. It includes container orchestration, service mesh, observability, security, and CI/CD pipelines.
 
-## Timeline
-We should complete this in Q3.
+### 1.3 Glossary
+- **K8s**: Kubernetes - Container orchestration platform
+- **IaC**: Infrastructure as Code
+- **SLO**: Service Level Objective
+- **SLI**: Service Level Indicator
+- **mTLS**: Mutual Transport Layer Security
+- **CNCF**: Cloud Native Computing Foundation
+- **GitOps**: Git as single source of truth for infrastructure
+- **Observability**: Metrics, logs, traces for system understanding
 
-## Resources
-- 2 developers
-- 1 designer
+## 2. Vision
 
-### Issues with this example:
-1. Missing critical sections (vision, requirements, architecture, testing, etc.)
-2. No version number or precise date
-3. Vague descriptions without measurable outcomes
-4. No alignment with business objectives
-5. Missing acceptance criteria and KPIs
-6. No risk assessment or mitigation strategies
-7. No approval process or stakeholder sign-off
-8. Lacks proper structure and organization
-9. No glossary or clear terminology
-10. Missing diagrams or visual representations
+### 2.1 Vision Statement
+Create a robust, scalable, and developer-friendly cloud-native platform that accelerates time-to-market for new features while ensuring reliability, security, and operational excellence.
+
+### 2.2 Strategic Alignment
+This initiative supports our strategic goals of:
+- Reducing time-to-market for new features by 50%
+- Improving system reliability to 99.99% uptime
+- Reducing operational costs by 30%
+- Enabling scaling to support 10x current user load
+
+### 2.3 Success Criteria
+| Criterion | Metric | Target | Measurement Method |
+|-----------|--------|--------|-------------------|
+| Deployment Frequency | Deployments per week | 100+ | CI/CD metrics |
+| Lead Time | Time from commit to production | <1 hour | CI/CD metrics |
+| Change Failure Rate | % of deployments causing incidents | <5% | Incident reports |
+| MTTR | Time to recover from failures | <15 minutes | Incident metrics |
+| Resource Efficiency | CPU/memory utilization | >70% | Cluster metrics |
+| Developer Satisfaction | Survey score | >4.5/5 | Quarterly surveys |
+
+## 3. Technical Vision
+
+### 3.1 Architectural Principles
+- **Cloud-Native First**: Design for dynamic, containerized environments
+- **Infrastructure as Code**: All infrastructure defined, versioned, and automated
+- **GitOps Workflow**: Git as single source of truth for infrastructure and deployments
+- **Zero-Trust Security**: Assume breach, verify everything, least privilege
+- **Immutable Infrastructure**: Recreate rather than modify
+- **Observability by Default**: Built-in metrics, logging, and tracing
+- **Self-Service**: Developers can provision and manage resources without operations intervention
+- **Service Ownership**: Teams own their services end-to-end
+- **Cost Awareness**: Resource usage tracked and optimized
+
+### 3.2 Quality Attributes
+| Attribute | Requirement | Measurement |
+|-----------|------------|-------------|
+| Scalability | Support 10x load with linear resource increase | Load testing, resource metrics |
+| Reliability | 99.99% uptime for critical services | SLO monitoring |
+| Security | Zero critical/high vulnerabilities | Security scans, penetration testing |
+| Performance | API response <100ms (p95) | APM monitoring |
+| Maintainability | Service onboarding <1 day | Time tracking |
+| Observability | 100% service coverage for metrics, logs, traces | Coverage reports |
+
+## 4. Architecture
+
+### 4.1 High-Level Architecture
+
+```mermaid
+flowchart TD
+    subgraph Dev["Development"]
+        GitRepo["Git Repository"] --> |Push| CI["CI Pipeline"]
+    end
+    
+    subgraph Platform["Platform Layer"]
+        CI --> |Deploy| GitOps["GitOps Controller"]
+        GitOps --> |Apply| K8s["Kubernetes Clusters"]
+        K8s --> |Hosts| SM["Service Mesh"]
+        K8s --> |Uses| Storage["Persistent Storage"]
+        K8s --> |Configured via| IAM["Identity & Access"]
+        SM --> |Routes| Services["Microservices"]
+    end
+    
+    subgraph Observability["Observability Stack"]
+        Services --> |Sends| Metrics["Metrics"]
+        Services --> |Produces| Logs["Logs"]
+        Services --> |Generates| Traces["Traces"]
+        Metrics & Logs & Traces --> |Visualized in| Dashboards["Dashboards"]
+        Metrics --> |Trigger| Alerts["Alerts"]
+    end
+    
+    subgraph Users["End Users"]
+        Clients["Client Applications"] --> |Request via| Ingress["API Gateway"]
+        Ingress --> SM
+    end
+```
+
+### 4.2 Component Details
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Container Orchestration | Kubernetes | 1.27.x | Manage containerized workloads |
+| Service Mesh | Istio | 1.18.x | Service-to-service communication, mTLS |
+| API Gateway | Kong | 3.4.x | Manage external API access |
+| Secret Management | Vault | 1.14.x | Secure secrets storage and distribution |
+| Observability | Prometheus, Loki, Tempo | Latest | Metrics, logs, traces |
+| Visualization | Grafana | 10.0.x | Dashboards and alerts |
+| GitOps | Flux | 2.0.x | Continuous delivery from Git |
+| Infrastructure | Terraform | 1.6.x | Infrastructure as Code |
+| CI/CD | GitHub Actions | N/A | Build, test, delivery pipelines |
+| Policy Enforcement | OPA/Gatekeeper | Latest | Kubernetes policy enforcement |
+
+## 5. Technical Stack
+
+### 5.1 Infrastructure Layer
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Cloud Provider | AWS | N/A | Primary infrastructure |
+| Kubernetes | EKS | 1.27.x | Container orchestration |
+| Node Types | EC2 (m6i, c6i, r6i) | Latest | Compute resources |
+| Storage | EBS, S3 | Latest | Persistent storage |
+| Networking | VPC, ELB, Route53 | Latest | Network infrastructure |
+| IAM | AWS IAM, IRSA | Latest | Identity management |
+| Infrastructure as Code | Terraform | 1.6.x | Infrastructure provisioning |
+
+### 5.2 Platform Layer
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Container Runtime | containerd | 1.7.x | Container execution |
+| Service Mesh | Istio | 1.18.x | Service networking |
+| Ingress | Istio Gateway | 1.18.x | External traffic |
+| Certificate Management | cert-manager | 1.13.x | TLS certificate automation |
+| Secret Management | Vault | 1.14.x | Secrets handling |
+| Configuration | ConfigMaps, External Secrets | Latest | Application configuration |
+| Storage Classes | EBS CSI, S3 CSI | Latest | Persistent volumes |
+| Service Discovery | Kubernetes DNS | Latest | Internal service discovery |
+
+### 5.3 Observability Layer
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Metrics | Prometheus | 2.46.x | Metrics collection and alerting |
+| Logs | Loki | 2.9.x | Log aggregation |
+| Traces | Tempo | 2.2.x | Distributed tracing |
+| Visualization | Grafana | 10.0.x | Dashboards |
+| Service Monitors | Prometheus Operator | Latest | Service discovery for metrics |
+| Alerting | Alertmanager, PagerDuty | Latest | Alert notification |
+| SLO Monitoring | OpenSLO | Latest | SLO definition and tracking |
+
+### 5.4 CI/CD Pipeline
+
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| Source Control | GitHub | N/A | Code repository |
+| CI System | GitHub Actions | N/A | Build and test |
+| CD System | Flux | 2.0.x | GitOps deployment |
+| Container Registry | ECR | Latest | Container images |
+| Build Cache | GitHub Actions Cache | N/A | Speed up builds |
+| Artifact Repository | GitHub Packages | N/A | Build artifacts |
+| Deployment Strategy | Canary | N/A | Progressive delivery |
+
+## 6. Implementation Roadmap
+
+```mermaid
+gantt
+    title Platform Implementation Roadmap
+    dateFormat  YYYY-MM-DD
+    
+    section Foundation
+    Kubernetes Cluster Setup        :a1, 2024-01-15, 30d
+    Infrastructure as Code          :a2, 2024-01-15, 45d
+    CI/CD Pipeline                  :a3, 2024-02-01, 30d
+    
+    section Core Services
+    Service Mesh Implementation     :b1, after a1, 30d
+    Observability Stack             :b2, after a1, 45d
+    Security Controls               :b3, after a1, 60d
+    
+    section Platform Features
+    Self-Service Portal             :c1, after b1, 45d
+    Developer Tooling               :c2, after b2, 30d
+    Cost Management                 :c3, after b3, 30d
+    
+    section Adoption
+    Pilot Services Migration        :d1, after c1, 30d
+    Team Onboarding & Training      :d2, after c2, 60d
+    Production Rollout              :d3, after d1, 90d
+```
+
+## 7. Security Architecture
+
+### 7.1 Security Principles
+- Zero-trust network model
+- Least privilege access
+- Defense in depth
+- Immutable infrastructure
+- Secure by default configurations
+- Automated security testing and scanning
+
+### 7.2 Security Controls
+
+| Control Area | Implementation | Purpose |
+|--------------|----------------|---------|
+| Network Security | Service mesh mTLS, network policies | Secure communication |
+| Identity | OIDC, IRSA, Kubernetes RBAC | Authentication & authorization |
+| Secrets Management | Vault, sealed secrets | Secure sensitive data |
+| Image Security | ECR scanning, admission controllers | Prevent vulnerable containers |
+| Policy Enforcement | OPA/Gatekeeper | Enforce security policies |
+| Runtime Security | Falco | Detect suspicious activities |
+| Compliance | AWS Security Hub, custom auditing | Regulatory compliance |
+
+### 7.3 Security Processes
+- Automated vulnerability scanning in CI/CD
+- Regular penetration testing
+- Security incident response procedure
+- Compliance monitoring and reporting
+- Security patch management
+- Access reviews and audit logging
+
+## 8. Observability Strategy
+
+### 8.1 Key Metrics
+
+| Metric Type | Examples | Purpose |
+|-------------|----------|---------|
+| Infrastructure | CPU, memory, disk, network | Resource management |
+| Kubernetes | Pod status, deployments, HPA | Platform health |
+| Application | Request rate, errors, latency | Service health |
+| Business | Transactions, users, features | Business impact |
+| Cost | Resource usage by team, service | Cost attribution |
+
+### 8.2 Logging Strategy
+- Structured JSON logging
+- Centralized collection with Loki
+- Log retention policies by importance
+- Log level standards (ERROR, WARN, INFO, DEBUG)
+- Context preservation (request IDs, correlation IDs)
+
+### 8.3 Tracing Implementation
+- OpenTelemetry instrumentation
+- Sampling strategies by service importance
+- End-to-end transaction visibility
+- Integration with metrics and logs
+- Service dependency mapping
+
+### 8.4 Alerting Philosophy
+- Alert on symptoms, not causes
+- Actionable alerts only
+- Alert fatigue prevention
+- Tiered severity levels
+- Automated remediation where possible
+
+## 9. Development Standards
+
+### 9.1 Service Implementation Guidelines
+- Containerization standards (Dockerfile best practices)
+- Health check implementation
+- Graceful shutdown handling
+- Config management approach
+- Dependency management
+- API design standards (REST, gRPC)
+
+### 9.2 Code Quality Standards
+- Static analysis tools configuration
+- Test coverage requirements (80% minimum)
+- Documentation requirements
+- Code review process
+- SOLID principles application
+- Error handling standards
+
+### 9.3 CI/CD Requirements
+- Pipeline stage definitions
+- Quality gates
+- Deployment approval process
+- Rollback procedures
+- Environment promotion criteria
+- Release notes generation
+
+## 10. Operations
+
+### 10.1 Operational Responsibilities
+
+| Area | Team | Responsibilities |
+|------|------|------------------|
+| Platform Infrastructure | Platform Team | Cluster health, upgrades, scaling |
+| Service Reliability | Service Teams | Service health, performance, incidents |
+| Security | Security Team | Vulnerability management, compliance |
+| Cost Management | Platform & Finance | Resource optimization, chargeback |
+
+### 10.2 Incident Management
+- Severity definitions and SLAs
+- On-call rotation strategy
+- Incident response procedure
+- Post-mortem process
+- Incident documentation requirements
+- Blameless culture emphasis
+
+### 10.3 Disaster Recovery
+- Multi-AZ deployment
+- Backup and restoration procedures
+- Recovery time objectives (RTO)
+- Recovery point objectives (RPO)
+- DR testing schedule
+- Business continuity planning
+
+## 11. Decision Records
+
+| ID      | Decision                                  | Status   | Date       |
+|---------|-------------------------------------------|----------|------------|
+| ADR-001 | Adopt Kubernetes as Orchestration Platform| Approved | 2023-11-01 |
+| ADR-002 | Use Istio for Service Mesh                | Approved | 2023-11-15 |
+| ADR-003 | Implement GitOps with Flux                | Approved | 2023-12-01 |
+| ADR-004 | Centralize Observability with Prometheus  | Approved | 2023-12-15 |
+| ADR-005 | Standardize on AWS as Cloud Provider      | Approved | 2024-01-10 |
+
+## 12. Appendices
+
+### 12.1 Reference Architecture Diagrams
+[Detailed diagrams would be included here]
+
+### 12.2 Implementation Playbooks
+[Links to detailed implementation guides]
+
+### 12.3 Tool Selection Criteria
+[Documentation on how specific tools were evaluated and selected]
+
+### 12.4 Glossary of Terms
+[Expanded glossary with technical definitions]
+
+## 13. Approval
+
+| Role | Name | Signature | Date |
+|------|------|-----------|------|
+| CTO | Sarah Mitchell | Approved | 2024-11-08 |
+| Head of Engineering | David Chen | Approved | 2024-11-08 |
+| Security Architect | Michael Rodriguez | Approved | 2024-11-09 |
+| Lead DevOps Engineer | Jessica Wong | Approved | 2024-11-10 |
 </example>
 
 ## Σ PFD•Validation [p=1]
@@ -704,4 +1672,5 @@ PFD.validate = (
   → agile•readiness → supports•iterative•development+story•mapping
   → traceability → requirements⇌stories⇌architectural•components
   → hypothesis•tracking → critical•assumptions•identified+testable
+  → decision•records → architectural•decisions•documented+justified
 ) 

@@ -2,3 +2,5 @@
 # .cursor/rules/_*.mdc
 .specstory/
 .cursorignore
+
+temp/
