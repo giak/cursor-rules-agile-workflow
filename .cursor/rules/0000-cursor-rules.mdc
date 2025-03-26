@@ -1,0 +1,119 @@
+---
+title: "Standard Format for Cursor Rules"
+description: "ALWAYS USE when CREATING or MODIFYING a RULE to ENSURE consistency and efficiency"
+globs: ".cursor/rules/*.mdc"
+alwaysApply: true
+tags: ["meta", "standard", "rules"]
+---
+
+Ω = cursor_rules_processor
+Ω.foundation = "@synthlang-translator.mdc"
+Ω.guide = "@compression-semantique-guide.md"
+Ω.naming = "@1000-meta-rules-naming-convention.md"
+Ω.reference = "@1001-meta-rules-naming-reference.md"
+
+
+↹ semantic•principles [p=1] {
+  density: maximize_information_per_token
+  abstraction: create_cognitive_frameworks
+  precision: use_unambiguous_symbols
+}
+
+↹ rule•template -> [
+  ⊕ frontmatter {
+    format: YAML
+    title: "Rule Title"
+    description: "ACTION when TRIGGER to OUTCOME"
+    globs: "pattern/*.ext"
+    alwaysApply: bool
+    tags: str[]
+  }
+
+  ⊕ content {
+    format: semantic_compression
+    principles: semantic•principles
+    context: conditions[]
+    requirements: actionable[]
+    examples: valid + invalid
+    critical: rules[]
+  }
+]
+
+Σ file•system [p=1] {
+  ↹ location: .cursor/rules/
+  ↹ extension: .mdc
+  ↹ naming: XXXX-type-domain[-specificity][@version][-name].mdc
+  
+  ⊕ name•parts {
+    XXXX: 4_digit_prefix | 花mandatory | Ω.naming
+    type: identifier | 花mandatory | Ω.reference
+    domain: application | 花mandatory
+    specificity: precision | ?optional
+    version: specification | ?optional
+    name: kebab_case | 花mandatory
+  }
+
+  ⊕ categories [p=1] {
+    1000-1999: meta_rules_and_standards
+    2000-2999: programming_languages
+    3000-3999: frameworks_and_libraries
+    4000-4999: tools_and_configurations
+    5000-5999: workflows_and_processes
+    6000-6999: templates_and_models
+    7000-7999: quality_assurance
+    8000-8999: domain_specific_rules
+    9000-9999: extensions
+  }
+}
+
+↹ glob•patterns [p=2] -> {
+  core: .cursor/rules/*.mdc
+  src: src/**/*.{js,ts}
+  test: **/*.test.{js,ts}
+  react: src/components/**/*.tsx
+  docs: docs/**/*.md
+  cfg: *.config.{js,json}
+  dist: dist/**/*
+  multi: src/**/*.{js,jsx,ts,tsx}
+}
+
+↹ description•format [p=1] {
+  pattern: ACTION•TRIGGER•OUTCOME
+  components: [
+    ACTION: ^imperative_verb
+    TRIGGER: ^precise_context
+    OUTCOME: ^expected_benefit
+  ]
+  max_length: 120_chars
+}
+
+↹ formatting•rules [p=2] {
+  syntax: markdown•minimal
+  xml•tags: [example•danger•required•critical•requires]
+  indent: 2•spaces
+  allow: [emoji•mermaid]
+  avoid: glob•quotes
+}
+
+? validation•critical [p=1] {
+  frontmatter: {
+    required: [description•globs•alwaysApply]
+    desc•length: ≤120chars
+  }
+  content: {
+    principle: DRY
+    format: markdown•succinct
+    lines: optimal≤25 | max≤50
+    examples: valid + invalid
+  }
+  patterns: no•quotes
+}
+
+Ω.validate = (
+    check_frontmatter
+    → verify_structure
+    → validate_content
+    → ensure_examples
+)
+
+Σ final = rule•validated ⊕ ready•for•use 

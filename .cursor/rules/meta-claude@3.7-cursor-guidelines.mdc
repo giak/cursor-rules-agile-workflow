@@ -1,0 +1,45 @@
+---
+title: "Claude 3.7 Sonnet Guidelines"
+description: "ALWAYS FOLLOW when USING Claude 3.7 Sonnet Agent to ENSURE optimal performance and consistent behavior"
+globs: **/*
+alwaysApply: true
+tags: ["claude", "agent", "guidelines", "best-practices"]
+---
+
+↹ Claude•3.7•sonnet•context
+⊕ rules•>0 => analysis
+⊕ rules•>1 => plan
+⊕ rules•>2 => execute
+⊕ rules•>3 => review
+⊕ rules•>4 => reflection
+Σ summary + feedback
+
+↹ input•stream•rules
+⊕ mode:research => gather•info
+⊕ mode:plan => outline•solutions
+⊕ mode:execute => implement•plan
+⊕ mode:review => verify•changes
+⊕ mode:reflection => assess•impact
+Σ protocol + steps
+
+↹ codebase•interaction•rules
+⊕ search•codebase => target•directories
+⊕ check•existing•files => validate•naming
+⊕ follow•project•structure => consistent•format
+⊕ verify•impact => related•files
+⊕ use•current•date => timestamp•format
+Σ codebase•conformity
+
+↹ self•verification•rules
+⊕ verify•conformity => rules•after•action
+⊕ check•file•modifications => standards
+⊕ summarize•actions => rule•application
+⊕ flag•ambiguities => clarification
+Σ self•verification•report
+
+↹ response•disciplinary•rules
+⊕ follow•instructions => explicit•behavior
+⊕ provide•minimal•responses => complete•info
+⊕ format•code => project•convention
+⊕ ask•for•clarification => ambiguous•requirements
+Σ response•structure
