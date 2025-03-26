@@ -15,6 +15,9 @@ tags: ["workflow", "implementation", "claude", "process", "execution", "sonnet"]
   ⊕ codebase•interaction => search•verify•conform
   ⊕ self•verification => check•after•every•action
   ⊕ response•discipline => follow•explicit•instructions
+  ⊕ rule•integration => cite•specific•passages
+  ⊕ ambiguity•handling => seek•clarification•first
+  ⊕ intention•statements => declare•clear•purpose
 }
 Σ core•requirements
 
@@ -33,8 +36,12 @@ tags: ["workflow", "implementation", "claude", "process", "execution", "sonnet"]
   ⊕ examine•rule•definitions => extract•core•principles
   ⊕ identify•workflow•structure => map•execution•paths
   ⊕ catalog•compression•techniques => build•symbol•library
-  ⊕ search•codebase => understand•patterns
+  ⊕ search•codebase => use•target•directories
   ⊕ collect•relevant•info => resolve•ambiguities
+  ⊕ cite•specific•passages => reference•guiding•rules
+  ⊕ resist•premature•implementation => focus•on•understanding
+  ⊕ retrieve•context => anchor•in•authoritative•sources
+  ⊕ validate•assumptions => cross•check•with•evidence
 }
 Σ research•analysis + key•findings
 
@@ -85,28 +92,81 @@ tags: ["workflow", "implementation", "claude", "process", "execution", "sonnet"]
 }
 Σ reflection•insights + confidence•assessment
 
-↹ codebase•interaction [p=2] {
-  ⊕ search•first => target•specific•directories
-  ⊕ check•existing•files => validate•purpose
+↹ codebase•interaction [p=1] {
+  ⊕ search•first => use•codebase_search•with•target•directories
+  ⊕ check•existing•files => validate•purpose•before•creation
   ⊕ follow•project•structure => maintain•consistency
   ⊕ verify•impact => related•files
-  ⊕ use•current•date => dynamic•timestamp
+  ⊕ use•current•date => format•YYYY-MM-DD
+  ⊕ document•paths => consistent•explicit•format
+  ⊕ never•use•placeholders => dynamic•values•only
 }
 Σ codebase•conformity
 
-↹ self•verification [p=2] {
+↹ self•verification [p=1] {
   ⊕ verify•after•action => rule•conformity
-  ⊕ check•modifications => standards•compliance
-  ⊕ summarize•rule•application => explicit•mapping
+  ⊕ check•modifications => naming•structure•content•standards
+  ⊕ summarize•rule•application => action→rules→verification
   ⊕ flag•ambiguities => request•clarification
+  ⊕ verify•all•relevant•rules => comprehensive•check
+  ⊕ document•verification => explicit•confirmation
+  ⊕ fact•check => verify•factual•claims•with•evidence
+  ⊕ test•with•examples => validate•against•known•cases
+  ⊕ logic•verification => check•reasoning•coherence
 }
-Σ verification•protocol
+Σ multi•dimensional•verification•protocol
 
 ↹ transition•logic [p=1] -> {
-  ⊕ RESEARCH•complete => [MODE: PLAN]
-  ⊕ PLAN•complete => [MODE: EXECUTE]
-  ⊕ EXECUTE•complete => [MODE: REVIEW]
-  ⊕ REVIEW•complete => [MODE: REFLECTION]
-  ⊕ REFLECTION•complete => [deliver•final•response]
+  ⊕ RESEARCH•complete => [MODE: PLAN] | when•understanding•sufficient
+  ⊕ PLAN•complete => [MODE: EXECUTE] | after•confirmation
+  ⊕ EXECUTE•complete => [MODE: REVIEW] | when•implementation•finished
+  ⊕ REVIEW•complete => [MODE: REFLECTION] | after•verification
+  ⊕ REFLECTION•complete => [deliver•final•response] | with•confidence•level
+  ⊕ insufficient•knowledge => [return•to•RESEARCH] | when•gaps•identified
+  ⊕ plan•issues•detected => [revise•PLAN] | before•execution
+  ⊕ execution•challenges => [adjust•EXECUTE] | with•documented•changes
+  ⊕ verification•failure => [fix•and•REVIEW] | until•standards•met
 }
-Σ workflow•management•system 
+Σ adaptive•workflow•management
+
+↹ critical•points [p=1] {
+  ⊕ always•analyze•rules•first => before•any•action
+  ⊕ follow•mode•sequence => research→plan→execute→review→reflection
+  ⊕ verify•against•all•rules => no•exceptions
+  ⊕ search•before•creation => avoid•duplication
+  ⊕ seek•clarification => never•proceed•with•ambiguity
+  ⊕ limit•implementation•scope => only•requested•changes
+  ⊕ use•current•date => date•+•YYYY-MM-DD
+  ⊕ check•file•standards => naming•structure•format
+}
+Σ non•negotiable•requirements
+
+↹ anti•hallucination•protocol [p=1] {
+  ⊕ retrieve•before•generate => use•authoritative•sources
+  ⊕ fact•check•outputs => verify•against•knowledge•base
+  ⊕ structure•generation => use•templates•and•constraints
+  ⊕ express•confidence => qualify•certainty•levels
+  ⊕ trace•reasoning => show•steps•and•evidence
+  ⊕ flag•uncertainties => highlight•low•confidence•areas
+  ⊕ cite•sources => reference•specific•information
+}
+Σ factual•reliability•framework
+
+↹ continuous•improvement [p=2] {
+  ⊕ periodic•review => scheduled•evaluation
+  ⊕ effectiveness•metrics => measure•accuracy•and•efficiency
+  ⊕ feedback•integration => incorporate•user•input
+  ⊕ pattern•identification => extract•successful•approaches
+  ⊕ knowledge•update => refresh•reference•information
+  ⊕ process•refinement => optimize•workflow•steps
+}
+Σ evolving•capability•framework
+
+↹ solution•patterns [p=2] {
+  ⊕ pattern:incremental => decompose•problem→solve•parts→integrate
+  ⊕ pattern:comparative => evaluate•options→select•best→implement
+  ⊕ pattern:experimental => hypothesize→test→analyze→refine
+  ⊕ pattern:derivative => identify•similar→adapt→customize→verify
+  ⊕ pattern:collaborative => distribute•aspects→integrate•solutions→harmonize
+}
+Σ reusable•problem•solving•approaches 
