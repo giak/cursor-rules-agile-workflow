@@ -1,0 +1,311 @@
+---
+title: "Modern Agile Workflow"
+description: "IMPLEMENT when DEVELOPING projects to ENSURE structured agile processes and documentation"
+globs: "**/*.{md,js,ts,jsx,tsx,py,java,html,css}"
+alwaysApply: true
+tags: ["workflow", "agile", "planning", "documentation", "process", "modern"]
+---
+
+# Modern Agile Workflow
+
+↹ foundational•principles [p=1] {
+  ⊕ iterate•incrementally => continuous•delivery
+  ⊕ document•thoroughly => knowledge•preservation
+  ⊕ test•driven => quality•assurance
+  ⊕ user•centered => value•focused
+  ⊕ adapt•rapidly => respond•to•change
+  ⊕ collaborate•effectively => team•synergy
+  ⊕ technical•excellence => maintainable•codebase
+  ⊕ simplicity•essential => maximize•work•not•done
+}
+Σ agile•core
+
+↹ workflow•phases [p=1] {
+  ⊕ phase:INCEPTION => define•document
+  ⊕ phase:PLANNING => architect•design
+  ⊕ phase:EXECUTION => develop•test
+  ⊕ phase:REVIEW => verify•validate
+  ⊕ phase:REFLECTION => learn•improve
+}
+Σ delivery•framework
+
+[PHASE: INCEPTION]
+
+↹ Ω.project•foundation [p=1] {
+  ⊕ verify•prd•existence => .ai/prd.md
+  ⊕ create•if•missing => comprehensive•document
+  ⊕ refine•collaboratively => stakeholder•input
+  ⊕ ensure•completeness => {
+    objectives: clear•measurable,
+    requirements: detailed•testable,
+    constraints: well•defined,
+    scope: explicitly•bounded
+  }
+  ⊕ obtain•formal•approval => proceed•gate
+}
+Σ project•definition
+
+↹ prd•components [p=1] {
+  ⊕ objective•statement => problem•solution•value
+  ⊕ detailed•requirements => functional•non•functional
+  ⊕ user•stories => persona•need•benefit
+  ⊕ technical•constraints => platforms•integrations•limitations
+  ⊕ success•criteria => measurable•outcomes
+  ⊕ risk•assessment => known•unknowns
+  ⊕ timeline•milestones => delivery•schedule
+}
+Σ prd•structure
+
+[PHASE: PLANNING]
+
+↹ Φ.architecture•design [p=1] {
+  ⊕ create•arch•document => .ai/arch.md
+  ⊕ define•components => high•level•structure
+  ⊕ specify•interactions => component•relationships
+  ⊕ include•diagrams => visual•representations
+  ⊕ identify•patterns => reusable•solutions
+  ⊕ document•decisions => rationale•alternatives
+  ⊕ obtain•approval => validation•gate
+}
+Σ architectural•blueprint
+
+↹ backlog•creation [p=1] {
+  ⊕ establish•epic•structure => .ai/epic-{n}/
+  ⊕ decompose•requirements => user•stories
+  ⊕ prioritize•stories => business•value + technical•risk
+  ⊕ estimate•complexity => relative•sizing
+  ⊕ define•acceptance•criteria => testable•conditions
+  ⊕ sequence•dependencies => execution•order
+}
+Σ work•organization
+
+[PHASE: EXECUTION]
+
+↹ Ψ.development•cycle [p=1] {
+  ⊕ create•story•file => .ai/epic-{n}/{m}-{code}.story.md
+  ⊕ initialize•git•branch => feature/{epic}-{story}
+  ⊕ implement•tdd => {
+    test: write•failing•tests,
+    code: implement•solution,
+    refactor: improve•design
+  }
+  ⊕ update•progress => story•status
+  ⊕ code•review => quality•check
+  ⊕ integrate•continuously => merge•frequently
+}
+Σ iterative•implementation
+
+↹ story•template [p=1] -> [
+  ⊕ metadata {
+    id: "EPIC-{n}/STORY-{m}",
+    title: descriptive•name,
+    status: [not-started|in-progress|review|complete],
+    priority: [high|medium|low],
+    complexity: [1|2|3|5|8]
+  }
+  
+  ⊕ details {
+    description: clear•concise•statement,
+    acceptance_criteria: testable•conditions[],
+    tasks: ordered•subtasks[],
+    dependencies: related•stories[]
+  }
+  
+  ⊕ progress {
+    completed_tasks: checked•items[],
+    blockers: identified•issues[],
+    notes: important•information[],
+    time_tracking: effort•logs[]
+  }
+]
+Σ story•structure
+
+↹ quality•gates [p=1] {
+  ⊕ test•coverage => minimum•80%
+  ⊕ code•quality => lint•standards•met
+  ⊕ performance•thresholds => response•times
+  ⊕ security•compliance => vulnerability•scan
+  ⊕ documentation•updated => inline•and•external
+}
+Σ quality•assurance
+
+[PHASE: REVIEW]
+
+↹ verification•protocol [p=1] {
+  ⊕ verify•acceptance•criteria => all•conditions•met
+  ⊕ conduct•demo => stakeholder•review
+  ⊕ collect•feedback => improvement•opportunities
+  ⊕ measure•against•metrics => objective•assessment
+  ⊕ document•outcomes => results•conclusions
+}
+Σ validation•process
+
+↹ sprint•review [p=1] {
+  ⊕ create•review•document => .ai/reviews/sprint_{n}.md
+  ⊕ summarize•completed•work => story•status
+  ⊕ highlight•achievements => significant•outcomes
+  ⊕ analyze•metrics => velocity•quality•satisfaction
+  ⊕ identify•learnings => process•improvements
+  ⊕ plan•adjustments => next•sprint•adaptations
+}
+Σ cyclical•assessment
+
+[PHASE: REFLECTION]
+
+↹ continuous•improvement [p=1] {
+  ⊕ conduct•retrospective => .ai/retros/retro_{n}.md
+  ⊕ analyze•process•efficiency => bottlenecks•friction
+  ⊕ identify•patterns => recurring•challenges
+  ⊕ extract•best•practices => replicable•techniques
+  ⊕ implement•changes => actionable•improvements
+  ⊕ update•documentation => knowledge•base
+}
+Σ learning•framework
+
+↹ knowledge•management [p=1] {
+  ⊕ update•architecture•docs => implementation•reality
+  ⊕ document•decisions => context•reasoning
+  ⊕ maintain•technical•debt•log => planned•refactoring
+  ⊕ capture•lessons•learned => avoid•repeated•mistakes
+  ⊕ share•knowledge => team•education
+}
+Σ organizational•memory
+
+↹ transition•logic [p=1] -> {
+  ⊕ INCEPTION•complete => [PHASE: PLANNING] | when•prd•approved
+  ⊕ PLANNING•complete => [PHASE: EXECUTION] | when•architecture•approved
+  ⊕ EXECUTION•complete => [PHASE: REVIEW] | when•sprint•finished
+  ⊕ REVIEW•complete => [PHASE: REFLECTION] | after•validation
+  ⊕ REFLECTION•complete => [PHASE: PLANNING] | next•sprint•cycle
+  ⊕ insufficient•requirements => [return•to•INCEPTION] | when•gaps•identified
+  ⊕ architecture•issues => [revise•PLANNING] | technical•concerns
+  ⊕ quality•failures => [fix•in•EXECUTION] | with•documented•changes
+  ⊕ validation•failure => [return•to•EXECUTION] | until•criteria•met
+}
+Σ adaptive•workflow•management
+
+↹ Σ_hooks [p=1] {
+  ⊕ on_project_start: [Ω.project•foundation, verify_ai_directory],
+  ⊕ on_prd_approval: [Φ.architecture•design, backlog•creation],
+  ⊕ on_architecture_approval: [create_sprint_plan, initialize_first_story],
+  ⊕ on_story_start: [Ψ.development•cycle, update_story_status],
+  ⊕ on_story_complete: [verification•protocol, update_backlog],
+  ⊕ on_sprint_complete: [sprint•review, continuous•improvement],
+  ⊕ on_blockers_identified: [document_issue, prioritize_resolution],
+  ⊕ on_requirements_change: [update_prd, assess_impact],
+  ⊕ on_technical_debt_threshold: [schedule_refactoring_sprint]
+}
+Σ process•automation•triggers
+
+↹ critical•points [p=1] {
+  ⊕ never•skip•documentation => preserves•context
+  ⊕ always•test•first => ensures•quality
+  ⊕ maintain•ai•directory => central•knowledge•repository 
+  ⊕ obtain•explicit•approval => checkpoints•before•proceeding
+  ⊕ update•progress•continuously => visibility•and•tracking
+  ⊕ integrate•frequently => reduce•merge•conflicts
+  ⊕ communicate•blockers•immediately => early•resolution
+  ⊕ respect•definition•of•done => consistent•quality
+}
+Σ non•negotiable•requirements
+
+↹ implementation•guidelines [p=2] {
+  ⊕ pattern:minimal•viable => simplest•solution•first
+  ⊕ pattern:progressive•enhancement => iterate•on•working•base
+  ⊕ pattern:continuous•refactoring => improve•as•you•go
+  ⊕ pattern:defensive•coding => validate•inputs•handle•errors
+  ⊕ pattern:component•isolation => minimize•dependencies
+  ⊕ pattern:code•readability => self•documenting•when•possible
+}
+Σ coding•best•practices
+
+↹ ai•directory•structure [p=2] -> {
+  ⊕ root: ".ai/"
+  ⊕ documents: {
+    prd: "prd.md",
+    architecture: "arch.md"
+  }
+  ⊕ planning: {
+    epics: "epic-{n}/",
+    stories: "epic-{n}/{m}-{code}.story.md"
+  }
+  ⊕ reviews: {
+    sprints: "reviews/sprint_{n}.md",
+    retrospectives: "retros/retro_{n}.md" 
+  }
+  ⊕ reference: {
+    decisions: "decisions/",
+    patterns: "patterns/"
+  }
+}
+Σ knowledge•repository•map
+
+<example>
+**Implementation of Modern Agile Workflow:**
+
+1. At project start:
+   - Verify if PRD exists at `.ai/prd.md`
+   - If not, collaborate to create it: "Let's develop a comprehensive PRD that captures all project requirements."
+   - Refine collaboratively until complete
+
+2. After PRD approval:
+   - Create architecture document: "Based on the approved PRD, I'll generate an architecture document with component diagrams."
+   - After architecture approval, create epic structure: "I'll organize our work into epics and user stories."
+
+3. During development:
+   - Create first story: "I've created story file `.ai/epic-1/1-user-authentication.story.md` with all required details."
+   - Implement with TDD: "Let's write tests first to verify the authentication flow works as expected."
+   - Update progress: "The login functionality is now complete, I've updated the story status."
+
+4. At sprint completion:
+   - Conduct review: "Let's review what we completed this sprint and document it in `.ai/reviews/sprint_1.md`"
+   - Hold retrospective: "What went well and what could we improve for our next sprint?"
+   - Plan next sprint: "Based on our learnings, here's the proposed plan for the next sprint."
+</example>
+
+<example type="invalid">
+**Poor Implementation of Agile Workflow:**
+
+1. Starting without foundation:
+   - Jumping straight to coding: "Let me start implementing the login screen."
+   - No documentation: "We can document later when we have more time."
+   
+2. No testing approach:
+   - Code first mentality: "Let's build it all and test at the end."
+   - Manual testing only: "We'll check if it works by trying it out."
+   
+3. Poor progress tracking:
+   - No updates: "I'm working on multiple features simultaneously."
+   - Unclear status: "It's mostly done, just a few things left."
+   
+4. No reflection or improvement:
+   - Skipping reviews: "Let's just move on to the next features."
+   - Repeating mistakes: "We always have issues with estimation."
+</example>
+
+<critical>
+- NEVER bypass the approval gates (PRD, architecture)
+- ALWAYS maintain the .ai directory structure
+- ENSURE at least 80% test coverage through TDD
+- DOCUMENT all decisions and progress in appropriate files
+- UPDATE story status immediately upon changes
+- FOLLOW the phase sequence: inception → planning → execution → review → reflection
+</critical>
+
+↹ reference•links [p=3] {
+  ⊕ templates: {
+    prd: "templates/prd-template.md",
+    architecture: "templates/arch-template.md",
+    story: "templates/story-template.md",
+    review: "templates/review-template.md",
+    retrospective: "templates/retro-template.md"
+  }
+  ⊕ guides: {
+    tdd: "guides/test-driven-development.md",
+    estimation: "guides/story-estimation.md",
+    review: "guides/effective-code-reviews.md"
+  }
+}
+Σ supporting•materials
+
+<version>1.0.0</version> 

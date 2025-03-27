@@ -1,0 +1,224 @@
+---
+title: "Naming Standards"
+description: "ENFORCE when WRITING code to ENSURE consistency, readability, and maintainability"
+globs: "**/*"
+alwaysApply: true
+tags: ["naming", "conventions", "code-quality", "readability", "standards"]
+---
+
+# Naming Standards
+
+↹ Ω•naming•processor [p=1] {
+  ⊕ core•principles {
+    descriptive: reveal•intent
+    searchable: unique•findable
+    consistent: follow•patterns
+    concise: optimal•not•verbose
+    coherent: domain•aligned
+  }
+  
+  ⊕ global•rules {
+    max•length: 50•chars
+    abbreviations: avoid•except•common
+    redundant•words: eliminate
+    format•compliance: required
+  }
+}
+Σ foundational•requirements
+
+↹ element•taxonomy [p=1] -> {
+  ⊕ files {
+    source•code: kebab-case.ext
+    components: PascalCase.{jsx|tsx|vue}
+    tests: [filename].{spec|test}.ext
+    types: kebab-case.d.ts
+    config: kebab-case.config.{js|ts}
+    constants: SCREAMING_SNAKE_CASE.{js|ts}
+  }
+  
+  ⊕ folders {
+    general: kebab-case
+    features: kebab-case
+    architecture•layers: kebab-case
+    component•collections: kebab-case
+  }
+  
+  ⊕ variables {
+    standard: camelCase
+    private: _camelCase
+    boolean: {is|has}Prefixed
+    constants: SCREAMING_SNAKE_CASE
+    env•vars: SCREAMING_SNAKE_CASE
+  }
+  
+  ⊕ functions {
+    standard: camelCase()
+    private: _camelCase()
+    boolean•returning: {is|has}Prefixed()
+    factory: createPrefixed()
+    event•handlers: handlePrefixed()
+  }
+  
+  ⊕ classes {
+    standard: PascalCase
+    abstract: AbstractPascalCase
+    service: PascalCaseService
+    repository: PascalCaseRepository
+    controller: PascalCaseController
+  }
+  
+  ⊕ types {
+    interfaces: PascalCaseInterface
+    types: PascalCaseType
+    generics: {T|PascalCaseType}
+    props: PascalCaseProps
+  }
+  
+  ⊕ enums {
+    names: PascalCaseEnum
+    members: SCREAMING_SNAKE_CASE
+  }
+  
+  ⊕ react•vue {
+    components: PascalCase
+    hooks: useCamelCase
+    providers: PascalCaseProvider
+    HOCs: withPascalCase
+  }
+  
+  ⊕ css {
+    classes: kebab-case
+    variables: --kebab-case
+    modules: camelCase [imported]
+    tailwind: kebab-case
+  }
+  
+  ⊕ backend {
+    endpoints: kebab-case
+    db•tables: snake_case
+    db•fields: snake_case
+  }
+  
+  ⊕ clean•arch {
+    use•cases: PascalCaseUseCase
+    entities: PascalCaseEntity
+    value•objects: PascalCase
+    DTOs: PascalCaseDTO
+    repo•interfaces: PascalCaseRepositoryInterface
+    implementations: Context{PascalCase}
+  }
+  
+  ⊕ testing {
+    suites: describe('PascalCase',...)
+    cases: {it|test}('should...',...)
+    fixtures: {camelCaseMock|mockPascalCase}
+    helpers: camelCaseHelper
+  }
+}
+Σ comprehensive•naming•taxonomy
+
+↹ validation•criteria [p=2] {
+  ⊕ conformity•check => element•taxonomy
+  ⊕ intent•clarity => names•reveal•purpose
+  ⊕ consistency•verify => patterns•maintained
+  ⊕ searchability•test => unique•findable
+}
+Σ quality•assurance
+
+↹ implementation•workflow [p=2] -> [
+  ⊕ new•code: strict•compliance
+  ⊕ legacy•code: refactor•opportunistically
+  ⊕ automated•checks: linters•configured
+  ⊕ review•process: naming•verification
+]
+Σ adoption•strategy
+
+<example>
+// Files & Folders
+resume-service.ts
+ResumeForm.tsx
+resume-builder/
+ui-components/
+
+// Variables & Constants
+const userData = fetchData();
+const isValid = validateInput();
+const MAX_RETRIES = 3;
+
+// Functions & Methods
+function calculateTotal() {...}
+function isEmailValid() {...}
+function handleSubmit() {...}
+
+// Classes
+class UserProfile {...}
+class AbstractRepository {...}
+class AuthenticationService {...}
+
+// Types
+interface UserDataInterface {...}
+type FormFieldType = {...}
+type T extends Entity {...}
+
+// React/Vue
+const ProfileCard = () => {...}
+const useFormValidation = () => {...}
+const ThemeProvider = {...}
+
+// CSS
+.user-profile {...}
+--primary-color: #333;
+
+// Backend
+/api/user-profiles
+user_accounts
+</example>
+
+<example type="invalid">
+// Files & Folders
+resume_service.ts  // Use kebab-case
+resumeForm.vue     // Use PascalCase
+UIComponents/      // Use kebab-case
+
+// Variables & Constants
+const Data = fetchData();      // Use camelCase
+const valid = checkEmail();    // Use isValid
+const maxRetries = 3;          // Use SCREAMING_SNAKE_CASE
+
+// Functions & Methods
+function Calculate() {...}     // Use camelCase
+function valid_email() {...}   // Use camelCase and isPrefix
+function onClick() {...}       // Use handlePrefix
+
+// Classes
+class userProfile {...}        // Use PascalCase
+class repository_abstract {...} // Use AbstractPascalCase
+class auth {...}               // Use descriptive PascalCase
+
+// Types
+interface userData {...}       // Use PascalCaseInterface
+type formField = {...}         // Use PascalCaseType
+type entity extends T {...}    // Use PascalCase
+
+// React/Vue
+const profileCard = () => {...} // Use PascalCase
+const FormValidation = () => {...} // Use usePrefix
+const theme_provider = {...}    // Use PascalCase
+
+// CSS
+.userProfile {...}             // Use kebab-case
+--primaryColor: #333;          // Use kebab-case
+
+// Backend
+/api/userProfiles              // Use kebab-case
+UserAccounts                   // Use snake_case
+</example>
+
+Ω.naming•verify = (
+  check•element•type
+  → apply•relevant•convention
+  → validate•compliance
+  → suggest•corrections
+)
+
+Σ final = naming•standards ⊕ implemented•consistently 
