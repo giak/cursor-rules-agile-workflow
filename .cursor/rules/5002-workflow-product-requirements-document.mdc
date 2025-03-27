@@ -1,0 +1,332 @@
+---
+title: "Product Requirements Document Framework"
+description: "GENERATE when DETAILING product requirements to ENSURE comprehensive feature specifications"
+globs: "**/*prd.md"
+alwaysApply: false
+tags: ["product-requirements", "documentation", "specifications", "agile"]
+---
+
+# 📋 Product Requirements Document (PRD) Framework
+
+## Σ Context•Alignment [p=1]
+- PRD = detailed•specification(features+requirements+constraints)
+- extends•from(PFD) → refines•objectives•into•implementable•requirements
+- document → implementation•guide(developers+designers+testers)
+- bridges(business•vision ⇌ technical•implementation)
+- enables(feature•validation+scope•management+prioritization)
+- supports(estimation+planning+resource•allocation)
+- foundation•for(development•tickets+test•cases)
+
+## Γ Document•Relationships [p=1]
+
+↹ documentation•hierarchy {
+  position: PFD → PRD → technical•specifications
+  
+  pfd•relationship: {
+    consumes: business•goals+vision+constraints,
+    transforms: high•level•objectives → detailed•requirements,
+    maintains: alignment•with•business•value
+  }
+  
+  architecture•relationship: {
+    informs: implementation•decisions+technical•approaches,
+    constrains: technical•feasibility+platform•limitations,
+    validates: requirements•against•technical•capabilities
+  }
+  
+  implementation•relationship: {
+    guides: development•tasks+acceptance•criteria,
+    defines: feature•behaviors+user•interactions,
+    establishes: quality•standards+success•metrics
+  }
+  
+  visual•representation: ```mermaid
+    flowchart TB
+      PFD[Project Foundation Document] --> PRD[Product Requirements Document]
+      PRD --> DEV[Development Tasks]
+      PRD --> TEST[Test Cases]
+      PRD --> DESIGN[Design Specifications]
+      
+      PFD -.-> |Vision & Goals| PRD
+      ARCH[Architecture Document] -.-> |Technical Constraints| PRD
+      PRD -.-> |Feature Requirements| ARCH
+      
+      subgraph Implementation
+        DEV
+        TEST
+        DESIGN
+      end
+      
+      classDef pfd fill:#ff9900,stroke:#333,stroke-width:2px
+      classDef prd fill:#66cc99,stroke:#333,stroke-width:2px
+      classDef arch fill:#6699ff,stroke:#333,stroke-width:2px
+      classDef impl fill:#eeeeee,stroke:#333,stroke-width:1px
+      
+      class PFD pfd
+      class PRD prd
+      class ARCH arch
+      class DEV,TEST,DESIGN impl
+  ```
+}
+
+## Ω₁ Document•Structure [p=1]
+
+↹ prd•framework {
+  format: markdown•professional
+  organization: logical•sections(clear•hierarchy)
+  navigation: table•of•contents(linked•sections)
+  accessibility: business+technical•stakeholders
+  
+  components: [
+    frontmatter(metadata+version+status)
+    → introduction(context+purpose+scope)
+    → problem•statement(challenges+opportunities)
+    → objectives(goals+success•criteria+metrics)
+    → user•journeys(primary+secondary+diagrams)
+    → requirements(functional+non-functional+priorities)
+    → technical•specifications(architecture+stack+constraints)
+    → implementation•plan(phases+milestones+dependencies)
+    → risk•assessment(business+technical+mitigation)
+    → appendices(glossary+references+supporting•materials)
+  ]
+  
+  visual•representation: ```mermaid
+    graph TD
+      subgraph PRD[Product Requirements Document]
+        direction TB
+        FM[Frontmatter]
+        INTRO[Introduction]
+        PROB[Problem Statement]
+        OBJ[Objectives]
+        USERS[User Journeys]
+        REQ[Requirements]
+        TECH[Technical Specifications]
+        IMPL[Implementation Plan]
+        RISK[Risk Assessment]
+        APP[Appendices]
+      end
+      
+      FM --> INTRO
+      INTRO --> PROB
+      PROB --> OBJ
+      OBJ --> USERS
+      USERS --> REQ
+      REQ --> TECH
+      TECH --> IMPL
+      IMPL --> RISK
+      RISK --> APP
+      
+      subgraph "Requirements Detail"
+        FUNC[Functional]
+        NONFUNC[Non-Functional]
+        UX[UX/UI]
+        EXCLUDE[Explicitly Excluded]
+      end
+      
+      REQ --- FUNC
+      REQ --- NONFUNC
+      REQ --- UX
+      REQ --- EXCLUDE
+      
+      classDef main fill:#f5f5f5,stroke:#333,stroke-width:1px
+      classDef section fill:#ffffff,stroke:#333,stroke-width:1px
+      classDef subsection fill:#f0f0f0,stroke:#333,stroke-width:1px
+      
+      class PRD,FM,INTRO,PROB,OBJ,USERS,REQ,TECH,IMPL,RISK,APP main
+      class FUNC,NONFUNC,UX,EXCLUDE subsection
+  ```
+}
+
+↹ metadata•requirements {
+  elements: [
+    title: product•name+document•type,
+    description: concise•summary•of•content,
+    version: semver+date,
+    status: draft|review|approved,
+    author: name+role,
+    tags: relevant•keywords,
+    related_documents: reference•to•pfd+architecture
+  ]
+  
+  schema: YAML|frontmatter
+  placement: document•start
+  
+  example: ```yaml
+    ---
+    title: "Product Requirements Document - Feature Name"
+    description: "Detailed requirements for Feature X implementation"
+    version: "1.0.0"
+    status: "Draft"
+    date: "2023-11-15"
+    author: "Jane Smith"
+    tags: ["feature-x", "requirements", "product-specification"]
+    ---
+  ```
+}
+
+## Ω₂ Content•Requirements [p=1]
+
+↹ core•sections [p=1] → [
+  ⊕ introduction {
+    project•description: overview+purpose+value•proposition,
+    context: market•situation+business•context+motivation,
+    target•audience: user•types+personas+stakeholders,
+    problem•statement: challenges+pain•points+opportunities
+  }
+  
+  ⊕ objectives {
+    primary•goals: specific+measurable+product•objectives,
+    success•criteria: concrete+verifiable•outcomes,
+    kpis: quantifiable•metrics+targets,
+    measurement•methods: data•collection+analysis•approach
+  }
+  
+  ⊕ user•journeys {
+    primary•flows: step•by•step•main•user•paths,
+    secondary•flows: alternative•paths+edge•cases,
+    user•flow•diagrams: visual•representation•of•journeys,
+    touchpoints: key•interactions+decision•points
+  }
+  
+  ⊕ requirements {
+    classification: moscow•prioritization(must+should+could+wont),
+    
+    functional: {
+      core•operations: system•behaviors+user•actions,
+      data•management: storage+processing+manipulation,
+      interface•requirements: ui•elements+interactions,
+      integrations: external•systems+apis+services
+    },
+    
+    non-functional: {
+      performance: speed+responsiveness+efficiency,
+      compatibility: devices+browsers+platforms,
+      security: data•protection+authentication+privacy,
+      compliance: standards+regulations+requirements
+    },
+    
+    ux/ui: {
+      guidelines: design•principles+patterns+standards,
+      experience: interaction•patterns+feedback•mechanisms,
+      accessibility: standards+requirements+accommodations
+    },
+    
+    excluded•features: explicitly•out•of•scope+future•considerations
+  }
+  
+  ⊕ technical•specifications {
+    vision: high•level•technical•approach+principles,
+    stack: technologies+frameworks+libraries+versions,
+    architecture: components+data•flows+integration•points,
+    constraints: technical•limitations+dependencies+boundaries,
+    development•principles: standards+practices+considerations
+  }
+  
+  ⊕ implementation•plan {
+    current•status: progress•overview+completed•work,
+    phases: logical•development•stages+milestones,
+    technical•phases: implementation•breakdown+approach,
+    dependencies: external•requirements+prerequisites,
+    resources: team•composition+roles+responsibilities
+  }
+  
+  ⊕ risk•assessment {
+    business•risks: market+adoption+competition+challenges,
+    technical•risks: implementation+integration+performance•concerns,
+    mitigation•strategies: preventive•measures+contingency•plans,
+    alternatives•considered: options+analysis+decisions
+  }
+  
+  ⊕ appendices {
+    related•documents: links•to•supporting•materials,
+    glossary: terminology+definitions+acronyms,
+    reference•materials: standards+guidelines+examples
+  }
+]
+
+↹ moscow•prioritization [p=2] {
+  must•have: essential+critical+core•functionality,
+  should•have: important+high•value+next•priority,
+  could•have: desired+valuable+if•resources•permit,
+  wont•have: explicitly•excluded+future•consideration
+}
+
+↹ requirement•attributes [p=2] {
+  clarity: unambiguous+precise+concrete
+  testability: verifiable+measurable+observable
+  feasibility: realistic+achievable+within•constraints
+  necessity: solves•actual•problem+delivers•value
+  traceability: linked•to•business•goals+user•needs
+}
+
+↹ visualization•elements [p=2] → [
+  ⊕ user•flows {
+    format: mermaid•flowchart,
+    elements: actions+decision•points+system•responses,
+    structure: logical•progression+branching•paths,
+    style: clear•labels+directional•arrows
+  }
+  
+  ⊕ requirement•diagrams {
+    format: tables+lists+hierarchies,
+    categorization: functional•groups+priority•levels,
+    relationships: dependencies+connections,
+    annotations: notes+constraints+assumptions
+  }
+  
+  ⊕ system•diagrams {
+    format: component•diagrams+sequence•diagrams,
+    scope: relevant•system•boundaries,
+    detail: appropriate•abstraction•level,
+    emphasis: key•interactions+integrations
+  }
+]
+
+## Ψ Verification•Criteria [p=1]
+
+↹ quality•standards {
+  completeness: all•required•sections+sufficient•detail,
+  consistency: aligned•with•pfd+business•objectives,
+  clarity: unambiguous+precise+well•organized,
+  actionability: implementable+testable+specific,
+  traceability: requirements•linked•to•objectives
+}
+
+↹ review•checklist [p=2] -> [
+  ⊕ alignment {
+    business•goals: requirements•support•stated•objectives,
+    pfd•consistency: maintains•vision+scope•boundaries,
+    stakeholder•needs: addresses•identified•requirements
+  }
+  
+  ⊕ content {
+    completeness: all•sections•properly•detailed,
+    specificity: concrete•requirements•not•generalizations,
+    measurability: clear•success•criteria+acceptance•tests,
+    feasibility: realistic•within•constraints+capabilities
+  }
+  
+  ⊕ usability {
+    organization: logical•flow+findability,
+    readability: clear•language+appropriate•terminology,
+    accessibility: understandable•by•all•stakeholders,
+    actionability: provides•sufficient•implementation•guidance
+  }
+  
+  ⊕ technical {
+    scope•appropriateness: right•level•of•detail,
+    constraints•clarity: limitations+boundaries•defined,
+    validation•criteria: clear•testing•approach,
+    integration•considerations: system•interactions•addressed
+  }
+]
+
+↹ final•verification [p=1] {
+  stakeholder•approval: required•sign-offs+feedback•incorporation,
+  completeness•check: all•sections•adequately•addressed,
+  consistency•validation: internal+external•alignment,
+  quality•assurance: meets•organizational•standards,
+  usability•assessment: serves•intended•purpose
+}
+
+Σ prd = comprehensive•requirements•document ⊕ implementation•ready•specification 
