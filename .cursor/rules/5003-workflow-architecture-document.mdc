@@ -1,0 +1,464 @@
+---
+title: "Architecture Document Framework"
+description: "GENERATE when DOCUMENTING system architecture to ENSURE comprehensive technical blueprint"
+globs: "docs/architecture/*.md"
+alwaysApply: false
+tags: ["architecture", "documentation", "technical", "design"]
+---
+
+# 🏗️ Architecture Document Framework
+
+## Σ Context•Alignment [p=1]
+- Architecture = technical•blueprint(structure+patterns+interfaces)
+- extends•from(PFD+PRD) → transforms•requirements•into•technical•solutions
+- document → implementation•guide(developers+architects+maintainers)
+- bridges(business•requirements ⇌ technical•implementation)
+- enables(consistent•development+quality•assurance+evolution)
+- supports(onboarding+maintenance+scalability)
+- foundation•for(implementation+testing+future•extensions)
+
+## Γ Document•Relationships [p=1]
+
+↹ documentation•hierarchy {
+  position: PFD → PRD → Architecture → implementation
+  
+  pfd•relationship: {
+    consumes: vision+goals+constraints,
+    transforms: high•level•objectives → technical•approach,
+    maintains: alignment•with•business•direction
+  }
+  
+  prd•relationship: {
+    consumes: functional+non-functional•requirements,
+    transforms: feature•requirements → technical•components,
+    validates: technical•feasibility•of•requirements
+  }
+  
+  implementation•relationship: {
+    guides: development•decisions+component•interactions,
+    defines: interfaces+patterns+data•flows,
+    establishes: technical•standards+design•patterns
+  }
+  
+  visual•representation: ```mermaid
+    flowchart TB
+      PFD[Project Foundation Document] --> PRD[Product Requirements Document]
+      PFD --> ARCH[Architecture Document]
+      PRD --> ARCH
+      ARCH --> IMPL[Implementation]
+      
+      PFD -.-> |Vision & Constraints| ARCH
+      PRD -.-> |Requirements| ARCH
+      ARCH -.-> |Technical Decisions| IMPL
+      IMPL -.-> |Feedback| ARCH
+      
+      subgraph Implementation
+        CODE[Source Code]
+        COMP[Components]
+        TESTS[Test Cases]
+        CI[CI/CD Pipeline]
+      end
+      
+      ARCH --> CODE
+      ARCH --> COMP
+      ARCH --> TESTS
+      ARCH --> CI
+      
+      classDef pfd fill:#ff9900,stroke:#333,stroke-width:2px
+      classDef prd fill:#66cc99,stroke:#333,stroke-width:2px
+      classDef arch fill:#6699ff,stroke:#333,stroke-width:2px
+      classDef impl fill:#eeeeee,stroke:#333,stroke-width:1px
+      
+      class PFD pfd
+      class PRD prd
+      class ARCH arch
+      class CODE,COMP,TESTS,CI impl
+  ```
+}
+
+## Ω₁ Document•Structure [p=1]
+
+↹ architecture•framework {
+  format: markdown•professional
+  organization: multi•level•diagram•approach
+  navigation: table•of•contents(linked•sections)
+  accessibility: technical+business•stakeholders
+  
+  components: [
+    frontmatter(metadata+version+status)
+    → introduction(context+purpose+scope)
+    → levels•of•abstraction(3-tier•approach)
+    → level•1:context(system+users+external•systems)
+    → level•2:container(high•level•components)
+    → level•3:component(detailed•implementation)
+    → cross•cutting•concerns(shared•aspects+quality•attributes)
+    → data•flows(sequence+interaction•diagrams)
+    → technical•decisions(patterns+frameworks+rationale)
+    → evolution(roadmap+technical•debt+future•directions)
+    → specialized•details(security+performance+accessibility)
+    → appendix(glossary+references+stack•details)
+  ]
+  
+  visual•representation: ```mermaid
+    graph TD
+      subgraph Architecture[Architecture Document]
+        direction TB
+        FM[Frontmatter]
+        INTRO[Introduction]
+        LEVELS[Abstraction Levels]
+        CTX[Level 1: Context]
+        CONT[Level 2: Container]
+        COMP[Level 3: Component]
+        CROSS[Cross-Cutting Concerns]
+        FLOW[Data Flows]
+        DEC[Technical Decisions]
+        EVOL[Evolution]
+        SPEC[Specialized Details]
+        APP[Appendix]
+      end
+      
+      FM --> INTRO
+      INTRO --> LEVELS
+      LEVELS --> CTX
+      CTX --> CONT
+      CONT --> COMP
+      COMP --> CROSS
+      CROSS --> FLOW
+      FLOW --> DEC
+      DEC --> EVOL
+      EVOL --> SPEC
+      SPEC --> APP
+      
+      subgraph "Level Details"
+        CTX1[System Context Diagram]
+        CONT1[Container/Package Diagram]
+        COMP1[Component Diagram]
+        COMP2[Component Details]
+      end
+      
+      CTX --- CTX1
+      CONT --- CONT1
+      COMP --- COMP1
+      COMP --- COMP2
+      
+      classDef main fill:#f5f5f5,stroke:#333,stroke-width:1px
+      classDef section fill:#ffffff,stroke:#333,stroke-width:1px
+      classDef detail fill:#f0f0f0,stroke:#333,stroke-width:1px
+      
+      class FM,INTRO,LEVELS,CTX,CONT,COMP,CROSS,FLOW,DEC,EVOL,SPEC,APP main
+      class CTX1,CONT1,COMP1,COMP2 detail
+  ```
+}
+
+↹ metadata•requirements {
+  elements: [
+    title: system•name+document•type,
+    version: semver+date,
+    status: draft|review|approved,
+    authors: names+roles,
+    related_documents: references•to•pfd+prd
+  ]
+  
+  schema: YAML|frontmatter
+  placement: document•start
+  
+  example: ```yaml
+    ---
+    title: "System Architecture - Customer Portal"
+    version: "1.0.0"
+    date: "2024-11-15"
+    status: "Draft"
+    authors: ["Architecture Team"]
+    related_documents:
+      - document_type: "PFD"
+        path: ".ai/pfd.md"
+        version: "1.3.0"
+      - document_type: "PRD"
+        path: ".ai/prd.md"
+        version: "2.0.0"
+    ---
+  ```
+}
+
+## Ω₂ Content•Requirements [p=1]
+
+↹ core•sections [p=1] → [
+  ⊕ introduction {
+    purpose: document•objectives+intended•audience,
+    scope: system•boundaries+included•components,
+    alignment: relationship•to•pfd+prd
+  }
+  
+  ⊕ levels•of•abstraction {
+    approach: c4•model•inspired(context+container+component+code),
+    rationale: progressive•disclosure•of•detail,
+    navigation: how•to•read•the•document,
+    structure: high•level•overview•of•sections
+  }
+  
+  ⊕ level•1:context {
+    purpose: system•in•relation•to•users+external•systems,
+    diagram: context•diagram(mermaid•flowchart|c4),
+    elements: [
+      users: primary+secondary•users,
+      external•systems: integrations+dependencies,
+      data•flows: high•level•exchanges
+    ],
+    element•details: purpose+interactions+requirements
+  }
+  
+  ⊕ level•2:container {
+    purpose: high•level•components+package•structure,
+    diagram: container•diagram(mermaid•flowchart),
+    elements: [
+      major•components: modules+services+packages,
+      interfaces: how•components•interact,
+      technological•choices: key•technologies•per•component,
+      dependencies: component•relationships+direction
+    ],
+    element•details: responsibility+technology+dependencies
+  }
+  
+  ⊕ level•3:component {
+    purpose: detailed•internal•structure•of•components,
+    diagram: component•diagram(mermaid•flowchart),
+    elements: [
+      subcomponents: classes+modules+functions,
+      interfaces: public•apis+contracts,
+      data•structures: key•entities+objects,
+      patterns: design•patterns+architectural•patterns
+    ],
+    component•details: [
+      responsibility: specific•purpose+function,
+      properties: main•data•elements,
+      methods: key•operations+behaviors,
+      constraints: limitations+requirements,
+      technical•decisions: implementation•choices+rationale
+    ]
+  }
+  
+  ⊕ cross•cutting•concerns {
+    error•handling: strategy+patterns+implementation,
+    logging: approach+levels+storage,
+    security: authentication+authorization+data•protection,
+    internationalization: languages+translation•approach,
+    accessibility: standards+implementation•approach,
+    configuration: environment•variables+settings
+  }
+  
+  ⊕ data•flows {
+    key•scenarios: main•use•cases+operations,
+    sequence•diagrams: step•by•step•interactions,
+    state•transitions: key•state•changes+triggers,
+    error•paths: exception•handling+recovery
+  }
+  
+  ⊕ technical•decisions {
+    architecture•style: monolith|microservices|serverless,
+    design•patterns: selected•patterns+usage,
+    framework•choices: selected•frameworks+rationale,
+    technical•constraints: limitations+boundaries,
+    integration•approaches: apis+events+shared•data
+  }
+  
+  ⊕ evolution {
+    technical•debt: current•issues+impact+remediation,
+    roadmap: planned•improvements+timeline,
+    version•strategy: compatibility+migration,
+    future•considerations: scalability+extensibility
+  }
+  
+  ⊕ specialized•details {
+    security•architecture: defense•in•depth+measures,
+    performance•considerations: optimization+metrics,
+    scaling•strategy: horizontal+vertical+approach,
+    mobile•considerations: responsive+platform•specific,
+    accessibility•implementation: WCAG+testing
+  }
+  
+  ⊕ appendix {
+    technology•stack: detailed•version•table,
+    glossary: terms+acronyms+definitions,
+    references: standards+patterns+inspiration,
+    document•history: version•log+changes
+  }
+]
+
+↹ architectural•views [p=2] {
+  context•view: system•boundaries+external•entities,
+  logical•view: functional•components+organization,
+  process•view: runtime•behavior+interactions,
+  physical•view: deployment+hardware+networks,
+  development•view: code•organization+modules
+}
+
+↹ diagram•requirements [p=1] {
+  format: mermaid•preferred(flowchart+sequence+class),
+  elements: clearly•labeled+purpose•indicated,
+  relationships: direction+type•of•interaction,
+  styling: consistent•colors+shapes+formatting,
+  
+  visual•style: {
+    colors: consistent•palette•for•component•types,
+    shapes: appropriate•to•element•type,
+    text: clear•concise•descriptive,
+    layout: logical•flow+minimize•crossing•lines
+  },
+  
+  diagram•types: [
+    context: system•and•external•entities,
+    container: high•level•components,
+    component: internal•structure,
+    sequence: interaction•flows,
+    state: state•transitions,
+    class: detailed•structure,
+    entity•relationship: data•models
+  ],
+  
+  accessibility: text•explanation•accompanying•each•diagram
+}
+
+## Ψ Verification•Criteria [p=1]
+
+↹ quality•standards {
+  completeness: all•required•sections+sufficient•detail,
+  consistency: pfd+prd+technical•implementation,
+  clarity: unambiguous+precise+well•organized,
+  actionability: implementable+testable+specific,
+  traceability: decisions•linked•to•requirements
+}
+
+↹ review•checklist [p=2] -> [
+  ⊕ alignment {
+    business•goals: supports•stated•objectives•in•pfd,
+    requirements: addresses•requirements•in•prd,
+    constraints: respects•limitations+boundaries
+  }
+  
+  ⊕ content {
+    completeness: all•sections•properly•detailed,
+    clarity: diagrams+explanations•are•understandable,
+    depth: appropriate•level•of•technical•detail,
+    breadth: covers•all•system•aspects
+  }
+  
+  ⊕ technical {
+    correctness: patterns+approaches•are•sound,
+    consistency: technologies+terms+approaches,
+    feasibility: implementation•is•realistic,
+    maintainability: design•supports•future•changes
+  }
+  
+  ⊕ diagrams {
+    accuracy: correctly•represents•the•system,
+    readability: clear+well•organized+labeled,
+    consistency: notation+style+level•of•detail,
+    completeness: covers•key•aspects+interactions
+  }
+]
+
+↹ architecture•challenges [p=2] {
+  scalability: capacity•for•growth+performance•under•load,
+  security: protection•from•threats+vulnerability•mitigation,
+  maintainability: ease•of•change+understanding+fixing,
+  performance: speed+efficiency+resource•usage,
+  reliability: fault•tolerance+recovery+availability,
+  interoperability: compatibility•with•other•systems,
+  extensibility: ability•to•add•features+capabilities
+}
+
+↹ critical•aspects [p=1] {
+  ⊕ alignment•with•requirements => architecture•clearly•supports•requirements
+  ⊕ technical•feasibility => architecture•can•be•implemented•with•available•resources
+  ⊕ appropriate•technology•choices => selected•technologies•fit•the•needs
+  ⊕ clear•component•boundaries => well•defined•interfaces+responsibilities
+  ⊕ management•of•technical•risks => identified+addressed•in•the•design
+  ⊕ comprehensive•diagrams => visual•representation•at•multiple•levels
+  ⊕ explained•technical•decisions => rationale•for•key•choices
+  ⊕ evolution•path => clear•direction•for•future•development
+}
+
+## Λ Architecture•Templates [p=2]
+
+↹ 3-tier•architecture•template {
+  presentation•layer: {
+    components: ui•components+pages+layouts,
+    state•management: stores+state•containers,
+    routing: navigation+deep•linking,
+    visualization: charts+graphs+reports
+  },
+  application•layer: {
+    services: business•logic+operations,
+    controllers: request•handling+orchestration,
+    use•cases: business•operations+workflows,
+    validation: input•validation+business•rules
+  },
+  data•layer: {
+    repositories: data•access+persistence,
+    models: data•structures+entities,
+    storage: databases+files+caches,
+    integration: external•services+apis
+  },
+  cross•cutting: {
+    authentication: identity+access•control,
+    logging: event•recording+monitoring,
+    error•handling: exceptions+recovery,
+    configuration: settings+environment
+  }
+}
+
+↹ clean•architecture•template {
+  entities: {
+    domain•objects: core•business•models,
+    business•rules: invariants+validations,
+    value•objects: immutable•values,
+    domain•events: significant•state•changes
+  },
+  use•cases: {
+    interactors: application•specific•rules,
+    input•ports: use•case•boundaries•inward,
+    output•ports: use•case•boundaries•outward,
+    domain•services: domain•specific•operations
+  },
+  interface•adapters: {
+    controllers: input•adaptation+routing,
+    presenters: output•formatting+adaptation,
+    gateways: external•system•adaptation,
+    repositories: persistence•adaptation
+  },
+  frameworks: {
+    ui: presentation•framework+components,
+    web: server+client•frameworks,
+    persistence: database+orm+storage,
+    external: third•party•libraries+services
+  }
+}
+
+↹ microservices•template {
+  service•boundaries: {
+    domain•decomposition: bounded•contexts+domains,
+    service•definition: purpose+responsibilities,
+    api•contracts: interfaces+operations+data•formats,
+    autonomy: independent•deployment+operation
+  },
+  inter•service•communication: {
+    synchronous: rest+grpc+graphql,
+    asynchronous: messaging+events+queues,
+    gateway: api•aggregation+composition,
+    discovery: service•registry+resolution
+  },
+  data•management: {
+    database•per•service: isolated•persistence,
+    data•consistency: eventual+transactional,
+    data•sharing: replication+views+projections,
+    queries: cqrs+materialized•views
+  },
+  operational•aspects: {
+    deployment: containers+orchestration,
+    monitoring: health+metrics+logging,
+    resilience: circuit•breakers+retries+fallbacks,
+    scaling: horizontal+capacity•planning
+  }
+}
+
+Σ architecture•document = comprehensive•technical•blueprint ⊕ implementation•ready•specification 
