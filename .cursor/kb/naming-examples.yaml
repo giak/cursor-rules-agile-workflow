@@ -1,0 +1,131 @@
+valid:
+  - type: file::source_code
+    value: resume-service.ts
+    notes: kebab-case
+  - type: file::components
+    value: ResumeForm.tsx
+    notes: PascalCase
+  - type: folder::general
+    value: resume-builder
+    notes: kebab-case
+  - type: folder::component_collections
+    value: ui-components
+    notes: kebab-case
+  - type: variable::standard
+    value: userData
+    notes: camelCase
+  - type: variable::boolean
+    value: isValid
+    notes: isPrefixed
+  - type: variable::constants
+    value: MAX_RETRIES
+    notes: SCREAMING_SNAKE_CASE
+  - type: function::standard
+    value: calculateTotal()
+    notes: camelCase()
+  - type: function::boolean_returning
+    value: isEmailValid()
+    notes: isPrefixed()
+  - type: function::event_handlers
+    value: handleSubmit()
+    notes: handlePrefixed()
+  - type: class::standard
+    value: UserProfile
+    notes: PascalCase
+  - type: class::abstract
+    value: AbstractRepository
+    notes: AbstractPascalCase
+  - type: class::service
+    value: AuthenticationService
+    notes: PascalCaseService
+  - type: type::interfaces
+    value: UserDataInterface
+    notes: PascalCaseInterface
+  - type: type::types
+    value: FormFieldType
+    notes: PascalCaseType
+  - type: react_vue::components
+    value: ProfileCard
+    notes: PascalCase
+  - type: react_vue::hooks
+    value: useFormValidation
+    notes: useCamelCase
+  - type: react_vue::providers
+    value: ThemeProvider
+    notes: PascalCaseProvider
+  - type: css::classes
+    value: user-profile
+    notes: kebab-case
+  - type: css::variables
+    value: "--primary-color"
+    notes: "--kebab-case"
+  - type: backend::endpoints
+    value: /api/user-profiles
+    notes: kebab-case
+  - type: backend::db_tables
+    value: user_accounts
+    notes: snake_case
+invalid:
+  - type: file::source_code
+    value: resume_service.ts
+    reason: Should be kebab-case
+  - type: file::components
+    value: resumeForm.vue
+    reason: Should be PascalCase
+  - type: folder::general
+    value: UIComponents
+    reason: Should be kebab-case
+  - type: variable::standard
+    value: Data
+    reason: Should be camelCase
+  - type: variable::boolean
+    value: valid
+    reason: Should use is/has prefix
+  - type: variable::constants
+    value: maxRetries
+    reason: Should be SCREAMING_SNAKE_CASE
+  - type: function::standard
+    value: Calculate()
+    reason: Should be camelCase()
+  - type: function::boolean_returning
+    value: valid_email()
+    reason: Should be isPrefixed()
+  - type: function::event_handlers
+    value: onClick()
+    reason: Should use handlePrefix()
+  - type: class::standard
+    value: userProfile
+    reason: Should be PascalCase
+  - type: class::abstract
+    value: repository_abstract
+    reason: Should be AbstractPascalCase
+  - type: class::service
+    value: auth
+    reason: Should be PascalCaseService (and descriptive)
+  - type: type::interfaces
+    value: userData
+    reason: Should be PascalCaseInterface
+  - type: type::types
+    value: formField
+    reason: Should be PascalCaseType
+  - type: react_vue::components
+    value: profileCard
+    reason: Should be PascalCase
+  - type: react_vue::hooks
+    value: FormValidation
+    reason: Should use usePrefix (useFormValidation)
+  - type: react_vue::providers
+    value: theme_provider
+    reason: Should be PascalCaseProvider
+  - type: css::classes
+    value: userProfile
+    reason: Should be kebab-case
+  - type: css::variables
+    value: "--primaryColor"
+    reason: Should be --kebab-case
+  - type: backend::endpoints
+    value: /api/userProfiles
+    reason: Should be kebab-case
+  - type: backend::db_tables
+    value: UserAccounts
+    reason: Should be snake_case 

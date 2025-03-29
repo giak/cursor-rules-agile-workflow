@@ -1,0 +1,163 @@
+files:
+  source_code:
+    pattern: kebab-case.ext
+    example: user-service.ts
+  components:
+    pattern: PascalCase.{jsx|tsx|vue}
+    example: UserProfile.tsx
+  tests:
+    pattern: "[filename].{spec|test}.ext"
+    example: user-service.spec.ts
+  types:
+    pattern: kebab-case.d.ts
+    example: user-types.d.ts
+  config:
+    pattern: kebab-case.config.{js|ts}
+    example: webpack.config.js
+  constants:
+    pattern: SCREAMING_SNAKE_CASE.{js|ts}
+    example: API_ENDPOINTS.ts
+folders:
+  general:
+    pattern: kebab-case
+  features:
+    pattern: kebab-case
+  architecture_layers:
+    pattern: kebab-case
+  component_collections:
+    pattern: kebab-case
+variables:
+  standard:
+    pattern: camelCase
+    example: userData
+  private:
+    pattern: _camelCase
+    example: _internalValue
+  boolean:
+    pattern: "{is|has|should|can|did|will}Prefixed"
+    example: isValid
+  constants:
+    pattern: SCREAMING_SNAKE_CASE
+    example: MAX_RETRIES
+  env_vars:
+    pattern: SCREAMING_SNAKE_CASE
+    example: API_KEY
+functions:
+  standard:
+    pattern: camelCase()
+    example: calculateTotal()
+  private:
+    pattern: _camelCase()
+    example: _validateInput()
+  boolean_returning:
+    pattern: "{is|has|should|can|did|will}Prefixed()"
+    example: isEmailValid()
+  factory:
+    pattern: createPrefixed()
+    example: createUser()
+  event_handlers:
+    pattern: handlePrefixed()
+    example: handleSubmit()
+classes:
+  standard:
+    pattern: PascalCase
+    example: UserProfile
+  abstract:
+    pattern: AbstractPascalCase
+    example: AbstractRepository
+  service:
+    pattern: PascalCaseService
+    example: AuthenticationService
+  repository:
+    pattern: PascalCaseRepository
+    example: UserRepository
+  controller:
+    pattern: PascalCaseController
+    example: AuthController
+types:
+  interfaces:
+    pattern: PascalCaseInterface
+    example: UserDataInterface
+  types:
+    pattern: PascalCaseType
+    example: ResponseType
+  generics:
+    pattern: "{T|PascalCaseType}"
+    example: T | StatusType
+  props:
+    pattern: PascalCaseProps
+    example: ButtonProps
+enums:
+  names:
+    pattern: PascalCaseEnum
+    example: StatusEnum
+  members:
+    pattern: SCREAMING_SNAKE_CASE
+    example: ACTIVE
+react_vue:
+  components:
+    pattern: PascalCase
+    example: UserProfile
+  hooks:
+    pattern: useCamelCase
+    example: useFormValidation
+  providers:
+    pattern: PascalCaseProvider
+    example: ThemeProvider
+  HOCs:
+    pattern: withPascalCase
+    example: withAuthentication
+css:
+  classes:
+    pattern: kebab-case
+    example: user-profile
+  variables:
+    pattern: --kebab-case
+    example: "--primary-color"
+  modules:
+    pattern: camelCase [imported]
+    example: styles.userName
+  tailwind:
+    pattern: kebab-case
+backend:
+  endpoints:
+    pattern: kebab-case
+    example: /api/user-profiles
+  db_tables:
+    pattern: snake_case
+    example: user_accounts
+  db_fields:
+    pattern: snake_case
+    example: first_name
+clean_arch:
+  use_cases:
+    pattern: PascalCaseUseCase
+    example: CreateUserUseCase
+  entities:
+    pattern: PascalCaseEntity
+    example: UserEntity
+  value_objects:
+    pattern: PascalCase
+    example: Email
+  DTOs:
+    pattern: PascalCaseDTO
+    example: UserDTO
+  repo_interfaces:
+    pattern: PascalCaseRepositoryInterface
+    example: UserRepositoryInterface
+  implementations:
+    pattern: Context{PascalCase}
+    example: SqlUserRepository
+testing:
+  suites:
+    pattern: "describe('PascalCase',...)"
+    example: "describe('UserService', ...)"
+  cases:
+    pattern: "{it|test}('should...',...)"
+    example: "it('should validate email', ...)"
+  fixtures:
+    pattern: "{camelCaseMock|mockPascalCase}"
+    example: userMock | mockUserData
+  helpers:
+    pattern: camelCaseHelper
+    example: createTestUser 

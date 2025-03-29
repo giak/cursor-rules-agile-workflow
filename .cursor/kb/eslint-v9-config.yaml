@@ -1,0 +1,275 @@
+# KB ESLint v9 Configuration
+# Ce fichier KB contient toutes les informations nécessaires pour générer une configuration ESLint v9 compatible
+
+# Métadonnées
+metadata:
+  version: 1.0.0
+  date_creation: "2025-03-29"
+  target_eslint_version: 9
+  author: "AI Assistant"
+  description: "Knowledge Base pour la génération de configuration ESLint v9 compatible"
+
+# Prérequis pour la configuration ESLint v9
+prerequisites:
+  package_json:
+    # ESLint v9 nécessite "type": "module" dans package.json pour les imports ESM
+    type: "module"
+    dependencies:
+      eslint: "^9.0.0"
+      "@typescript-eslint/eslint-plugin": "^8.0.0"
+      "@typescript-eslint/parser": "^8.0.0"
+  
+  tsconfig:
+    # Configuration TypeScript minimale requise
+    compilerOptions:
+      target: "ES2022"
+      module: "ESNext"
+      moduleResolution: "node"
+      esModuleInterop: true
+      strict: true
+      skipLibCheck: true
+
+# Plugins à éviter avec ESLint v9 flat config
+incompatible_plugins:
+  - name: "eslint-plugin-filenames"
+    reason: "Non compatible avec ESLint v9 flat config, utilise une structure incompatible"
+    alternatives:
+      - "Utiliser @typescript-eslint/naming-convention pour les règles de nommage générales"
+      - "Implémenter une logique personnalisée pour la validation des noms de fichiers si nécessaire"
+
+# Structure de base pour la configuration ESLint v9
+configuration_template:
+  - section: "ignores"
+    description: "Fichiers et répertoires à ignorer par ESLint"
+    content: |
+      {
+        ignores: [
+          'node_modules/**',
+          'dist/**',
+          'build/**',
+          '.eslint/**',
+          'test_structured_command/**'
+        ]
+      }
+  
+  - section: "javascript"
+    description: "Configuration pour les fichiers JavaScript"
+    content: |
+      {
+        files: ['**/*.{js,jsx}'],
+        languageOptions: {
+          ecmaVersion: 2022,
+          sourceType: 'module'
+        },
+        rules: {
+          'id-length': ['error', { max: 50 }]
+        }
+      }
+  
+  - section: "typescript"
+    description: "Configuration pour les fichiers TypeScript"
+    content: |
+      {
+        files: ['**/*.{ts,tsx}'],
+        languageOptions: {
+          ecmaVersion: 2022,
+          sourceType: 'module',
+          parser: tsParser,
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true
+            },
+            project: './tsconfig.json'
+          }
+        },
+        plugins: {
+          '@typescript-eslint': typescriptEslint
+        },
+        rules: {
+          'camelcase': 'off',
+          '@typescript-eslint/naming-convention': [
+            'error',
+            // Variables standard (camelCase)
+            {
+              selector: 'variable',
+              format: ['camelCase'],
+              filter: {
+                regex: '^(is|has|should|can|will|did)',
+                match: false
+              }
+            },
+            // Variables booléennes (isPrefixed)
+            {
+              selector: 'variable',
+              types: ['boolean'],
+              format: ['camelCase'],
+              prefix: ['is', 'has', 'should', 'can', 'will', 'did']
+            }
+            // Note: D'autres règles seront ajoutées selon les conventions définies dans les autres KB
+          ],
+          'id-length': ['error', { max: 50 }]
+        }
+      }
+  
+  - section: "react_tsx"
+    description: "Configuration pour les composants React TSX"
+    content: |
+      {
+        files: ['**/*.tsx'],
+        rules: {
+          '@typescript-eslint/naming-convention': [
+            'error',
+            // Composants React (PascalCase)
+            {
+              selector: 'variable',
+              filter: {
+                regex: '^[A-Z]',
+                match: true
+              },
+              format: ['PascalCase']
+            },
+            {
+              selector: 'function',
+              filter: {
+                regex: '^[A-Z]',
+                match: true
+              },
+              format: ['PascalCase']
+            },
+            // Hooks React (useCamelCase)
+            {
+              selector: 'function',
+              filter: {
+                regex: '^use[A-Z]',
+                match: true
+              },
+              format: ['camelCase']
+            }
+          ]
+        }
+      }
+
+# Mappings entre les conventions de nommage et les règles ESLint
+naming_convention_mapping:
+  # Variables
+  variables:
+    standard:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "variable"
+        format: ["camelCase"]
+    
+    boolean:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "variable"
+        types: ["boolean"]
+        format: ["camelCase"]
+        prefix: ["is", "has", "should", "can", "will", "did"]
+    
+    constants:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "variable"
+        modifiers: ["const"]
+        format: ["UPPER_CASE"]
+    
+    private:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "memberLike"
+        modifiers: ["private"]
+        format: ["camelCase"]
+        leadingUnderscore: "require"
+  
+  # Classes
+  classes:
+    standard:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "class"
+        format: ["PascalCase"]
+    
+    abstract:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "class"
+        format: ["PascalCase"]
+        prefix: ["Abstract"]
+    
+    service:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "class"
+        format: ["PascalCase"]
+        suffix: ["Service"]
+  
+  # Types
+  types:
+    interface:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "interface"
+        format: ["PascalCase"]
+        suffix: ["Interface"]
+    
+    type_alias:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "typeAlias"
+        format: ["PascalCase"]
+        suffix: ["Type"]
+    
+    enum:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "enum"
+        format: ["PascalCase"]
+        suffix: ["Enum"]
+    
+    enum_member:
+      rule: "@typescript-eslint/naming-convention"
+      config:
+        selector: "enumMember"
+        format: ["UPPER_CASE"]
+
+# Guide pour les problèmes courants et leur résolution
+troubleshooting:
+  - problem: "Key 'rules': Key 'filenames/match-regex': Value should NOT have more than 0 items"
+    cause: "Le plugin eslint-plugin-filenames n'est pas compatible avec ESLint v9 flat config"
+    solution: "Ne pas utiliser eslint-plugin-filenames avec ESLint v9, utiliser @typescript-eslint/naming-convention à la place"
+  
+  - problem: "Error while loading rule 'filenames/match-regex': Rule must be an object with a 'create' method"
+    cause: "Incompatibilité du plugin avec le format flat config d'ESLint v9"
+    solution: "Supprimer toute référence à ce plugin et ses règles dans la configuration"
+  
+  - problem: "You have used a rule which requires type information, but don't have parserOptions"
+    cause: "La règle @typescript-eslint/naming-convention nécessite des informations de type"
+    solution: "Ajouter parserOptions.project avec le chemin vers le tsconfig.json dans la configuration"
+  
+  - problem: "Module type of file... is not specified and it doesn't parse as CommonJS"
+    cause: "ESLint v9 utilise la syntaxe ES modules (imports/exports)"
+    solution: "Ajouter 'type': 'module' au package.json"
+
+# Documentation à générer
+documentation_sections:
+  - title: "À propos de cette configuration"
+    content: "Description générale de la configuration ESLint v9 flat config"
+  
+  - title: "Installation"
+    content: "Étapes d'installation incluant le tsconfig.json et 'type': 'module' dans package.json"
+  
+  - title: "Structure de la configuration"
+    content: "Description des différentes sections de la configuration"
+  
+  - title: "Conventions implémentées"
+    content: "Détail des conventions de nommage appliquées"
+  
+  - title: "Utilisation"
+    content: "Commandes pour exécuter ESLint"
+  
+  - title: "Personnalisation"
+    content: "Comment personnaliser la configuration"
+  
+  - title: "Résolution des problèmes"
+    content: "Solutions aux problèmes courants" 

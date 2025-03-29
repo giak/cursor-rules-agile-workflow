@@ -1,0 +1,10 @@
+descriptive:
+  goal: reveal_intent
+searchable:
+  goal: unique_findable
+consistent:
+  goal: follow_patterns
+concise:
+  goal: optimal_not_verbose
+coherent:
+  goal: domain_aligned 

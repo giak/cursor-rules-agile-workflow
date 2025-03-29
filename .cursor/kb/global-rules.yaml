@@ -1,0 +1,9 @@
+max_length: 50
+abbreviations:
+  policy: avoid_except_common
+  # Define common allowed abbreviations if needed
+  allowed: [] 
+redundant_words:
+  policy: eliminate
+format_compliance:
+  policy: required 

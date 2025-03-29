@@ -1,4 +1,6 @@
 # Private individual user cursor rules
+node_modules/
+
 # .cursor/rules/_*.mdc
 .specstory/
 .cursorignore

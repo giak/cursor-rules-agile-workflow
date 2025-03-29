@@ -1,0 +1,32 @@
+{
+  "name": "eslint-naming-conventions",
+  "version": "1.0.0",
+  "description": "Configuration ESLint pour les conventions de nommage",
+  "main": ".eslintrc.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "eslint",
+    "naming",
+    "conventions",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "typescript": ">=5.0.0"
+  },
+  "optionalDependencies": {
+    "eslint-plugin-react": "^7.32.2"
+  }
+}
