@@ -1,0 +1,61 @@
+extraction_criteria:
+  reuse:
+    description: "Extraire en composable lorsque la logique est utilisée dans plusieurs composants"
+    priority: 1
+    heuristics:
+      - "Logique identique ou très similaire présente dans 2+ composants"
+      - "Comportement qui pourrait être réutilisé dans d'autres parties de l'application"
+      - "Patterns communs comme la gestion de formulaires, pagination, filtrage, etc."
+    examples:
+      - "Validation de formulaire utilisée dans plusieurs écrans"
+      - "Logique de pagination pour différentes listes"
+      - "Formatage de données commun à plusieurs vues"
+  
+  complexity:
+    description: "Extraire en composable lorsque la logique complexifie un composant"
+    priority: 1
+    heuristics:
+      - "Composant de plus de 100 lignes de code (hors template)"
+      - "Plus de 5 méthodes ou propriétés computed"
+      - "Plusieurs responsabilités identifiables dans le même composant"
+      - "Logique qui masque l'intention principale du composant"
+    examples:
+      - "Logique de filtrage complexe dans un composant de liste"
+      - "Gestion d'état avec plusieurs transformations"
+      - "Interactions avec plusieurs API dans un seul composant"
+  
+  domain_logic:
+    description: "Extraire la logique métier pure du composant UI"
+    priority: 2
+    heuristics:
+      - "Transformations de données selon des règles métier"
+      - "Validations spécifiques au domaine"
+      - "Calculs qui implémentent des règles métier"
+    examples:
+      - "Règles de calcul de prix dans un composant d'affichage de produit"
+      - "Validation de données selon le schéma JSON Resume"
+      - "Transformation de données brutes en modèle de domaine"
+  
+  lifecycle_management:
+    description: "Extraire la gestion du cycle de vie"
+    priority: 2
+    heuristics:
+      - "Configuration d'abonnements ou d'écouteurs d'événements"
+      - "Initialisation et nettoyage de ressources"
+      - "Polling ou autre logique temporelle"
+    examples:
+      - "Gestion de WebSocket avec abonnement/désabonnement"
+      - "Écouteurs d'événements de scroll ou resize"
+      - "Timers et intervalles avec nettoyage approprié"
+  
+  anti_extraction:
+    description: "Cas où l'extraction en composable est déconseillée"
+    heuristics:
+      - "Logique simple de moins de 10 lignes sans réutilisation prévue"
+      - "Logique purement statique qui ne gère pas d'état"
+      - "Code spécifique à un composant unique sans réutilisation possible"
+      - "Extractions qui créeraient plus de complexité que de simplicité"
+    examples:
+      - "Simple formatage de date utilisé uniquement dans un composant"
+      - "Petites transformations de données spécifiques à un affichage"
+      - "Fonctions utilitaires sans état ni effets secondaires" 

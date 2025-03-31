@@ -1,0 +1,246 @@
+---
+name: Vue 3 Composables Pattern
+description: "IMPLEMENT when CREATING Vue 3 composables to ENSURE maintainability, reusability, and clean architecture"
+categories: [vue3, framework, composables, frontend]
+glob: "**/*.{js,ts,vue}"
+always_apply: true
+doc_links:
+  - https://vuejs.org/guide/reusability/composables.html
+  - https://vuejs.org/api/composition-api-setup.html
+  - https://vuejs.org/guide/extras/reactivity-in-depth.html
+rule_version: 1.0
+---
+
+# Vue 3 Composables Pattern
+
+↹ kb•vue3•composables [p=1] {
+  ⊕ naming_patterns: ".cursor/kb/2100-vue3-composables/patterns/naming.yaml",
+  ⊕ extraction_criteria: ".cursor/kb/2100-vue3-composables/patterns/extraction_criteria.yaml",
+  ⊕ architecture_layers: ".cursor/kb/2100-vue3-composables/guidelines/architecture_layers.md",
+  ⊕ tdd_workflow: ".cursor/kb/2100-vue3-composables/guidelines/tdd_workflow.md",
+  ⊕ examples: {
+    good: ".cursor/kb/2100-vue3-composables/examples/good_examples.md",
+    bad: ".cursor/kb/2100-vue3-composables/examples/bad_examples.md"
+  }
+}
+Σ knowledge•references
+
+↹ principles•core [p=1] {
+  ⊕ separation•of•concerns {
+    single_responsibility: one_composable_one_purpose | ref: kb•vue3•composables.extraction_criteria,
+    clean_architecture: organize_by_architectural_layer | ref: kb•vue3•composables.architecture_layers,
+    data_transformation: separate_from_presentation | for: maintainability
+  }
+  
+  ⊕ reusability {
+    extract_common_logic: multiple_use_cases | threshold: 2+ components,
+    interface_minimalism: return_only_what_is_needed | for: clarity_and_maintenance,
+    reactive_parameters: support_refs_and_getters | using: toValue()
+  }
+  
+  ⊕ lifecycle•management {
+    cleanup_resources: release_in_onUnmounted | avoid: memory_leaks,
+    proper_initialization: use_onMounted_when_needed | respect: component_lifecycle,
+    reactivity_control: maintain_reactivity_chain | avoid: breaking_reactivity
+  }
+}
+Σ composables•principles
+
+↹ Ω•decide•extract [p=1] -> (
+  analyze•component(component: Vue.Component)
+  → identify•logic•blocks(
+      categorize: ["ui_logic", "data_transformation", "effects", "validation"] | ref: kb•vue3•composables.extraction_criteria,
+      measure_complexity: count_lines_and_cognitive_load | threshold: >100 lines -> consider_extraction
+  ) 
+  → evaluate•reuse•potential(
+      usage_count: count_similar_logic_across_components | ref: kb•vue3•composables.extraction_criteria.reuse,
+      reuse_value: calculate_extraction_value | consider: maintenance_cost_vs_reuse_benefit
+  )
+  → apply•extraction•criteria(ref: kb•vue3•composables.extraction_criteria)
+  → decide(
+      extract: meets_criteria | ref: kb•vue3•composables.extraction_criteria,
+      keep_inline: fails_criteria | reason: too_simple_or_specific
+  )
+)
+Σ extraction•decision•process
+
+↹ Ω•design•composable [p=1] -> [
+  ⊕ define•interface {
+    parameters: determine_necessary_inputs | support: reactive_values,
+    return_values: identify_essential_outputs | principle: minimalism,
+    documentation: add_jsdoc_comments | for: users_of_composable
+  }
+  
+  ⊕ implement•logic {
+    reactive_state: setup_refs_and_computed | ref: kb•vue3•composables.examples.good,
+    lifecycle_hooks: add_mounted_unmounted_handling | if_needed: true,
+    business_logic: implement_core_functionality | separate_from: framework_code
+  }
+  
+  ⊕ organize•architecturally {
+    identify_layer: determine_architectural_layer | ref: kb•vue3•composables.architecture_layers,
+    place_in_structure: follow_project_organization | e.g.: `/composables/{layer}/{domain}`,
+    name_appropriately: follow_naming_convention | ref: kb•vue3•composables.naming_patterns
+  }
+]
+Σ composable•design•process
+
+↹ Ω•validate•composable [p=1] -> (
+  check•naming(
+    pattern: '^use[A-Z]' | camelCase: true,
+    domain_specific: align_with_domain_terminology | ref: kb•vue3•composables.naming_patterns
+  )
+  → validate•interface(
+      minimal: exposes_only_necessary_values | no_internal_implementation_details,
+      reactive: supports_reactive_parameters | using: toValue(),
+      documented: has_jsdoc_for_params_and_returns | complete: true
+  )
+  → verify•lifecycle(
+      cleanup: releases_resources_properly | in: onUnmounted,
+      initialization: proper_setup | in: onMounted_if_needed
+  )
+  → test•functionality(
+      unit_tests: test_all_paths | coverage_target: 90%+,
+      integration_tests: test_with_components | ref: kb•vue3•composables.tdd_workflow
+  )
+  → assess•quality(
+      solid_principles: follows_solid | especially: single_responsibility,
+      clean_code: readable_and_maintainable | reviewer: approves
+  )
+)
+Σ validation•process
+
+↹ Ω•apply•tdd [p=1] -> (
+  define•interface•first(
+    parameters: determine_inputs_including_types | support: MaybeRefOrGetter,
+    return_values: plan_outputs | principle: minimalism
+  )
+  → write•tests(
+      initialization: test_default_behavior | and: custom_options,
+      functionality: test_all_methods_and_properties | edge_cases: included,
+      reactivity: test_reactive_updates | if: reactive_parameters
+  )
+  → implement•for•tests(
+      minimum_code: make_tests_pass | avoid: over_engineering,
+      refactor: improve_code_quality | maintain: test_passing
+  )
+  → document(
+      jsdoc: add_comprehensive_docs | with: examples,
+      interface: clearly_document_types | for: consumers
+  )
+)
+Σ tdd•workflow | ref: kb•vue3•composables.tdd_workflow
+
+↹ LLM•composable•analyzer [p=1] {
+  ⊕ tasks {
+    component_analysis: identify_extractable_logic | ref: Ω•decide•extract,
+    extraction_suggestion: recommend_logic_to_extract | with: justification,
+    organization_advice: suggest_organization_structure | ref: kb•vue3•composables.architecture_layers
+  }
+  
+  ⊕ inputs {
+    component_code: component_to_analyze | for: extraction_suggestions,
+    project_structure: existing_organization | for: consistency,
+    domain_context: business_domain_information | for: domain_alignment
+  }
+  
+  ⊕ outputs {
+    extraction_recommendations: {
+      should_extract: boolean,
+      logic_blocks: Array<{
+        description: string,
+        lines: [start, end],
+        reason_for_extraction: string,
+        suggested_name: string,
+        architectural_layer: string
+      }>,
+      priority: "high" | "medium" | "low"
+    }
+  }
+  
+  ⊕ constraints {
+    avoid_trivial_extraction: no_extraction_if_less_than_10_lines | unless: high_reuse_potential,
+    respect_single_responsibility: one_concern_per_composable | ref: principles•core.separation•of•concerns,
+    follow_naming_conventions: adhere_to_patterns | ref: kb•vue3•composables.naming_patterns
+  }
+  
+  ⊕ validation_criteria {
+    extraction_value: value_added_by_extraction | threshold: medium_or_higher,
+    architectural_fit: aligns_with_clean_architecture | ref: kb•vue3•composables.architecture_layers,
+    naming_quality: descriptive_and_following_conventions | ref: kb•vue3•composables.naming_patterns
+  }
+}
+Σ llm•composable•analysis
+
+↹ LLM•composable•generator [p=1] {
+  ⊕ tasks {
+    code_generation: generate_composable_implementation | ref: Ω•design•composable,
+    test_generation: create_unit_tests | ref: Ω•apply•tdd,
+    documentation_creation: write_jsdoc_and_examples | for: usage_guidance
+  }
+  
+  ⊕ inputs {
+    functionality_description: what_composable_should_do | for: implementation,
+    architectural_layer: which_layer_it_belongs_to | ref: kb•vue3•composables.architecture_layers,
+    dependencies: other_composables_or_libraries_needed | for: integration
+  }
+  
+  ⊕ outputs {
+    composable_code: {
+      file_path: string,
+      content: string,
+      tests: string,
+      example_usage: string
+    }
+  }
+  
+  ⊕ constraints {
+    follow_principles: adhere_to_core_principles | ref: principles•core,
+    minimal_interface: return_only_necessary_values | principle: interface_minimalism,
+    proper_reactivity: handle_reactive_parameters_correctly | using: toValue()
+  }
+  
+  ⊕ validation_criteria {
+    code_quality: follows_best_practices | ref: kb•vue3•composables.examples.good,
+    test_coverage: tests_all_functionality | coverage: comprehensive,
+    documentation_clarity: clear_and_complete_docs | with: examples
+  }
+}
+Σ llm•composable•generation
+
+↹ constraints•critical [p=2] {
+  ⊕ extraction•constraints [
+    no_trivial_extraction: "NE PAS extraire de logique dans un composable si cela n'apporte pas une réelle valeur" | lines: <10,
+    avoid_god_composables: "ÉVITER de créer des composables fourre-tout" | ref: kb•vue3•composables.examples.bad,
+    performance_constraint: "RESPECTER la contrainte de performance (<500ms)" | in: conception,
+    prefer_simple: "PRÉFÉRER plusieurs composables simples à un composable complexe" | for: maintainability,
+    document_interface: "DOCUMENTER clairement l'interface des composables" | for: usability,
+    no_static_only: "NE PAS créer de composables pour une logique purement statique" | unless: state_management_needed,
+    ensure_template_coherence: "TOUJOURS assurer la cohérence entre transformations d'état et templates" | for: correctness,
+    test_all_mappings: "TOUJOURS tester tous les cas de mapping et transformations" | e.g.: "'experience' → 'work'"
+  ]
+}
+Σ critical•constraints
+
+↹ patterns•recommended [p=2] {
+  ⊕ location•patterns {
+    dedicated_folder: place_in_composables_directory | path: "/composables",
+    domain_organization: organize_by_domain | structure: "/composables/{domain}",
+    layer_organization: organize_by_layer | ref: kb•vue3•composables.architecture_layers
+  }
+  
+  ⊕ testability•patterns {
+    isolated_tests: design_for_isolated_testing | ref: kb•vue3•composables.tdd_workflow,
+    dependency_injection: inject_dependencies | not: hardcode,
+    mock_friendly: facilitate_mocking_external_dependencies | for: unit_testing
+  }
+  
+  ⊕ interface•patterns {
+    clear_return_types: explicitly_type_return_values | for: users,
+    jsdoc_documentation: document_with_jsdoc | include: examples,
+    reactive_support: use_toValue_for_parameters | support: refs_and_getters
+  }
+}
+Σ recommended•patterns
+
+Σ vue3•composables ⊕ clean•architecture ⊕ reusability ⊕ maintainability 

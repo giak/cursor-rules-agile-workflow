@@ -1,0 +1,56 @@
+naming_patterns:
+  prefix: 
+    pattern: "use[A-Z]"
+    description: "Tous les composables doivent commencer par 'use' suivi d'un nom descriptif"
+    examples:
+      correct: ["useFormValidation", "useNavigation", "useLocalStorage"]
+      incorrect: ["formValidation", "UseNavigation", "get_local_storage"]
+  
+  casing:
+    pattern: "use[A-Z][a-zA-Z0-9]*"
+    description: "Le nom après 'use' doit être en camelCase avec la première lettre en majuscule"
+    examples:
+      correct: ["useFormValidation", "useUserProfile", "useAPI"]
+      incorrect: ["useformValidation", "use_user_profile", "useApi"]
+  
+  domain_specific:
+    groups:
+      ui: ["useForm", "useNavigation", "useModal", "useDialog", "useToast", "useNotification"]
+      data: ["useFetch", "useStorage", "useQuery", "useMutation"]
+      state: ["useState", "useStore", "useReducer"]
+      lifecycle: ["useMount", "useUnmount", "useEffect", "useWatch"]
+      domain: ["useUser", "useProduct", "useCart", "useCheckout", "useAuth"]
+  
+  naming_by_layer:
+    domain:
+      pattern: "use{EntityName}{Operation}"
+      examples: ["useUserValidation", "useProductTransform", "useResumeSchema"]
+    
+    application:
+      pattern: "use{UseCase}"
+      examples: ["useAuthentication", "useResumeBuild", "useProfileExport"]
+    
+    infrastructure:
+      pattern: "use{ExternalSystem}{Operation}"
+      examples: ["useLocalStorage", "useAPIFetch", "usePDFExport"]
+    
+    ui:
+      pattern: "use{UIElement}{Action}"
+      examples: ["useFormValidation", "useNavigation", "useModalState"]
+
+  anti_patterns:
+    - pattern: "[a-z]+[A-Z]+"
+      description: "Nommer un composable sans le préfixe 'use'"
+      example: "formValidation"
+    
+    - pattern: "use[a-z]+"
+      description: "Ne pas commencer le mot après 'use' par une majuscule"
+      example: "useform"
+    
+    - pattern: "use_[a-z_]+"
+      description: "Utiliser snake_case au lieu de camelCase"
+      example: "use_form_validation"
+    
+    - pattern: "use[A-Z][a-z]*Utils?"
+      description: "Nommer un composable avec un suffixe générique comme 'Utils'"
+      example: "useFormUtils" 
