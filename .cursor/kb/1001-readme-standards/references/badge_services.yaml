@@ -1,0 +1,175 @@
+badges:
+  # Build Status Badges
+  build:
+    - name: GitHub Actions
+      url: "https://github.com/{user}/{repo}/actions/workflows/{workflow}.yml/badge.svg"
+      link: "https://github.com/{user}/{repo}/actions/workflows/{workflow}.yml"
+      desc: "Shows the status of GitHub Actions workflow"
+    
+    - name: Travis CI
+      url: "https://travis-ci.org/{user}/{repo}.svg?branch=master"
+      link: "https://travis-ci.org/{user}/{repo}"
+      desc: "Shows the status of Travis CI builds"
+    
+    - name: CircleCI
+      url: "https://circleci.com/gh/{user}/{repo}.svg?style=shield"
+      link: "https://circleci.com/gh/{user}/{repo}"
+      desc: "Shows the status of CircleCI builds"
+    
+    - name: Jenkins
+      url: "https://ci.jenkins.io/job/{job}/badge/icon"
+      link: "https://ci.jenkins.io/job/{job}/"
+      desc: "Shows the status of Jenkins builds"
+
+  # Code Coverage Badges
+  coverage:
+    - name: Codecov
+      url: "https://codecov.io/gh/{user}/{repo}/branch/master/graph/badge.svg"
+      link: "https://codecov.io/gh/{user}/{repo}"
+      desc: "Shows code coverage from Codecov"
+    
+    - name: Coveralls
+      url: "https://coveralls.io/repos/github/{user}/{repo}/badge.svg?branch=master"
+      link: "https://coveralls.io/github/{user}/{repo}?branch=master"
+      desc: "Shows code coverage from Coveralls"
+
+  # Version Badges
+  version:
+    - name: npm
+      url: "https://img.shields.io/npm/v/{package}.svg"
+      link: "https://www.npmjs.com/package/{package}"
+      desc: "Shows the latest version on npm"
+    
+    - name: PyPI
+      url: "https://img.shields.io/pypi/v/{package}.svg"
+      link: "https://pypi.org/project/{package}/"
+      desc: "Shows the latest version on PyPI"
+    
+    - name: Packagist
+      url: "https://img.shields.io/packagist/v/{user}/{package}.svg"
+      link: "https://packagist.org/packages/{user}/{package}"
+      desc: "Shows the latest version on Packagist"
+    
+    - name: Maven Central
+      url: "https://img.shields.io/maven-central/v/{group}/{artifact}.svg"
+      link: "https://search.maven.org/artifact/{group}/{artifact}"
+      desc: "Shows the latest version on Maven Central"
+
+  # License Badges
+  license:
+    - name: MIT
+      url: "https://img.shields.io/badge/License-MIT-blue.svg"
+      link: "https://opensource.org/licenses/MIT"
+      desc: "Shows MIT license"
+    
+    - name: Apache 2.0
+      url: "https://img.shields.io/badge/License-Apache%202.0-blue.svg"
+      link: "https://opensource.org/licenses/Apache-2.0"
+      desc: "Shows Apache 2.0 license"
+    
+    - name: GPL v3
+      url: "https://img.shields.io/badge/License-GPLv3-blue.svg"
+      link: "https://www.gnu.org/licenses/gpl-3.0"
+      desc: "Shows GPL v3 license"
+    
+    - name: BSD 3-Clause
+      url: "https://img.shields.io/badge/License-BSD%203--Clause-blue.svg"
+      link: "https://opensource.org/licenses/BSD-3-Clause"
+      desc: "Shows BSD 3-Clause license"
+
+  # Status Badges
+  status:
+    - name: Maintenance
+      url: "https://img.shields.io/badge/Maintained%3F-yes-green.svg"
+      link: "https://github.com/{user}/{repo}/graphs/commit-activity"
+      desc: "Shows if the project is maintained"
+    
+    - name: Website Status
+      url: "https://img.shields.io/website-up-down-green-red/http/{url}.svg"
+      link: "http://{url}"
+      desc: "Shows website status"
+
+  # Social Badges
+  social:
+    - name: Twitter Follow
+      url: "https://img.shields.io/twitter/follow/{username}.svg?style=social"
+      link: "https://twitter.com/{username}"
+      desc: "Shows Twitter follow button"
+    
+    - name: GitHub Stars
+      url: "https://img.shields.io/github/stars/{user}/{repo}.svg?style=social&label=Star"
+      link: "https://github.com/{user}/{repo}"
+      desc: "Shows GitHub stars"
+    
+    - name: Discord
+      url: "https://img.shields.io/discord/{server_id}.svg"
+      link: "https://discord.gg/{invite_code}"
+      desc: "Shows Discord chat server status"
+
+  # Documentation Badges
+  documentation:
+    - name: Read the Docs
+      url: "https://readthedocs.org/projects/{project}/badge/?version=latest"
+      link: "https://{project}.readthedocs.io/en/latest/?badge=latest"
+      desc: "Shows documentation status on Read the Docs"
+    
+    - name: Documentation Website
+      url: "https://img.shields.io/badge/docs-website-blue.svg"
+      link: "https://{user}.github.io/{repo}/"
+      desc: "Links to documentation website"
+
+  # Package Information Badges
+  package_info:
+    - name: Bundle Size
+      url: "https://img.shields.io/bundlephobia/min/{package}.svg"
+      link: "https://bundlephobia.com/result?p={package}"
+      desc: "Shows npm package bundle size"
+    
+    - name: Downloads
+      url: "https://img.shields.io/npm/dm/{package}.svg"
+      link: "https://www.npmjs.com/package/{package}"
+      desc: "Shows npm package downloads per month"
+    
+    - name: Dependencies
+      url: "https://img.shields.io/david/{user}/{repo}.svg"
+      link: "https://david-dm.org/{user}/{repo}"
+      desc: "Shows status of dependencies"
+
+templates:
+  web_app:
+    - type: build
+      recommended: ["GitHub Actions", "Travis CI"]
+    - type: license
+      recommended: ["MIT", "Apache 2.0"]
+    - type: status
+      recommended: ["Maintenance"]
+  
+  library:
+    - type: version
+      recommended: ["npm", "PyPI", "Maven Central"]
+    - type: build
+      recommended: ["GitHub Actions", "Travis CI"]
+    - type: coverage
+      recommended: ["Codecov", "Coveralls"]
+    - type: license
+      recommended: ["MIT", "Apache 2.0"]
+    - type: package_info
+      recommended: ["Bundle Size", "Downloads", "Dependencies"]
+  
+  cli_tool:
+    - type: version
+      recommended: ["npm", "PyPI"]
+    - type: build
+      recommended: ["GitHub Actions", "Travis CI"]
+    - type: license
+      recommended: ["MIT", "GPL v3"]
+  
+  api:
+    - type: build
+      recommended: ["GitHub Actions", "Travis CI"]
+    - type: status
+      recommended: ["Website Status"]
+    - type: documentation
+      recommended: ["Documentation Website"]
+    - type: license
+      recommended: ["MIT", "Apache 2.0"] 

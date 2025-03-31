@@ -1,0 +1,239 @@
+---
+description: "ENSURE README.md standards to deliver comprehensive project documentation"
+globs: "**/README.md"
+alwaysApply: false
+---
+
+# README Standards
+
+↹ kb•readme•standards [p=1] {
+  # Knowledge base paths
+  ⊕ core_kb: ".cursor/kb/core/",
+  ⊕ readme_kb: ".cursor/kb/1001-readme-standards/",
+  
+  # Standards and examples
+  ⊕ structure_guide: readme_kb + "guidelines/structure_guide.md",
+  ⊕ formatting_guide: readme_kb + "guidelines/formatting_guide.md",
+  ⊕ examples: {
+    good: readme_kb + "examples/good_examples.md",
+    bad: readme_kb + "examples/bad_examples.md"
+  },
+  
+  # Templates
+  ⊕ readme_templates: readme_kb + "templates/",
+  ⊕ project_types: {
+    web_app: readme_templates + "web_app.md",
+    library: readme_templates + "library.md",
+    cli_tool: readme_templates + "cli_tool.md",
+    api: readme_templates + "api.md"
+  },
+  
+  # External references
+  ⊕ markdown_guide: "https://www.markdownguide.org/",
+  ⊕ badge_services: readme_kb + "references/badge_services.yaml"
+}
+Σ knowledge•references
+
+↹ principles•readme [p=1] {
+  ⊕ primary•goals [
+    completeness: comprehensive_documentation | priority: highest,
+    clarity: information_presented_clearly | priority: high,
+    usability: easily_navigable_and_practical | priority: high
+  ]
+  
+  ⊕ design•principles {
+    user_centric: focus_on_user_needs | not: developer_convenience,
+    progressive_disclosure: critical_information_first | principle: inverted_pyramid,
+    structure_consistency: maintain_logical_structure | enable: faster_comprehension,
+    visual_hierarchy: use_formatting_for_emphasis | enhance: readability,
+    completeness: cover_all_required_aspects | ref: kb•readme•standards.structure_guide
+  }
+}
+Σ readme•principles
+
+↹ Ω•analyze•project [p=1] -> (
+  determine•project•type(
+    analyze_dependencies: identify_key_libraries | for: technological_context,
+    analyze_structure: identify_project_architecture | for: project_classification,
+    determine_type: classify_as_web_app_library_cli_tool_or_api | ref: kb•readme•standards.project_types
+  )
+  → identify•key•features(
+    scan_codebase: identify_main_functionalities | for: feature_listing,
+    evaluate_uniqueness: highlight_distinguishing_features | for: value_proposition,
+    assess_complexity: determine_documentation_needs | for: detail_level
+  )
+  → review•existing•documentation(
+    scan_docs_folder: identify_existing_documentation | for: integration,
+    review_inline_comments: extract_key_documentation_points | for: completeness,
+    identify_gaps: mark_undocumented_features | for: documentation_planning
+  )
+  → recommend•structure(
+    template_selection: select_appropriate_template | ref: kb•readme•standards.project_types,
+    customization_needs: identify_template_modifications | for: project_specifics,
+    content_plan: outline_required_sections | ref: kb•readme•standards.structure_guide
+  )
+)
+Σ project•analysis•process
+
+↹ Ω•create•readme [p=1] -> [
+  ⊕ structure•core•sections {
+    title_and_badges: create_project_title_with_status_badges | ref: kb•readme•standards.badge_services,
+    introduction: write_concise_project_description | with: problem_solution_overview,
+    toc: generate_table_of_contents | for: navigation,
+    features: list_key_features_and_capabilities | with: brief_descriptions,
+    installation: document_prerequisites_and_setup_steps | with: commands,
+    usage: provide_basic_examples_and_use_cases | with: code_samples
+  }
+  
+  ⊕ add•detailed•sections {
+    api_documentation: document_interfaces_and_methods | if: applicable,
+    configuration: document_configuration_options | with: examples,
+    project_structure: explain_repository_organization | with: directory_tree,
+    development: provide_contributor_guidelines | with: process_description,
+    deployment: document_deployment_procedures | if: relevant
+  }
+  
+  ⊕ enhance•readability {
+    formatting: apply_markdown_formatting | ref: kb•readme•standards.formatting_guide,
+    images: add_screenshots_or_diagrams | for: visual_clarity,
+    code_examples: include_syntax_highlighted_examples | for: implementation_guidance
+  }
+  
+  ⊕ finalize {
+    review_completeness: check_against_structure_guide | ref: kb•readme•standards.structure_guide,
+    validate_links: ensure_all_links_work | for: usability,
+    add_metadata: include_license_authors_acknowledgments | for: attribution
+  }
+]
+Σ readme•creation•process
+
+↹ Ω•update•readme [p=1] -> (
+  analyze•changes(
+    code_modifications: identify_updated_features | for: documentation_updates,
+    dependency_changes: check_for_new_requirements | for: installation_updates,
+    api_changes: verify_interface_modifications | for: api_doc_updates
+  )
+  → identify•update•areas(
+    affected_sections: determine_readme_sections_to_update | ref: Ω•create•readme,
+    content_outdated: identify_deprecated_information | for: removal,
+    missing_content: identify_undocumented_features | for: addition
+  )
+  → implement•updates(
+    modify_sections: update_affected_content | preserve: overall_structure,
+    check_consistency: ensure_changes_align_with_rest | for: coherence,
+    update_date: refresh_last_updated_metadata | for: version_tracking
+  )
+  → validate•updates(
+    review_changes: verify_accuracy_of_updates | against: codebase,
+    check_formatting: ensure_markdown_formatting_intact | ref: kb•readme•standards.formatting_guide,
+    test_examples: verify_code_examples_work | for: reliability
+  )
+)
+Σ readme•update•process
+
+↹ Ω.validate [p=1] -> (
+  check•structure(
+    required_sections: verify_core_sections_present | ref: kb•readme•standards.structure_guide,
+    logical_flow: ensure_information_order_makes_sense | principle: progressive_disclosure,
+    appropriate_detail: check_detail_level_matches_complexity | for: usability
+  )
+  → validate•content(
+    accuracy: information_matches_codebase | for: trustworthiness,
+    completeness: all_features_documented | no: undocumented_functionality,
+    clarity: information_presented_clearly | for: comprehension
+  )
+  → validate•formatting(
+    markdown_correctness: verify_markdown_syntax | ref: kb•readme•standards.formatting_guide,
+    visual_structure: check_headings_lists_code_blocks | for: readability,
+    image_quality: ensure_images_are_clear_and_relevant | for: visual_aid
+  )
+  → check•links(
+    internal_links: verify_section_links_work | for: navigation,
+    external_links: check_external_resource_links | for: reference_validity,
+    relative_paths: ensure_repository_links_are_relative | for: portability
+  )
+)
+Σ readme•validation•process
+
+↹ LLM•readme•analyzer [p=1] {
+  ⊕ roles {
+    project_assessor: analyze_project_characteristics | focus: documentation_needs,
+    structure_advisor: recommend_readme_organization | focus: logical_hierarchy,
+    gap_detector: identify_documentation_gaps | focus: completeness
+  }
+  
+  ⊕ inputs {
+    project_files: codebase_to_analyze | for: feature_extraction,
+    existing_readme: current_readme_if_any | for: gap_analysis,
+    project_type: classification_of_project | ref: kb•readme•standards.project_types
+  }
+  
+  ⊕ outputs {
+    structure_recommendation: suggested_readme_structure | with: section_hierarchy,
+    content_gaps: identified_missing_documentation | with: importance_level,
+    template_suggestion: recommended_template | from: kb•readme•standards.project_types
+  }
+}
+Σ llm•readme•analysis
+
+↹ LLM•readme•generator [p=1] {
+  ⊕ roles {
+    content_creator: generate_readme_content | focus: clarity_and_completeness,
+    formatter: apply_proper_markdown_formatting | focus: readability,
+    example_writer: create_code_examples | focus: practical_usage
+  }
+  
+  ⊕ inputs {
+    project_analysis: project_characteristics | from: Ω•analyze•project,
+    documentation_needs: required_documentation_elements | from: LLM•readme•analyzer,
+    style_preferences: formatting_guidelines | ref: kb•readme•standards.formatting_guide
+  }
+  
+  ⊕ outputs {
+    readme_content: complete_readme_markdown | with: all_required_sections,
+    supplementary_docs: additional_documentation_if_needed | for: complex_features,
+    badge_suggestions: recommended_status_badges | ref: kb•readme•standards.badge_services
+  }
+  
+  ⊕ constraints {
+    follow_structure: adhere_to_recommended_structure | ref: Ω•create•readme,
+    avoid_redundancy: no_duplication_of_information | principle: DRY,
+    practical_focus: emphasize_practical_usage | over: theoretical_description
+  }
+}
+Σ llm•readme•generation
+
+↹ constraints•critical [p=2] {
+  ⊕ readme•constraints [
+    no_sensitive_info: "NEVER include API keys, credentials, or sensitive information" | priority: highest,
+    accuracy_required: "ALWAYS ensure installation and usage instructions are accurate and tested" | priority: high,
+    versioning_required: "ALWAYS include version information for dependencies" | for: reproducibility,
+    screenshots_constraints: "USE screenshots sparingly and optimize for size" | max: 500KB per image,
+    example_correctness: "VERIFY all code examples are correct and functional" | for: user_trust,
+    badges_limit: "LIMIT status badges to essential ones only" | max: 5-7 badges,
+    update_requirement: "UPDATE README whenever significant changes are made to the project" | for: documentation_freshness
+  ]
+}
+Σ critical•constraints
+
+↹ sections•required [p=2] {
+  ⊕ core•sections [
+    project_title: include_clear_descriptive_title | priority: highest,
+    introduction: provide_concise_problem_solution_description | max: 3-5 sentences,
+    installation: document_setup_instructions | with: prerequisites,
+    usage: provide_basic_usage_examples | min: 1 example,
+    features: list_key_capabilities | format: bullet_points,
+    license: specify_project_license | format: badge_and_text
+  ]
+  
+  ⊕ conditional•sections [
+    api_docs: include_for_libraries_and_apis | format: method_signatures_with_examples,
+    configuration: include_if_configurable_options_exist | format: table_or_list,
+    contributing: include_for_open_source_projects | with: contribution_guidelines,
+    deployment: include_for_applications_requiring_deployment | with: step_by_step_instructions,
+    changelog: include_for_established_projects | format: version_history
+  ]
+}
+Σ structure•requirements
+
+Σ readme•standards ⊕ documentation•quality ⊕ project•accessibility ⊕ user•experience 
