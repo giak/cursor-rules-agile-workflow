@@ -1,0 +1,243 @@
+---
+name: Standards pour les CHANGELOG
+description: "ENFORCE standardized changelog format and maintenance practices to ensure clear communication of project evolution"
+categories: [documentation, changelog, versioning, semantic-versioning]
+globs: ["CHANGELOG.md"]
+alwaysApply: false
+rule_version: 1.0.0
+---
+
+# Changelog Standards
+
+↹ kb•changelog•standards [p=1] {
+  # Knowledge base paths
+  ⊕ core_kb: ".cursor/kb/core/",
+  ⊕ changelog_kb: ".cursor/kb/1002-changelog-standards/",
+  
+  # Standards and guidelines
+  ⊕ structure_guide: changelog_kb + "guidelines/structure_guide.md",
+  ⊕ versioning_guide: changelog_kb + "guidelines/versioning_guide.md",
+  ⊕ content_guide: changelog_kb + "guidelines/content_guide.md",
+  ⊕ visual_guide: changelog_kb + "guidelines/visual_guide.md",
+  ⊕ maintenance_guide: changelog_kb + "guidelines/maintenance_guide.md",
+  
+  # Examples
+  ⊕ examples: {
+    good: changelog_kb + "examples/good_examples.md",
+    bad: changelog_kb + "examples/bad_examples.md"
+  },
+  
+  # Templates
+  ⊕ templates: changelog_kb + "templates/",
+  ⊕ changelog_templates: {
+    basic: templates + "basic_changelog.md",
+    detailed: templates + "detailed_changelog.md",
+    library: templates + "library_changelog.md",
+    application: templates + "application_changelog.md"
+  },
+  
+  # External references
+  ⊕ keep_a_changelog: "https://keepachangelog.com/",
+  ⊕ semver: "https://semver.org/",
+  ⊕ semver_guide: changelog_kb + "references/semantic_versioning.md",
+  ⊕ emoji_guide: changelog_kb + "references/emoji_reference.md"
+}
+Σ knowledge•references
+
+↹ principles•changelog [p=1] {
+  ⊕ primary•goals [
+    clarity: communicate_changes_clearly | priority: highest,
+    chronology: maintain_reverse_chronological_order | priority: high,
+    completeness: document_all_significant_changes | priority: high,
+    consistency: follow_established_format | priority: medium
+  ]
+  
+  ⊕ design•principles {
+    human_readable: write_for_humans_not_machines | not: technical_jargon_only,
+    structured_content: group_by_change_type | principle: categorical_organization,
+    version_focus: emphasize_version_changes | with: semantic_versioning,
+    contributor_recognition: credit_contributors | for: fostering_community,
+    traceable_history: link_between_versions | for: easy_comparison
+  }
+}
+Σ changelog•principles
+
+↹ Ω•analyze•project•changes [p=1] -> (
+  categorize•changes(
+    scan_commits: identify_changes_since_last_version | for: completeness,
+    classify_types: sort_into_added_changed_fixed_etc | ref: kb•changelog•standards.content_guide,
+    evaluate_impact: determine_semver_change_type | ref: kb•changelog•standards.semver_guide
+  )
+  → identify•affected•components(
+    map_changes_to_modules: link_changes_to_specific_parts | for: context,
+    detect_breaking_changes: flag_api_or_behavior_changes | for: semver_major,
+    track_deprecations: note_deprecated_features | for: future_planning
+  )
+  → determine•version•increment(
+    apply_semver_rules: decide_version_number_change | ref: kb•changelog•standards.versioning_guide,
+    check_prereleases: handle_alpha_beta_rc_versions | if: applicable,
+    validate_sequence: ensure_logical_version_progression | for: consistency
+  )
+)
+Σ change•analysis•process
+
+↹ Ω•create•changelog [p=1] -> [
+  ⊕ setup•structure {
+    create_frontmatter: add_metadata_header | ref: kb•changelog•standards.structure_guide,
+    add_introduction: explain_changelog_purpose | with: standard_references,
+    setup_unreleased: create_unreleased_section | for: ongoing_development,
+    prepare_version_sections: create_version_headings | with: dates
+  }
+  
+  ⊕ document•changes {
+    organize_by_category: group_changes_by_type | ref: kb•changelog•standards.content_guide,
+    write_entries: describe_each_change_clearly | principle: specific_and_concise,
+    reference_issues: link_to_tickets_and_prs | for: traceability,
+    credit_contributors: mention_authors_of_changes | for: recognition
+  }
+  
+  ⊕ enhance•readability {
+    add_visual_elements: include_emojis_and_formatting | ref: kb•changelog•standards.visual_guide,
+    include_technical_details: add_code_examples_for_context | when: beneficial,
+    create_diagrams: visualize_complex_changes | for: clarity,
+    format_consistently: ensure_uniform_styling | throughout: document
+  }
+  
+  ⊕ finalize•documentation {
+    add_version_links: link_to_comparison_views | ref: kb•changelog•standards.structure_guide,
+    validate_content: ensure_all_changes_documented | for: completeness,
+    proofread: check_grammar_and_clarity | for: quality,
+    update_dates: ensure_accurate_release_dates | format: ISO8601
+  }
+]
+Σ changelog•creation•process
+
+↹ Ω•update•changelog [p=1] -> (
+  prepare•for•update(
+    identify_new_changes: collect_changes_since_last_entry | from: commits_and_prs,
+    move_from_unreleased: transfer_completed_features | to: new_version_section,
+    determine_version_number: apply_semver_rules | ref: Ω•analyze•project•changes
+  )
+  → create•new•version(
+    add_version_header: insert_new_version_with_date | at: top_of_versions,
+    setup_categories: create_change_type_sections | ref: kb•changelog•standards.structure_guide,
+    populate_entries: add_all_identified_changes | with: clear_descriptions
+  )
+  → enhance•and•validate(
+    review_formatting: ensure_consistent_style | across: entire_document,
+    update_comparison_links: refresh_version_comparison_urls | at: document_bottom,
+    verify_completeness: check_all_significant_changes_included | for: accuracy
+  )
+)
+Σ changelog•update•process
+
+↹ Ω.validate [p=1] -> (
+  check•structure(
+    has_frontmatter: verify_metadata_present | ref: kb•changelog•standards.structure_guide,
+    has_introduction: check_for_standard_references | for: context,
+    has_categories: ensure_change_types_organized | for: readability,
+    has_version_links: verify_comparison_links_present | for: traceability
+  )
+  → validate•content(
+    clarity: ensure_descriptions_are_clear | principle: human_readable,
+    specificity: each_entry_describes_what_and_why | not: vague_statements,
+    consistency: use_of_present_tense_and_active_voice | throughout: document,
+    completeness: all_significant_changes_documented | for: transparency
+  )
+  → verify•versioning(
+    semver_compliance: version_numbers_follow_semver | ref: kb•changelog•standards.versioning_guide,
+    date_format: dates_use_iso8601 | format: YYYY-MM-DD,
+    chronological_order: newest_versions_first | for: usability
+  )
+  → check•enhancements(
+    visual_elements: appropriate_use_of_emojis_and_formatting | for: readability,
+    technical_details: implementation_examples_when_relevant | for: context,
+    contributor_recognition: contributors_credited_appropriately | for: community
+  )
+)
+Σ changelog•validation•process
+
+↹ LLM•changelog•analyzer [p=1] {
+  ⊕ roles {
+    change_classifier: categorize_changes_by_type | focus: accurate_classification,
+    semver_advisor: determine_appropriate_version_bump | focus: semantic_versioning_rules,
+    structure_evaluator: assess_changelog_organization | focus: standard_compliance
+  }
+  
+  ⊕ inputs {
+    current_changelog: existing_changelog_if_any | for: structure_analysis,
+    recent_commits: changes_since_last_version | for: change_identification,
+    project_context: type_and_scope_of_project | for: relevance_assessment
+  }
+  
+  ⊕ outputs {
+    change_categorization: changes_grouped_by_type | with: descriptions,
+    version_recommendation: suggested_version_number | with: justification,
+    structure_assessment: evaluation_of_current_format | with: improvement_suggestions
+  }
+}
+Σ llm•changelog•analysis
+
+↹ LLM•changelog•generator [p=1] {
+  ⊕ roles {
+    content_creator: generate_changelog_entries | focus: clarity_and_specificity,
+    formatter: apply_standard_formatting | focus: consistency_and_readability,
+    technical_writer: explain_complex_changes | focus: accessibility_to_users
+  }
+  
+  ⊕ inputs {
+    change_details: information_about_changes | from: commits_issues_prs,
+    project_type: nature_of_the_project | for: appropriate_detail_level,
+    audience: primary_readers_of_changelog | for: terminology_adjustment
+  }
+  
+  ⊕ outputs {
+    changelog_entries: well_formatted_change_descriptions | with: categorization,
+    version_section: complete_version_entry | with: date_and_links,
+    visual_enhancements: suggested_diagrams_or_examples | for: complex_changes
+  }
+  
+  ⊕ constraints {
+    maintain_human_focus: prioritize_clarity_over_technical_detail | for: general_audience,
+    be_specific: avoid_vague_descriptions | priority: high,
+    preserve_history: never_alter_previous_versions | only: add_or_update_current
+  }
+}
+Σ llm•changelog•generation
+
+↹ constraints•critical [p=2] {
+  ⊕ changelog•constraints [
+    no_duplicates: "NEVER include the same change in multiple categories" | priority: high,
+    accurate_versioning: "ALWAYS follow semantic versioning principles" | priority: highest,
+    complete_entries: "ENSURE each entry clearly describes what changed and why" | priority: high,
+    chronological_integrity: "MAINTAIN reverse chronological order of versions" | priority: medium,
+    historical_preservation: "NEVER modify entries for already-released versions" | priority: highest,
+    format_consistency: "USE consistent formatting throughout the document" | priority: medium,
+    date_precision: "ALWAYS include the release date with each version" | format: YYYY-MM-DD
+  ]
+}
+Σ critical•constraints
+
+↹ sections•required [p=2] {
+  ⊕ core•sections [
+    frontmatter: include_metadata_at_file_beginning | priority: medium,
+    introduction: explain_purpose_and_references | priority: medium,
+    unreleased: track_upcoming_changes | priority: high,
+    version_entries: document_each_release | priority: highest,
+    change_categories: organize_by_change_type | priority: high,
+    comparison_links: link_between_versions | priority: medium
+  ]
+  
+  ⊕ change•categories [
+    added: new_features_or_capabilities | emoji: 🎉,
+    changed: modifications_to_existing_functionality | emoji: 🔄,
+    deprecated: features_marked_for_removal | emoji: ⚠️,
+    removed: eliminated_features_or_capabilities | emoji: 🗑️,
+    fixed: bug_fixes | emoji: 🐛,
+    security: vulnerability_patches | emoji: 🔒,
+    technical: implementation_details | emoji: 🔧
+  ]
+}
+Σ structure•requirements
+
+Σ changelog•standards ⊕ project•evolution ⊕ user•communication ⊕ version•tracking 
