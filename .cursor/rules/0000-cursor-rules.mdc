@@ -4,7 +4,7 @@ description: "ALWAYS USE when CREATING or MODIFYING a RULE to ENSURE consistency
 categories: [meta, foundation, cognitive, rule-creation]
 glob: ".cursor/rules/*.mdc"
 always_apply: true
-rule_version: 2.1
+rule_version: 2.2
 ---
 
 # Méta-Règle pour la Création de Règles Cursor
@@ -14,15 +14,22 @@ rule_version: 2.1
   ⊕ core_kb: ".cursor/kb/core/",
   ⊕ rule_kb: ".cursor/kb/0000-cursor-rules/",
   
-  # KB central
+  # KB central et guides
   ⊕ semantic_principles: core_kb + "semantic-principles.yaml",
   ⊕ rule_structure: core_kb + "rule-structure.yaml",
   ⊕ rule_examples: rule_kb + "examples/",
-  
-  # Conventions et références
   ⊕ naming_conventions: "@1000-meta-rules-naming-convention.md",
   ⊕ structure_guide: rule_kb + "rule-structure-guide.md",
-  ⊕ validation_criteria: rule_kb + "validation-criteria.yaml"
+  ⊕ validation_criteria: rule_kb + "validation-criteria.yaml",
+  
+  # Documentation et modules
+  ⊕ documentation_templates: rule_kb + "documentation/templates/",
+  ⊕ documentation_path: ".cursor/documentation/",
+  
+  # Modules factorisés
+  ⊕ llm_roles: rule_kb + "modules/llm-roles.yaml",
+  ⊕ documentation_structure: rule_kb + "modules/documentation-structure.yaml",
+  ⊕ rule_structure_details: rule_kb + "modules/rule-structure-details.yaml"
 }
 Σ knowledge•references
 
@@ -40,7 +47,7 @@ rule_version: 2.1
     guidance: provide_clear_structure_for_llm | not: vague_instructions
   }
 }
-Σ core•principles
+Σ core•principles | ref: kb•cursor•rules.semantic_principles
 
 ↹ Ω•create•rule [p=1] -> [
   ⊕ analyze•need {
@@ -56,10 +63,36 @@ rule_version: 2.1
   ⊕ implement•rule {
     formulate•core | { description, requirements, constraints },
     structure•format | { apply_template, implement_semantic_compression },
-    validate•completeness | { run: Ω.validate }
+    validate•completeness | { run: Ω.validate },
+    generate•documentation | { run: Ω•create•documentation }
   }
 ]
 Σ rule•creation•workflow | ref: kb•cursor•rules.structure_guide
+
+↹ Ω•create•documentation [p=1] -> (
+  extract•rule•metadata(
+    rule_path: string | source: current_rule,
+    output_path: string | target: kb•cursor•rules.documentation_path
+  )
+  → analyze•rule•structure(
+    extract_sections: [kb_references, principles, cognitive_operations, llm_delegation, constraints, patterns],
+    identify_key_concepts: true | for: documentation_clarity
+  )
+  → generate•documentation•structure(
+    template: "rule_documentation" | ref: kb•cursor•rules.documentation_templates,
+    include_diagrams: true | for: visual_clarity,
+    include_sections: [
+      "summary", "fundamental_concepts", "principles", "processes", 
+      "validation", "architecture", "delegates", "examples", "checklist"
+    ]
+  )
+  → create•documentation•file(
+    file_name: "{rule_id}-documentation.md" | from: rule_metadata,
+    content: generated_documentation,
+    location: kb•cursor•rules.documentation_path
+  )
+)
+Σ documentation•generation•process | ref: kb•cursor•rules.documentation_structure
 
 ↹ Ω.validate [p=1] -> (
   check•structure(
@@ -92,14 +125,17 @@ rule_version: 2.1
     cognitive_model: proposed_reasoning_framework | with: decision_points,
     llm_delegation: recommended_llm_integration | with: tasks_and_boundaries
   }
-  
-  ⊕ quality•criteria {
-    kb_quality: knowledge_is_properly_externalized | not: duplicated_inline,
-    cognitive_clarity: reasoning_process_is_clear | emphasizes: how_to_think,
-    llm_actionability: delegation_instructions_are_specific | not: vague
+}
+Σ llm•assistance | ref: kb•cursor•rules.llm_roles
+
+↹ LLM•documentation•generator [p=1] {
+  ⊕ roles {
+    content_analyzer: extract_key_concepts_from_rule | focus: complete_understanding,
+    structure_designer: create_logical_documentation_structure | focus: usability_and_clarity,
+    diagram_creator: generate_explanatory_diagrams | focus: visual_representation
   }
 }
-Σ llm•assistance
+Σ documentation•generation | ref: kb•cursor•rules.llm_roles
 
 ↹ rule•structure•guide [p=2] {
   ⊕ required•sections [
@@ -107,13 +143,7 @@ rule_version: 2.1
     cognitive•operations: "↹ Ω•{operation} [p={priority}] -> [ ... ]" | min: 1, 
     llm•delegation: "↹ LLM•{role} [p={priority}] { ... }" | min: 1
   ]
-  
-  ⊕ common•mistakes [
-    knowledge_inline: avoid_embedding_domain_knowledge_directly | instead: reference_kb,
-    missing_cognitive: failing_to_define_how_to_think | instead: provide_reasoning_process,
-    vague_llm_tasks: unclear_delegation_to_LLM | instead: specify_tasks_and_boundaries
-  ]
 }
-Σ structural•guidelines | ref: kb•cursor•rules.structure_guide
+Σ structural•guidelines | ref: kb•cursor•rules.rule_structure_details
 
-Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration 
+Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration ⊕ documentation•generation 

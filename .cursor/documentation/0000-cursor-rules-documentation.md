@@ -2,7 +2,7 @@
 
 ## 📋 Résumé
 
-La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (2.1) met l'accent sur la séparation des connaissances, des processus cognitifs et des rôles du LLM.
+La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (2.2) met l'accent sur la modularité et la factorisation des connaissances tout en maintenant la séparation claire entre connaissances, processus cognitifs et rôles du LLM.
 
 | Aspect               | Description                                                                             |
 | -------------------- | --------------------------------------------------------------------------------------- |
@@ -10,7 +10,7 @@ La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de 
 | **Applicabilité**    | S'applique à tous les fichiers `.cursor/rules/*.mdc`                                    |
 | **Principe central** | Compression sémantique + référencement externe + workflow cognitif structuré            |
 | **Format**           | Markdown avec compression sémantique                                                    |
-| **Version actuelle** | 2.1 (factorisée et optimisée pour une meilleure séparation des préoccupations)          |
+| **Version actuelle** | 2.2 (factorisation améliorée avec modules externalisés)                                 |
 | **Prérequis**        | Comprendre les principes de compression sémantique et la structure des connaissances KB |
 
 ## 🧠 Concepts Fondamentaux
@@ -33,7 +33,7 @@ La compression sémantique est un système de notation qui permet de maximiser l
 
 ### Les Trois Piliers d'une Règle Cursor
 
-La version 2.1 de la méta-règle met en évidence trois piliers fondamentaux pour toute règle Cursor:
+La version 2.2 de la méta-règle maintient les trois piliers fondamentaux pour toute règle Cursor, mais avec une approche plus modulaire:
 
 ```mermaid
 flowchart TD
@@ -75,7 +75,7 @@ flowchart TD
 
 ### Architecture de la Base de Connaissances (KB)
 
-La règle utilise une architecture de connaissances hiérarchisée qui sépare les éléments réutilisables (core) des éléments spécifiques à chaque règle.
+La règle 2.2 utilise une architecture de connaissances encore plus modulaire avec des modules spécifiques pour différents aspects du système:
 
 ```mermaid
 flowchart TD
@@ -92,19 +92,26 @@ flowchart TD
     EX --- VE>valid-example.md]
     EX --- IE>bad-example.md]
 
+    R0 --- MOD([modules/])
+    MOD --- LR>llm-roles.yaml]
+    MOD --- DS>documentation-structure.yaml]
+    MOD --- RSD>rule-structure-details.yaml]
+
     %% Styles améliorés
     classDef coredir fill:#f2e6d9,stroke:#b58863,stroke-width:2px,color:#333
     classDef ruledir fill:#d9e6f2,stroke:#6382b5,stroke-width:2px,color:#333
     classDef file fill:#f9f9f9,stroke:#333,stroke-width:1px,color:#555
+    classDef module fill:#e6f7ff,stroke:#4a90e2,stroke-width:1px,color:#555
 
-    class CORE,EX coredir
+    class CORE,EX,MOD coredir
     class R0 ruledir
     class SP,DP,SN,GP,RS,RSG,VC,VE,IE file
+    class LR,DS,RSD module
 ```
 
 ## 🔄 Workflow de Création des Règles (Ω•create•rule)
 
-Le workflow `Ω•create•rule` définit un processus systématique pour créer une règle Cursor efficace et conforme. La version 2.1 simplifie ce processus en trois phases principales:
+Le workflow `Ω•create•rule` définit un processus systématique pour créer une règle Cursor efficace et conforme. La version 2.2 maintient ce processus en trois phases principales, avec une emphase sur l'externalisation:
 
 ```mermaid
 flowchart TB
@@ -125,16 +132,19 @@ flowchart TB
     C -.-> C1["formulate•core"]
     C -.-> C2["structure•format"]
     C -.-> C3["validate•completeness"]
+    C -.-> C4["generate•documentation"]
 
     %% Styles améliorés
     classDef phase fill:#d6e8d5,stroke:#6c8ea0,stroke-width:2px,color:#333,rx:5
     classDef step fill:#f9f9f9,stroke:none,stroke-width:1px,color:#666
+    classDef newstep fill:#f9f9f9,stroke:#6c8ea0,stroke-width:1px,color:#333
 
     class A,B,C phase
     class A1,A2,A3,A4,B1,B2,B3,C1,C2,C3 step
+    class C4 newstep
 ```
 
-### Détail du Workflow Révisé
+### Détail du Workflow Amélioré
 
 1. **analyze•need**: Identifier le contexte du problème et l'intention
 
@@ -153,10 +163,11 @@ flowchart TB
    - Formuler le contenu central (description, exigences, contraintes)
    - Structurer et formater selon les standards
    - Valider la complétude avec `Ω.validate`
+   - **Générer la documentation** automatiquement avec `Ω•create•documentation` (nouveau dans v2.2)
 
 ## 🔍 Protocole de Validation (Ω.validate)
 
-Le protocole de validation a été simplifié dans la version 2.1 pour se concentrer sur les trois piliers fondamentaux:
+Le protocole de validation de la version 2.2 maintient la même structure simplifiée que la version 2.1, en référençant des critères externalisés:
 
 ```mermaid
 flowchart LR
@@ -172,25 +183,50 @@ flowchart LR
     style CC fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
 ```
 
-### Étapes de validation simplifiées
+### Étapes de validation externalisées
 
 1. **check•structure**: Vérifier la présence des trois piliers (kb•references, Ω•operators, LLM•delegation)
 2. **validate•cognitive•focus**: S'assurer que les processus cognitifs sont bien définis
 3. **validate•kb•externalization**: Vérifier que les connaissances sont externalisées
 4. **validate•llm•guidance**: Valider la clarté des instructions pour le LLM
-5. **check•completeness**: Vérifier la complétude selon les critères du fichier `.cursor/kb/0000-cursor-rules/validation-criteria.yaml`
+5. **check•completeness**: Vérifier la complétude selon les critères du fichier externalisé `.cursor/kb/0000-cursor-rules/validation-criteria.yaml`
 
-## 🤖 Stratégie de Délégation au LLM
+## 🔄 Processus de Génération de Documentation (Ω•create•documentation)
 
-La version 2.1 clarifie les rôles spécifiques du LLM dans le processus de création de règles:
+La version 2.2 introduit un processus formalisé pour la génération automatique de documentation:
+
+```mermaid
+flowchart LR
+    ERM["extract rule metadata"] --> ARS["analyze rule structure"]
+    ARS --> GDS["generate documentation structure"]
+    GDS --> CDF["create documentation file"]
+
+    style ERM fill:#d6e8d5,stroke:#6c8ea0,stroke-width:1px
+    style ARS fill:#d6e8d5,stroke:#6c8ea0,stroke-width:1px
+    style GDS fill:#d6e8d5,stroke:#6c8ea0,stroke-width:1px
+    style CDF fill:#d6e8d5,stroke:#6c8ea0,stroke-width:1px
+```
+
+### Étapes du processus de documentation
+
+1. **extract•rule•metadata**: Extraire les métadonnées de la règle source
+2. **analyze•rule•structure**: Analyser les sections de la règle et identifier les concepts clés
+3. **generate•documentation•structure**: Générer la structure de documentation basée sur un template
+4. **create•documentation•file**: Créer le fichier de documentation dans l'emplacement approprié
+
+Ce processus permet de maintenir une documentation cohérente et à jour avec la règle elle-même.
+
+## 🤖 Stratégie de Délégation au LLM (v2.2)
+
+La version 2.2 clarifie davantage les rôles du LLM en externalisant leurs détails dans des modules dédiés:
 
 ```mermaid
 flowchart TD
     %% Structure principale
-    LLM(["LLM•rule•creator (v2.1)"]) --> ROLES
+    LLM(["LLM•rule•creator (v2.2)"]) --> ROLES
     LLM --> INPUTS
     LLM --> OUTPUTS
-    LLM --> QUALITY
+    LLM --> EXT["Détails externalisés:<br>kb•cursor•rules.llm_roles"]
 
     %% Groupes avec des formes distinctives
     subgraph ROLES [Rôles du LLM]
@@ -214,146 +250,59 @@ flowchart TD
         LD{{llm_delegation}}
     end
 
-    subgraph QUALITY [Critères de qualité]
-        direction LR
-        KQ>"kb_quality"]
-        CC>"cognitive_clarity"]
-        LA>"llm_actionability"]
-    end
-
-    %% Annotations pour les rôles
-    KO -.- KO_Desc["structure des<br>connaissances"]
-    CD -.- CD_Desc["cadre de<br>raisonnement"]
-    LI -.- LI_Desc["structure de<br>délégation"]
-
     %% Styles améliorés
     classDef llm fill:#e3d2ff,stroke:#6a3daf,stroke-width:2px,color:#333,rx:5
     classDef group fill:#f9f9f9,stroke:#666,stroke-width:1px,color:#333
     classDef role fill:#d8e7ff,stroke:#3d6daf,stroke-width:1px,color:#333
     classDef input fill:#ffeed8,stroke:#af7d3d,stroke-width:1px,color:#333
     classDef output fill:#d8ffe7,stroke:#3daf6d,stroke-width:1px,color:#333
-    classDef quality fill:#ffe7d8,stroke:#af6d3d,stroke-width:1px,color:#333
-    classDef desc fill:none,stroke:none,color:#666,font-size:12px
+    classDef ext fill:#ffe7d8,stroke:#af6d3d,stroke-width:1px,color:#333,rx:5
 
     class LLM llm
-    class ROLES,INPUTS,OUTPUTS,QUALITY group
+    class ROLES,INPUTS,OUTPUTS group
     class KO,CD,LI role
     class RD,RP,TU input
     class KS,CM,LD output
-    class KQ,CC,LA quality
-    class KO_Desc,CD_Desc,LI_Desc desc
+    class EXT ext
 ```
 
-Cette structure plus claire garantit que:
+Cette structure avec référence externe garantit que:
 
-- Le LLM comprend ses responsabilités spécifiques
-- Les attentes en matière d'entrées et de sorties sont bien définies
-- Des critères de qualité clairs sont établis pour évaluer la contribution du LLM
+- La règle principale reste concise et focalisée sur l'essentiel
+- Les détails d'implémentation sont externalisés dans des modules spécialisés
+- Les mises à jour de l'un n'affectent pas nécessairement l'autre
 
-## 📋 Organisation Améliorée des Fichiers KB
+## 🧩 Modules Factorisés (Nouveauté v2.2)
 
-### Nouveaux Fichiers KB pour la Règle 0000
+La version 2.2 introduit trois nouveaux modules qui externalisent des aspects spécifiques de la règle:
 
-La factorisation de la version 2.1 a conduit à la création de nouveaux fichiers KB spécifiques:
+### 1. Module Rôles LLM (`llm-roles.yaml`)
 
-| Fichier                     | Contenu                                                   |
-| --------------------------- | --------------------------------------------------------- |
-| `rule-structure-guide.md`   | Guide détaillé sur la structure attendue des règles       |
-| `validation-criteria.yaml`  | Critères formels pour valider la conformité des règles    |
-| `examples/valid-example.md` | Exemple complet d'une règle correctement structurée       |
-| `examples/bad-example.md`   | Exemple de règle mal conçue avec anti-patterns identifiés |
+Ce module externalise les détails des rôles du LLM, incluant:
 
-## 🔎 Structure Révisée d'une Règle
+- Définition précise des rôles pour la création de règles
+- Définition des rôles pour la génération de documentation
+- Entrées, sorties et critères de qualité pour chaque rôle
 
-### Structure Recommandée
+### 2. Module Structure de Documentation (`documentation-structure.yaml`)
 
-```
----
-name: "Nom de la Règle"
-description: "VERB quand CONTEXT pour GOAL"
-categories: [catégorie1, catégorie2]
-glob: "pattern/pour/fichiers/**/*.{extension}"
-always_apply: true|false
-[options additionnelles]
----
+Ce module externalise tout ce qui concerne la structure de la documentation:
 
-# Titre de la Règle
+- Principes de documentation (complétude, cohérence, clarté, traçabilité)
+- Sections requises et recommandées avec leur ordre
+- Types de diagrammes à inclure
+- Éléments clés pour une documentation efficace
 
-↹ kb•domaine [p=priorité] { ... }
-Σ knowledge•references
+### 3. Module Détails de Structure de Règle (`rule-structure-details.yaml`)
 
-↹ principles•core [p=priorité] { ... }
-Σ nom•du•groupe•de•principes
+Ce module externalise les détails concernant la structure des règles:
 
-↹ Ω•operation [p=priorité] -> [ ... ]
-Σ nom•du•processus•cognitif
+- Syntaxe et exemple pour chaque section requise
+- Erreurs courantes à éviter
+- Directives de formatage et placement des symboles
+- Critères de validation des règles
 
-↹ LLM•role [p=priorité] { ... }
-Σ nom•du•modèle•de•délégation
-
-[sections optionnelles additionnelles]
-
-Σ mot•clé•1 ⊕ mot•clé•2 ⊕ mot•clé•3
-```
-
-### Sections Obligatoires
-
-1. **Références KB** (`kb•`): Pointe vers des fichiers KB externes au lieu de dupliquer l'information
-
-2. **Opérateurs Cognitifs** (`Ω•`): Définit explicitement les processus de raisonnement, pas juste des informations
-
-3. **Délégation LLM** (`LLM•`): Structure précisément comment le LLM doit contribuer, avec entrées, sorties et contraintes
-
-## ⚠️ Erreurs Courantes à Éviter
-
-La factorisation de la méta-règle met en évidence les erreurs courantes à éviter:
-
-1. **Mélange de connaissance et logique cognitive**
-
-   - ❌ Incorporer des données, exemples ou référentiels directement dans la règle
-   - ✅ Pointer vers des fichiers KB externes et se concentrer sur le processus de raisonnement
-
-2. **Absence de processus cognitif explicite**
-
-   - ❌ Simplement lister les faits ou les directives sans expliquer le raisonnement
-   - ✅ Définir des opérateurs cognitifs qui montrent comment penser au problème
-
-3. **Délégation LLM vague**
-   - ❌ Instructions générales sans structure claire ou critères de validation
-   - ✅ Définir précisément les tâches, entrées, sorties et contraintes pour le LLM
-
-## 🛠️ Guide Pratique d'Application de la Version 2.1
-
-### Création d'une Nouvelle Règle
-
-1. **Analysez le besoin et la portée**
-
-   - Identifiez clairement le problème à résoudre
-   - Définissez l'objectif, la portée et la catégorie
-
-2. **Structurez les connaissances et le raisonnement**
-
-   - Créez une structure de répertoires KB appropriée pour externaliser les connaissances
-   - Identifiez les processus de raisonnement nécessaires
-   - Définissez les points d'intégration du LLM
-
-3. **Implémentez et validez la règle**
-   - Formulez le contenu en suivant la structure recommandée
-   - Utilisez la compression sémantique de manière cohérente
-   - Validez avec le protocole `Ω.validate`
-
-### Exemple de Convention de Nommage KB
-
-```
-.cursor/kb/{ID-règle}/{type}/{fichier}
-
-Exemples:
-.cursor/kb/2100-vue3-composables/patterns/naming.yaml
-.cursor/kb/2100-vue3-composables/guidelines/architecture_layers.md
-.cursor/kb/2100-vue3-composables/examples/good_examples.md
-```
-
-## 🌲 Arborescence des Fichiers de la Méta-Règle
+## 🌲 Arborescence des Fichiers de la Méta-Règle (v2.2)
 
 ### Représentation Graphique
 
@@ -361,7 +310,7 @@ Exemples:
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f0f8ff', 'fontSize': '16px'}}}%%
 flowchart TD
     %% Titre du diagramme
-    title[<b>Arborescence des Fichiers de la Méta-Règle</b>]
+    title[<b>Arborescence des Fichiers de la Méta-Règle v2.2</b>]
     style title fill:none,stroke:none
 
     %% Organisation principale
@@ -396,6 +345,13 @@ flowchart TD
             EX --- IE["bad-example.md<br><i>Anti-patterns</i>"]
         end
         KB0000 --- EX
+
+        subgraph MODULES ["Modules Factorisés"]
+            MOD["modules/"] --- LR["llm-roles.yaml<br><i>Rôles des LLM</i>"]
+            MOD --- DS["documentation-structure.yaml<br><i>Structure de documentation</i>"]
+            MOD --- RSD["rule-structure-details.yaml<br><i>Détails de structure</i>"]
+        end
+        KB0000 --- MOD
     end
     KB --- KB_SPECIFIC
 
@@ -408,13 +364,15 @@ flowchart TD
     %% Légende
     classDef directory fill:#f9d77e,stroke:#d9b066,stroke-width:2px,border-radius:8px
     classDef file fill:#f9f9f9,stroke:#999,stroke-width:1px,border-radius:4px
+    classDef module fill:#e6f7ff,stroke:#4a90e2,stroke-width:1px,border-radius:4px
     classDef section fill:#e6f7ff,stroke:#67c8ff,stroke-width:1px,stroke-dasharray:5 5,border-radius:10px
     classDef label fill:none,stroke:none
 
-    class ROOT,RULES,KB,DOC,CORE,KB0000,EX directory
+    class ROOT,RULES,KB,DOC,CORE,KB0000,EX,MOD directory
     class METARULE,SP,DP,SN,GP,RS,RSG,VC,VE,IE,METADOC file
+    class LR,DS,RSD module
     class STRUCTURE label
-    class RULES_GROUP,KB_CORE,KB_SPECIFIC,DOC_GROUP,EXAMPLES section
+    class RULES_GROUP,KB_CORE,KB_SPECIFIC,DOC_GROUP,EXAMPLES,MODULES section
 
     %% Annotations sur les relations
     linkStyle 0 stroke:#999,stroke-width:1px,stroke-dasharray:3 3
@@ -423,107 +381,100 @@ flowchart TD
 
 ### Représentation Textuelle Détaillée
 
-L'organisation des fichiers de la méta-règle suit une structure hiérarchique claire qui reflète la séparation des préoccupations. Chaque fichier a une responsabilité spécifique dans l'écosystème de la méta-règle :
+L'organisation des fichiers de la méta-règle v2.2 suit une structure hiérarchique améliorée avec externalisation des modules :
 
 ```
 .cursor/                                     # Répertoire racine contenant tous les éléments Cursor
 │
 ├── rules/                                   # Contient toutes les règles Cursor
 │   │
-│   └── 0000-cursor-rules.mdc                # LA MÉTA-RÈGLE PRINCIPALE
+│   └── 0000-cursor-rules.mdc                # LA MÉTA-RÈGLE PRINCIPALE (v2.2)
 │       • Définit la structure des règles
 │       • Établit les processus cognitifs
 │       • Spécifie la délégation au LLM
 │       • Pointe vers les fichiers KB externes
+│       • Utilise le principe de factorisation
 │
 ├── kb/                                      # BASE DE CONNAISSANCES
 │   │
 │   ├── core/                                # KB COMMUNE (réutilisable par plusieurs règles)
 │   │   │
 │   │   ├── semantic-principles.yaml         # Principes fondamentaux de compression sémantique
-│   │   │   • Symboles et leur signification
-│   │   │   • Règles d'utilisation
-│   │   │   • Exemples de notation
-│   │   │
 │   │   ├── design-patterns.yaml             # Modèles de conception pour les règles
-│   │   │   • Patterns architecturaux
-│   │   │   • Anti-patterns à éviter
-│   │   │   • Contexts d'utilisation
-│   │   │
 │   │   ├── semantic-notation.yaml           # Notation formelle pour la compression sémantique
-│   │   │   • Syntaxe détaillée
-│   │   │   • Combinaisons de symboles
-│   │   │   • Règles de formatage
-│   │   │
 │   │   ├── glob-patterns.yaml               # Modèles pour les fichiers ciblés par les règles
-│   │   │   • Syntaxe des globs
-│   │   │   • Patterns courants
-│   │   │   • Exemples pour différents types de fichiers
-│   │   │
 │   │   └── rule-structure.yaml              # Structure formelle des règles
-│   │       • Sections requises et optionnelles
-│   │       • Format du frontmatter
-│   │       • Organisation interne
 │   │
 │   └── 0000-cursor-rules/                   # KB SPÉCIFIQUE À LA MÉTA-RÈGLE
 │       │
 │       ├── rule-structure-guide.md          # Guide détaillé et complet sur la structure des règles
-│       │   • Instructions étape par étape
-│       │   • Bonnes pratiques
-│       │   • Explications détaillées de chaque section
-│       │
 │       ├── validation-criteria.yaml         # Critères formels pour valider la conformité des règles
-│       │   • Points de contrôle spécifiques
-│       │   • Métriques de qualité
-│       │   • Erreurs courantes à vérifier
 │       │
-│       └── examples/                         # EXEMPLES DE RÈGLES
+│       ├── examples/                        # EXEMPLES DE RÈGLES
+│       │   ├── valid-example.md             # Exemple de règle correctement structurée
+│       │   └── bad-example.md               # Contre-exemple avec anti-patterns
+│       │
+│       └── modules/                         # MODULES FACTORISÉS (NOUVEAUTÉ v2.2)
 │           │
-│           ├── valid-example.md              # Exemple de règle correctement structurée
-│           │   • Démonstration des bonnes pratiques
-│           │   • Annotations explicatives
-│           │   • Structure idéale à suivre
+│           ├── llm-roles.yaml               # Définition détaillée des rôles LLM
+│           │   • Rôles pour la création de règles
+│           │   • Rôles pour la génération de documentation
+│           │   • Entrées, sorties et critères de qualité
 │           │
-│           └── bad-example.md                # Contre-exemple avec anti-patterns
-│               • Erreurs courantes
-│               • Explications des problèmes
-│               • Suggestions d'amélioration
+│           ├── documentation-structure.yaml # Structure de la documentation
+│           │   • Principes de documentation
+│           │   • Sections requises et recommandées
+│           │   • Types de diagrammes à inclure
+│           │
+│           └── rule-structure-details.yaml  # Détails de la structure des règles
+│               • Syntaxe de chaque section
+│               • Erreurs courantes à éviter
+│               • Directives de formatage
 │
 └── documentation/                           # DOCUMENTATION UTILISATEUR
     │
     └── 0000-cursor-rules-documentation.md   # Documentation complète de la méta-règle (ce document)
-        • Présentation des concepts
-        • Explications des processus
+        • Mise à jour pour la version 2.2
+        • Explication des modules factorisés
         • Guide d'utilisation
         • Représentations visuelles
 ```
 
-### Relations entre les fichiers
+### Relations entre les composants
 
-- **Règle principale** (`.mdc`) : Contient les opérateurs cognitifs et les délégations LLM, et fait référence aux fichiers KB.
+- **Règle principale** (`.mdc`) : Version 2.2 plus concise, faisant référence aux modules externalisés
+- **Modules factorisés** (nouveauté v2.2) :
+  - `llm-roles.yaml` : Détails des rôles LLM
+  - `documentation-structure.yaml` : Structure de documentation
+  - `rule-structure-details.yaml` : Détails de structure des règles
 - **Fichiers KB** :
-  - Les fichiers `core/` établissent les fondements réutilisables par toutes les règles
-  - Les fichiers spécifiques à la règle `0000-cursor-rules/` fournissent des connaissances détaillées pour la méta-règle
-- **Documentation** : Synthétise et explique l'ensemble du système pour l'utilisateur final
+  - Organisation maintenue avec amélioration de la modularité
+- **Documentation** : Mise à jour pour refléter les changements de la v2.2
 
-Cette structure en trois couches (règle, KB, documentation) reflète directement les trois piliers fondamentaux de la méta-règle : séparation des connaissances, des processus cognitifs, et de la délégation LLM.
+Cette structure améliorée illustre le principe de factorisation et d'externalisation des connaissances, démontrant dans sa propre structure les principes qu'elle promeut.
 
-## ✅ Liste de Vérification Mise à Jour
+## ✅ Liste de Vérification v2.2
 
-Utilisez cette liste pour valider votre règle selon la version 2.1:
+Utilisez cette liste pour valider votre règle selon la version 2.2:
 
 - [ ] Contient les trois piliers: Références KB, Processus Cognitifs, Délégation LLM
 - [ ] Externalise correctement les connaissances dans des fichiers KB
+- [ ] Applique le principe de factorisation pour les détails d'implémentation
 - [ ] Définit clairement les processus de raisonnement (pas juste des informations)
-- [ ] Structure précisément la contribution du LLM
+- [ ] Structure précisément la contribution du LLM avec références aux modules
 - [ ] Utilise la compression sémantique de manière cohérente
 - [ ] A été validée avec `Ω.validate`
+- [ ] Intègre le processus de génération de documentation
+- [ ] Maintient la concision de la règle principale
 - [ ] Respecte la structure recommandée pour chaque section
 
 ## 📚 Ressources Additionnelles
 
-Pour plus de détails sur l'implémentation de la méta-règle 2.1, consultez:
+Pour plus de détails sur l'implémentation de la méta-règle 2.2, consultez:
 
 - `.cursor/kb/0000-cursor-rules/rule-structure-guide.md` - Guide complet de structure
 - `.cursor/kb/0000-cursor-rules/validation-criteria.yaml` - Critères formels de validation
 - `.cursor/kb/0000-cursor-rules/examples/valid-example.md` - Exemple de règle bien structurée
+- `.cursor/kb/0000-cursor-rules/modules/llm-roles.yaml` - Détails des rôles LLM
+- `.cursor/kb/0000-cursor-rules/modules/documentation-structure.yaml` - Structure de documentation
+- `.cursor/kb/0000-cursor-rules/modules/rule-structure-details.yaml` - Détails de structure des règles

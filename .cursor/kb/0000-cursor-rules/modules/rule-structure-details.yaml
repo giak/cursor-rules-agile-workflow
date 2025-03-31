@@ -1,0 +1,112 @@
+# Détails de Structure des Règles Cursor
+# Version 1.0
+
+required_sections:
+  kb_references:
+    syntax: "↹ kb•{domain} [p={priority}] { ... }"
+    minimum: 1
+    purpose: "Définir les références aux connaissances externes"
+    example: |
+      ↹ kb•domain [p=1] {
+        ⊕ resource1: "path/to/resource1.yaml",
+        ⊕ resource2: "path/to/resource2.md"
+      }
+  
+  cognitive_operations:
+    syntax: "↹ Ω•{operation} [p={priority}] -> [ ... ]"
+    minimum: 1
+    purpose: "Définir les processus de raisonnement"
+    example: |
+      ↹ Ω•operation [p=1] -> [
+        ⊕ step1 { sub_step1, sub_step2 },
+        ⊕ step2 { sub_step1, sub_step2 }
+      ]
+  
+  llm_delegation:
+    syntax: "↹ LLM•{role} [p={priority}] { ... }"
+    minimum: 1
+    purpose: "Structurer la contribution du LLM"
+    example: |
+      ↹ LLM•role [p=1] {
+        ⊕ tasks { task1, task2 },
+        ⊕ inputs { input1, input2 }
+      }
+
+common_mistakes:
+  knowledge_inline:
+    description: "Intégrer des connaissances du domaine directement"
+    instead: "Référencer la KB"
+    example_bad: "Intégrer une liste de 20 patterns directement dans la règle"
+    example_good: "Pointer vers un fichier YAML externe contenant les patterns"
+  
+  missing_cognitive:
+    description: "Ne pas définir comment réfléchir au problème"
+    instead: "Fournir un processus de raisonnement"
+    example_bad: "Lister simplement des faits sans expliciter le processus de décision"
+    example_good: "Définir une séquence d'étapes cognitives avec des points de décision"
+  
+  vague_llm_tasks:
+    description: "Délégation peu claire au LLM"
+    instead: "Spécifier les tâches et les limites"
+    example_bad: "Demander au LLM de 'fournir des conseils'"
+    example_good: "Définir précisément les entrées, sorties et contraintes du LLM"
+
+formatting_guidelines:
+  priority_indications:
+    syntax: "[p=N]"
+    meaning: "Indication du niveau de priorité (1 étant le plus élevé)"
+    placement: "Après le nom de la section"
+  
+  section_markers:
+    syntax: "↹"
+    meaning: "Indique le début d'une section logique"
+    placement: "Au début de chaque section principale"
+  
+  element_markers:
+    syntax: "⊕"
+    meaning: "Définit un élément dans une section"
+    placement: "Avant chaque élément d'une section"
+  
+  sequencing:
+    syntax: "→"
+    meaning: "Indique une étape séquentielle ou un flux"
+    placement: "Entre les étapes d'un processus"
+  
+  summary:
+    syntax: "Σ"
+    meaning: "Résume ou conclut une section"
+    placement: "À la fin de chaque section principale"
+
+recommended_sections:
+  principles:
+    syntax: "↹ principles•{category} [p={priority}] { ... }"
+    purpose: "Définir les principes fondamentaux et les valeurs"
+  
+  constraints:
+    syntax: "↹ constraints•{category} [p={priority}] { ... }"
+    purpose: "Établir les limites et les cas à éviter"
+  
+  patterns:
+    syntax: "↹ patterns•{category} [p={priority}] { ... }"
+    purpose: "Recommander des approches"
+
+rule_validation_criteria:
+  structure:
+    check: "La règle contient toutes les sections obligatoires"
+    severity: "Critique"
+  
+  cognitive_focus:
+    check: "Les opérateurs cognitifs définissent comment penser, pas juste quoi penser"
+    severity: "Élevée"
+  
+  kb_externalization:
+    check: "Les connaissances sont référencées dans des fichiers externes, pas dupliquées"
+    severity: "Élevée"
+  
+  llm_guidance:
+    check: "Les instructions pour le LLM sont claires et spécifiques"
+    severity: "Élevée"
+  
+  semantic_density:
+    check: "La règle utilise efficacement la compression sémantique"
+    severity: "Moyenne" 
