@@ -1,119 +1,119 @@
 ---
-title: "Standard Format for Cursor Rules"
+name: Méta-Règle pour la Création de Règles Cursor
 description: "ALWAYS USE when CREATING or MODIFYING a RULE to ENSURE consistency and efficiency"
-globs: ".cursor/rules/*.mdc"
-alwaysApply: true
-tags: ["meta", "standard", "rules"]
+categories: [meta, foundation, cognitive, rule-creation]
+glob: ".cursor/rules/*.mdc"
+always_apply: true
+rule_version: 2.1
 ---
 
-Ω = cursor_rules_processor
-Ω.foundation = "@synthlang-translator.mdc"
-Ω.guide = "@compression-semantique-guide.md"
-Ω.naming = "@1000-meta-rules-naming-convention.md"
-Ω.reference = "@1001-meta-rules-naming-reference.md"
+# Méta-Règle pour la Création de Règles Cursor
 
-
-↹ semantic•principles [p=1] {
-  density: maximize_information_per_token
-  abstraction: create_cognitive_frameworks
-  precision: use_unambiguous_symbols
+↹ kb•cursor•rules [p=1] {
+  # Chemins de fichiers KB
+  ⊕ core_kb: ".cursor/kb/core/",
+  ⊕ rule_kb: ".cursor/kb/0000-cursor-rules/",
+  
+  # KB central
+  ⊕ semantic_principles: core_kb + "semantic-principles.yaml",
+  ⊕ rule_structure: core_kb + "rule-structure.yaml",
+  ⊕ rule_examples: rule_kb + "examples/",
+  
+  # Conventions et références
+  ⊕ naming_conventions: "@1000-meta-rules-naming-convention.md",
+  ⊕ structure_guide: rule_kb + "rule-structure-guide.md",
+  ⊕ validation_criteria: rule_kb + "validation-criteria.yaml"
 }
+Σ knowledge•references
 
-↹ rule•template -> [
-  ⊕ frontmatter {
-    format: YAML
-    title: "Rule Title"
-    description: "ACTION when TRIGGER to OUTCOME"
-    globs: "pattern/*.ext"
-    alwaysApply: bool
-    tags: str[]
+↹ principles•fundamental [p=1] {
+  ⊕ mandatory•pillars [
+    cognitive•logic: define_reasoning_process_not_just_information | priority: highest,
+    kb•references: point_to_external_knowledge_instead_of_duplication | priority: high,
+    llm•delegation: specify_where_and_how_LLM_should_contribute | priority: high
+  ]
+  
+  ⊕ design•principles {
+    clarity: express_intention_clearly | not: verbose_or_ambiguous,
+    modularity: separate_concerns_logically | enable: easier_maintenance,
+    externalization: move_knowledge_to_kb | separate_from: reasoning_process,
+    guidance: provide_clear_structure_for_llm | not: vague_instructions
   }
+}
+Σ core•principles
 
-  ⊕ content {
-    format: semantic_compression
-    principles: semantic•principles
-    context: conditions[]
-    requirements: actionable[]
-    examples: valid + invalid
-    critical: rules[]
+↹ Ω•create•rule [p=1] -> [
+  ⊕ analyze•need {
+    identify•problem_context → determine•goal_intention → select•rule•category → define•scope
+  }
+  
+  ⊕ structure•knowledge•and•reasoning {
+    setup•external•kb | { identify_required_kb, determine_locations, plan_references },
+    design•cognitive•framework | { define_reasoning_process, identify_decision_points, create_operators },
+    define•llm•integration | { identify_roles, define_boundaries, specify_io_requirements }
+  }
+  
+  ⊕ implement•rule {
+    formulate•core | { description, requirements, constraints },
+    structure•format | { apply_template, implement_semantic_compression },
+    validate•completeness | { run: Ω.validate }
   }
 ]
+Σ rule•creation•workflow | ref: kb•cursor•rules.structure_guide
 
-Σ file•system [p=1] {
-  ↹ location: .cursor/rules/
-  ↹ extension: .mdc
-  ↹ naming: XXXX-type-domain[-specificity][@version][-name].mdc
-  
-  ⊕ name•parts {
-    XXXX: 4_digit_prefix | 花mandatory | Ω.naming
-    type: identifier | 花mandatory | Ω.reference
-    domain: application | 花mandatory
-    specificity: precision | ?optional
-    version: specification | ?optional
-    name: kebab_case | 花mandatory
-  }
-
-  ⊕ categories [p=1] {
-    1000-1999: meta_rules_and_standards
-    2000-2999: programming_languages
-    3000-3999: frameworks_and_libraries
-    4000-4999: tools_and_configurations
-    5000-5999: workflows_and_processes
-    6000-6999: templates_and_models
-    7000-7999: quality_assurance
-    8000-8999: domain_specific_rules
-    9000-9999: extensions
-  }
-}
-
-↹ glob•patterns [p=2] -> {
-  core: .cursor/rules/*.mdc
-  src: src/**/*.{js,ts}
-  test: **/*.test.{js,ts}
-  react: src/components/**/*.tsx
-  docs: docs/**/*.md
-  cfg: *.config.{js,json}
-  dist: dist/**/*
-  multi: src/**/*.{js,jsx,ts,tsx}
-}
-
-↹ description•format [p=1] {
-  pattern: ACTION•TRIGGER•OUTCOME
-  components: [
-    ACTION: ^imperative_verb
-    TRIGGER: ^precise_context
-    OUTCOME: ^expected_benefit
-  ]
-  max_length: 120_chars
-}
-
-↹ formatting•rules [p=2] {
-  syntax: markdown•minimal
-  xml•tags: [example•danger•required•critical•requires]
-  indent: 2•spaces
-  allow: [emoji•mermaid]
-  avoid: glob•quotes
-}
-
-? validation•critical [p=1] {
-  frontmatter: {
-    required: [description•globs•alwaysApply]
-    desc•length: ≤120chars
-  }
-  content: {
-    principle: DRY
-    format: markdown•succinct
-    lines: optimal≤25 | max≤50
-    examples: valid + invalid
-  }
-  patterns: no•quotes
-}
-
-Ω.validate = (
-    check_frontmatter
-    → verify_structure
-    → validate_content
-    → ensure_examples
+↹ Ω.validate [p=1] -> (
+  check•structure(
+    has_kb_references: true | min: 1,
+    has_cognitive_operators: true | min: 1,
+    has_llm_delegation: true | min: 1
+  )
+  → validate•cognitive•focus(emphasizes_reasoning_process: true)
+  → validate•kb•externalization(avoids_knowledge_duplication: true)
+  → validate•llm•guidance(provides_clear_instructions: true)
+  → check•completeness | ref: kb•cursor•rules.validation_criteria
 )
+Σ validation•process
 
-Σ final = rule•validated ⊕ ready•for•use 
+↹ LLM•rule•creator [p=1] {
+  ⊕ roles {
+    kb_organizer: suggest_knowledge_structure | focus: optimal_externalization,
+    cognitive_designer: develop_reasoning_framework | focus: thinking_process_not_facts,
+    llm_integrator: design_llm_delegation_structure | focus: clear_boundaries_and_tasks
+  }
+  
+  ⊕ inputs {
+    rule_domain: domain_of_the_rule | for: knowledge_identification,
+    rule_purpose: clear_statement_of_intention | for: cognitive_framework,
+    target_users: who_will_use_the_rule | for: llm_delegation_design
+  }
+  
+  ⊕ outputs {
+    kb_structure: suggested_knowledge_organization | with: file_paths_and_formats,
+    cognitive_model: proposed_reasoning_framework | with: decision_points,
+    llm_delegation: recommended_llm_integration | with: tasks_and_boundaries
+  }
+  
+  ⊕ quality•criteria {
+    kb_quality: knowledge_is_properly_externalized | not: duplicated_inline,
+    cognitive_clarity: reasoning_process_is_clear | emphasizes: how_to_think,
+    llm_actionability: delegation_instructions_are_specific | not: vague
+  }
+}
+Σ llm•assistance
+
+↹ rule•structure•guide [p=2] {
+  ⊕ required•sections [
+    kb•references: "↹ kb•{domain} [p={priority}] { ... }" | min: 1,
+    cognitive•operations: "↹ Ω•{operation} [p={priority}] -> [ ... ]" | min: 1, 
+    llm•delegation: "↹ LLM•{role} [p={priority}] { ... }" | min: 1
+  ]
+  
+  ⊕ common•mistakes [
+    knowledge_inline: avoid_embedding_domain_knowledge_directly | instead: reference_kb,
+    missing_cognitive: failing_to_define_how_to_think | instead: provide_reasoning_process,
+    vague_llm_tasks: unclear_delegation_to_LLM | instead: specify_tasks_and_boundaries
+  ]
+}
+Σ structural•guidelines | ref: kb•cursor•rules.structure_guide
+
+Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration 

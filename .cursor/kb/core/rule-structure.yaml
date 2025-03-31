@@ -1,0 +1,139 @@
+---
+title: "Rule Structure Standard"
+description: "Comprehensive specification for structure, formatting, and organization of all Cursor rules"
+---
+
+# File Structure
+
+file_format:
+  extension: ".mdc"
+  encoding: "UTF-8"
+  components:
+    - frontmatter
+    - title
+    - body
+    - summary
+
+frontmatter:
+  format: YAML
+  fields:
+    title:
+      type: "string"
+      description: "Descriptive title of the rule"
+      required: true
+      
+    description:
+      type: "string"
+      format: "ACTION when TRIGGER to OUTCOME"
+      max_length: 120
+      required: true
+      example: "ENFORCE when WRITING code to ENSURE consistency and maintainability"
+      
+    globs:
+      type: "string|array"
+      description: "File patterns the rule applies to"
+      required: true
+      example: ["src/**/*.js", "lib/**/*.js"]
+      
+    alwaysApply:
+      type: "boolean"
+      description: "Whether rule should be applied automatically"
+      required: true
+      default: false
+      
+    tags:
+      type: "array"
+      items: "string"
+      description: "Categorization tags for the rule"
+      required: false
+      example: ["javascript", "formatting", "style"]
+
+# Rule Description Format
+
+description_format:
+  pattern: "ACTION•TRIGGER•OUTCOME"
+  components:
+    action:
+      description: "Imperative verb indicating what to do"
+      examples: ["IMPLEMENT", "ENFORCE", "GENERATE", "FOLLOW", "APPLY"]
+      
+    trigger:
+      description: "Precise context when the rule applies"
+      examples: ["when DEVELOPING projects", "when WRITING code", "when CREATING components"]
+      
+    outcome:
+      description: "Expected benefit or results of following the rule"
+      examples: ["to ENSURE consistency", "to STANDARDIZE error handling", "to IMPROVE code readability"]
+
+# Content Structure
+
+content_structure:
+  format: "semantic_compression"
+  title:
+    format: "# Rule Title"
+    position: "after frontmatter"
+    
+  sections:
+    context:
+      purpose: "Establish background and alignment"
+      structure: "↹ section_name [p=priority] { ... }"
+      summary: "Σ section_summary"
+      
+    workflow:
+      purpose: "Define cognitive processes and steps"
+      structure: "↹ workflow_name [p=priority] -> [ ... ]"
+      element_format: "⊕ step_name { action → next_action }"
+      summary: "Σ workflow_summary"
+      
+    requirements:
+      purpose: "Define core rule directives"
+      structure: "↹ requirement_category [p=priority] { ... }"
+      element_format: "⊕ requirement: definition"
+      summary: "Σ requirements_summary"
+      
+    examples:
+      purpose: "Provide concrete illustrations"
+      structure: "<example> ... </example>"
+      variants: ["<example type=\"invalid\"> ... </example>"]
+      
+    critical:
+      purpose: "Highlight non-negotiable elements"
+      structure: "<critical> ... </critical>"
+      format: "Bulleted list of imperative statements"
+
+# Organization Principles
+
+organization_principles:
+  logical_progression:
+    description: "Content should flow in a logical progression"
+    implementation: "Foundation → Context → Process → Details → Examples → Critical Points"
+    
+  knowledge_separation:
+    description: "Separate process knowledge from domain knowledge"
+    implementation: "Reference external knowledge rather than embedding it"
+    
+  progressive_disclosure:
+    description: "Present information in order of importance"
+    implementation: "Most important information should come first"
+    
+  hierarchical_structure:
+    description: "Organize information hierarchically"
+    implementation: "Use semantic notation to create clear hierarchies"
+
+# Validation Criteria
+
+validation_criteria:
+  structure:
+    - all_required_sections_present: "All necessary sections are included"
+    - proper_formatting: "Sections follow the prescribed format"
+    - hierarchical_organization: "Content is properly hierarchical"
+    
+  content:
+    - clarity: "Content is unambiguous and precise"
+    - completeness: "All aspects of the rule are covered"
+    - actionability: "Directives can be directly implemented"
+    
+  references:
+    - external_knowledge: "References to KB are accurate"
+    - file_paths: "References to files are valid"
+    - documentation: "References to documentation are accurate" 

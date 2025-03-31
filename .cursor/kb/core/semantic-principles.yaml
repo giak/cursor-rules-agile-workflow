@@ -1,0 +1,55 @@
+---
+title: "Core Semantic Principles"
+description: "Fundamental semantic principles used across all Cursor rules"
+---
+
+principles:
+  density: 
+    definition: maximize_information_per_token
+    description: "Condense information to express maximum meaning with minimum tokens"
+    examples:
+      - "Using symbols (→, ⊕, Σ) instead of verbose text"
+      - "Combining related concepts with connector symbols (•, +, ⇌)"
+    anti_patterns:
+      - "Unnecessary repetition of concepts"
+      - "Verbose descriptions that could be symbolized"
+  
+  abstraction:
+    definition: create_cognitive_frameworks
+    description: "Develop mental models that organize information hierarchically"
+    examples:
+      - "Using higher-order categories (↹) to group related concepts"
+      - "Creating knowledge trees with parent-child relationships"
+    anti_patterns:
+      - "Flat, unstructured information presentation"
+      - "Missing hierarchical organization"
+  
+  precision:
+    definition: use_unambiguous_symbols
+    description: "Choose clear, specific notation that conveys exact meaning"
+    examples:
+      - "Consistent use of symbols for specific operations (→ for sequence)"
+      - "Clearly defined semantic boundaries"
+    anti_patterns:
+      - "Overloaded symbols with multiple meanings"
+      - "Vague or imprecise terminology"
+  
+  consistency:
+    definition: maintain_semantic_integrity
+    description: "Use symbols and patterns uniformly throughout the document"
+    examples:
+      - "Same symbol always represents the same concept"
+      - "Uniform structure across similar sections"
+    anti_patterns:
+      - "Changing notation conventions mid-document"
+      - "Inconsistent formatting or hierarchy"
+  
+  modularity:
+    definition: organize_in_functional_units
+    description: "Structure content into self-contained, reusable components"
+    examples:
+      - "Discrete sections with clear boundaries and purposes"
+      - "Components that can be referenced and reused"
+    anti_patterns:
+      - "Monolithic, tightly coupled sections"
+      - "Redundant information across multiple sections" 

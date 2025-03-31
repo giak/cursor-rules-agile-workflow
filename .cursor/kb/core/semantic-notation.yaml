@@ -1,0 +1,86 @@
+---
+title: "Semantic Notation Standard"
+description: "Defines the notation system, symbols and formatting standards for semantic compression across all Cursor rules"
+---
+
+syntax:
+  primary: "markdown with semantic compression"
+  fallback: "standard markdown"
+
+semantic_symbols:
+  - symbol: "↹"
+    meaning: "section_header"
+    usage: "Indicates the start of a logical section"
+    
+  - symbol: "⊕"
+    meaning: "element_definition"
+    usage: "Defines an element within a section"
+    
+  - symbol: "→"
+    meaning: "sequence_flow"
+    usage: "Indicates a sequential step or flow"
+    
+  - symbol: "Σ"
+    meaning: "section_summary"
+    usage: "Summarizes or concludes a section"
+    
+  - symbol: "⨁"
+    meaning: "combination"
+    usage: "Indicates combining multiple elements"
+    
+  - symbol: "⇌"
+    meaning: "bidirectional_relation"
+    usage: "Indicates a bidirectional relationship"
+    
+  - symbol: "|"
+    meaning: "condition_or_property"
+    usage: "Indicates a condition or property"
+    
+  - symbol: "•"
+    meaning: "connector"
+    usage: "Connects related concepts or terms"
+    
+  - symbol: "+"
+    meaning: "addition"
+    usage: "Indicates addition of concept or property"
+    
+  - symbol: "[p=n]"
+    meaning: "priority_level"
+    usage: "Indicates importance level (1=highest)"
+
+formatting_standards:
+  indentation:
+    character: "space"
+    size: 2
+    nesting: "consistent"
+    
+  style_rules:
+    - consistent_symbols: "Maintain consistent use of symbols throughout"
+    - meaningful_hierarchy: "Use clear hierarchical structure"
+    - proper_spacing: "Use appropriate spacing for readability"
+    - section_organization: "Organize content in logical sections"
+    - conciseness: "Prefer concise expressions over verbose ones"
+    - abbreviation: "Avoid obscure abbreviations"
+
+allowed_elements:
+  - emoji
+  - mermaid_diagrams
+  - tables
+  - code_blocks
+  - blockquotes
+  - links
+
+disallowed_elements:
+  - html_tags
+  - raw_html
+  - embedded_iframes
+  - macro_extensions
+  - custom_scripts
+  - quotes_in_glob_patterns
+
+xml_tags:
+  - example: "For providing examples of rule application"
+  - danger: "For highlighting dangerous practices"
+  - required: "For mandatory steps or components" 
+  - critical: "For critically important points"
+  - requires: "For dependency declarations" 
