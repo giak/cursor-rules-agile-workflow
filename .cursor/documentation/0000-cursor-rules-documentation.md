@@ -2,7 +2,7 @@
 
 ## 📋 Résumé
 
-La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (2.2) met l'accent sur la modularité et la factorisation des connaissances tout en maintenant la séparation claire entre connaissances, processus cognitifs et rôles du LLM.
+La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (3.1) met l'accent sur la modularité et la factorisation des connaissances tout en maintenant la séparation claire entre connaissances, processus cognitifs et rôles du LLM.
 
 | Aspect               | Description                                                                             |
 | -------------------- | --------------------------------------------------------------------------------------- |
@@ -10,7 +10,7 @@ La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de 
 | **Applicabilité**    | S'applique à tous les fichiers `.cursor/rules/*.mdc`                                    |
 | **Principe central** | Compression sémantique + référencement externe + workflow cognitif structuré            |
 | **Format**           | Markdown avec compression sémantique                                                    |
-| **Version actuelle** | 2.2 (factorisation améliorée avec modules externalisés)                                 |
+| **Version actuelle** | 3.1 (organisation améliorée des fichiers et templates)                                  |
 | **Prérequis**        | Comprendre les principes de compression sémantique et la structure des connaissances KB |
 
 ## 🧠 Concepts Fondamentaux
@@ -51,9 +51,9 @@ flowchart TD
     P3 -->|"Structure"| L
 
     %% Annotations légères
-    Notation1["↹ kb&#8226;domain"] -.-> P1
-    Notation2["↹ Ω&#8226;operation"] -.-> P2
-    Notation3["↹ LLM&#8226;role"] -.-> P3
+    Notation1["↹ kb•domain"] -.-> P1
+    Notation2["↹ Ω•operation"] -.-> P2
+    Notation3["↹ LLM•role"] -.-> P3
 
     %% Styles améliorés
     style P1 fill:#bedcfa,stroke:#4a6fa5,stroke-width:2px,color:#333

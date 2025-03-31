@@ -1,10 +1,10 @@
 ---
 name: Méta-Règle pour la Création de Règles Cursor
-description: "ALWAYS USE when CREATING or MODIFYING a RULE to ENSURE consistency and efficiency"
+description: "ALWAYS USE when CREATING or MODIFYING a RULE to ENSURE consistency and efficiency with COMPLETE ecosystem creation"
 categories: [meta, foundation, cognitive, rule-creation]
 glob: ".cursor/rules/*.mdc"
 always_apply: true
-rule_version: 2.2
+rule_version: 3.1
 ---
 
 # Méta-Règle pour la Création de Règles Cursor
@@ -19,17 +19,27 @@ rule_version: 2.2
   ⊕ rule_structure: core_kb + "rule-structure.yaml",
   ⊕ rule_examples: rule_kb + "examples/",
   ⊕ naming_conventions: "@1000-meta-rules-naming-convention.md",
-  ⊕ structure_guide: rule_kb + "rule-structure-guide.md",
-  ⊕ validation_criteria: rule_kb + "validation-criteria.yaml",
+  ⊕ structure_guide: rule_kb + "templates/implementation/structure_guide_template.md",
+  ⊕ validation_criteria: rule_kb + "validation/validation-rules.yaml",
+  ⊕ implementation_checklist: rule_kb + "core/implementation-checklist.yaml",
   
-  # Documentation et modules
-  ⊕ documentation_templates: rule_kb + "documentation/templates/",
+  # Documentation et templates
+  ⊕ templates_path: rule_kb + "templates/",
+  ⊕ documentation_templates: templates_path + "documentation/",
+  ⊕ implementation_templates: templates_path + "implementation/",
+  ⊕ example_templates: templates_path + "examples/",
+  ⊕ reference_templates: templates_path + "references/",
   ⊕ documentation_path: ".cursor/documentation/",
   
   # Modules factorisés
-  ⊕ llm_roles: rule_kb + "modules/llm-roles.yaml",
-  ⊕ documentation_structure: rule_kb + "modules/documentation-structure.yaml",
-  ⊕ rule_structure_details: rule_kb + "modules/rule-structure-details.yaml"
+  ⊕ core_modules: rule_kb + "core/modules/",
+  ⊕ llm_roles: core_modules + "llm-roles.yaml",
+  ⊕ documentation_structure: core_modules + "documentation-structure.yaml",
+  ⊕ rule_structure_details: core_modules + "rule-structure-details.yaml",
+  
+  # Écosystème et validation
+  ⊕ ecosystem_templates: templates_path + "ecosystem/",
+  ⊕ ecosystem_validation: rule_kb + "validation/validation-rules.yaml"
 }
 Σ knowledge•references
 
@@ -37,17 +47,47 @@ rule_version: 2.2
   ⊕ mandatory•pillars [
     cognitive•logic: define_reasoning_process_not_just_information | priority: highest,
     kb•references: point_to_external_knowledge_instead_of_duplication | priority: high,
-    llm•delegation: specify_where_and_how_LLM_should_contribute | priority: high
+    llm•delegation: specify_where_and_how_LLM_should_contribute | priority: high,
+    ecosystem•completeness: ensure_all_referenced_files_exist | priority: highest
   ]
   
   ⊕ design•principles {
     clarity: express_intention_clearly | not: verbose_or_ambiguous,
     modularity: separate_concerns_logically | enable: easier_maintenance,
     externalization: move_knowledge_to_kb | separate_from: reasoning_process,
-    guidance: provide_clear_structure_for_llm | not: vague_instructions
+    guidance: provide_clear_structure_for_llm | not: vague_instructions,
+    implementation•integrity: never_create_partial_implementations | enforce: strictly
   }
 }
 Σ core•principles | ref: kb•cursor•rules.semantic_principles
+
+↹ Ω•create•rule•ecosystem [p=1] -> [
+  ⊕ plan•ecosystem {
+    identify•knowledge•requirements: determine_needed_kb_files | for: rule_functionality,
+    design•directory•structure: plan_kb_directories | based_on: domain_and_requirements,
+    map•file•dependencies: identify_file_relationships | for: consistency
+  }
+  
+  ⊕ create•kb•structure {
+    create•directories: generate_all_required_directories | in: ".cursor/kb/{rule_id}/",
+    prepare•templates: select_appropriate_templates | ref: kb•cursor•rules.ecosystem_templates,
+    define•kb•schema: structure_knowledge_organization | for: optimal_retrieval
+  }
+  
+  ⊕ generate•kb•files {
+    create•guidelines: generate_guideline_files | for: each_needed_guidance,
+    create•examples: generate_good_and_bad_examples | for: implementation_clarity,
+    create•references: generate_reference_files | for: standard_information,
+    create•templates: generate_template_files | for: implementation_support
+  }
+  
+  ⊕ validate•ecosystem {
+    check•file•existence: verify_all_referenced_files_created | action: fail_if_missing,
+    verify•content•quality: ensure_files_have_appropriate_content | standard: high_quality,
+    test•cross•references: confirm_all_references_resolve | across: entire_ecosystem
+  }
+]
+Σ ecosystem•creation•workflow | ref: kb•cursor•rules.ecosystem_validation
 
 ↹ Ω•create•rule [p=1] -> [
   ⊕ analyze•need {
@@ -65,6 +105,13 @@ rule_version: 2.2
     structure•format | { apply_template, implement_semantic_compression },
     validate•completeness | { run: Ω.validate },
     generate•documentation | { run: Ω•create•documentation }
+  }
+  
+  ⊕ implement•ecosystem {
+    create•required•structure | { run: Ω•create•rule•ecosystem },
+    populate•kb•files | { generate_content, import_templates, customize },
+    validate•implementation | { run: Ω.validate•ecosystem },
+    link•documentation | { connect_rule_to_kb, ensure_navigation }
   }
 ]
 Σ rule•creation•workflow | ref: kb•cursor•rules.structure_guide
@@ -107,32 +154,100 @@ rule_version: 2.2
 )
 Σ validation•process
 
+↹ Ω.validate•ecosystem [p=1] -> (
+  check•kb•files•existence(
+    verify_all_references: check_all_kb_paths_exist | action: fail_if_missing,
+    validate_directory_structure: ensure_kb_directories_exist | action: fail_if_missing,
+    count_required_files: confirm_minimum_file_requirements | ref: kb•cursor•rules.implementation_checklist
+  )
+  → validate•content•quality(
+    check_guidelines: verify_guideline_files_have_content | min_quality: comprehensive,
+    check_examples: ensure_examples_illustrate_principles | min_quality: instructive,
+    check_templates: confirm_templates_are_usable | min_quality: practical
+  )
+  → verify•documentation(
+    documentation_exists: check_documentation_file_exists | in: kb•cursor•rules.documentation_path,
+    documentation_quality: assess_documentation_completeness | min_quality: comprehensive,
+    cross_references: ensure_documentation_links_to_kb | action: fail_if_missing
+  )
+  → generate•implementation•report(
+    summarize_status: create_ecosystem_status_report | with: passed_failed_items,
+    suggest_improvements: identify_enhancement_opportunities | if: minimal_implementation,
+    determine_certification: decide_if_implementation_certified | standard: full_compliance
+  )
+)
+Σ ecosystem•validation•process | ref: kb•cursor•rules.ecosystem_validation
+
 ↹ LLM•rule•creator [p=1] {
   ⊕ roles {
     kb_organizer: suggest_knowledge_structure | focus: optimal_externalization,
     cognitive_designer: develop_reasoning_framework | focus: thinking_process_not_facts,
-    llm_integrator: design_llm_delegation_structure | focus: clear_boundaries_and_tasks
+    llm_integrator: design_llm_delegation_structure | focus: clear_boundaries_and_tasks,
+    ecosystem_architect: design_complete_file_structure | focus: implementation_completeness
   }
   
   ⊕ inputs {
     rule_domain: domain_of_the_rule | for: knowledge_identification,
     rule_purpose: clear_statement_of_intention | for: cognitive_framework,
-    target_users: who_will_use_the_rule | for: llm_delegation_design
+    target_users: who_will_use_the_rule | for: llm_delegation_design,
+    implementation_scope: full_or_minimal_implementation | for: ecosystem_planning
   }
   
   ⊕ outputs {
     kb_structure: suggested_knowledge_organization | with: file_paths_and_formats,
     cognitive_model: proposed_reasoning_framework | with: decision_points,
-    llm_delegation: recommended_llm_integration | with: tasks_and_boundaries
+    llm_delegation: recommended_llm_integration | with: tasks_and_boundaries,
+    ecosystem_plan: complete_file_creation_plan | with: dependencies_and_sequence
+  }
+  
+  ⊕ constraints {
+    enforce_completeness: never_produce_partial_implementations | priority: highest,
+    verify_references: ensure_all_kb_references_are_valid | before: completion,
+    ecosystem_integrity: maintain_consistent_cross_references | across: all_files
   }
 }
 Σ llm•assistance | ref: kb•cursor•rules.llm_roles
+
+↹ LLM•kb•content•generator [p=1] {
+  ⊕ roles {
+    guideline_author: create_comprehensive_guidance | focus: clarity_and_utility,
+    example_creator: develop_instructive_examples | focus: illustrating_principles,
+    template_designer: craft_reusable_templates | focus: practical_application,
+    reference_compiler: assemble_standard_information | focus: authoritative_accuracy
+  }
+  
+  ⊕ inputs {
+    rule_specification: details_of_the_rule | for: content_alignment,
+    target_audience: users_of_the_rule | for: appropriate_detail_level,
+    use_cases: how_rule_will_be_applied | for: example_relevance
+  }
+  
+  ⊕ outputs {
+    guideline_files: comprehensive_guidance_documents | for: rule_implementation,
+    example_files: good_and_bad_implementation_examples | for: learning,
+    template_files: reusable_patterns_and_structures | for: efficient_application,
+    reference_files: authoritative_information_sources | for: standardization
+  }
+  
+  ⊕ constraints {
+    comprehensiveness: cover_all_aspects_of_rule | no: gaps_in_guidance,
+    practical_focus: ensure_content_is_applicable | not: theoretical_only,
+    consistency: maintain_alignment_with_rule | across: all_kb_content
+  }
+}
+Σ kb•content•generation | ref: kb•cursor•rules.llm_roles
 
 ↹ LLM•documentation•generator [p=1] {
   ⊕ roles {
     content_analyzer: extract_key_concepts_from_rule | focus: complete_understanding,
     structure_designer: create_logical_documentation_structure | focus: usability_and_clarity,
-    diagram_creator: generate_explanatory_diagrams | focus: visual_representation
+    diagram_creator: generate_explanatory_diagrams | focus: visual_representation,
+    ecosystem_documenter: document_kb_structure_and_relationships | focus: implementation_guidance
+  }
+  
+  ⊕ outputs {
+    documentation_content: comprehensive_rule_documentation | with: ecosystem_references,
+    implementation_guide: instructions_for_rule_application | with: kb_usage_patterns
   }
 }
 Σ documentation•generation | ref: kb•cursor•rules.llm_roles
@@ -143,7 +258,42 @@ rule_version: 2.2
     cognitive•operations: "↹ Ω•{operation} [p={priority}] -> [ ... ]" | min: 1, 
     llm•delegation: "↹ LLM•{role} [p={priority}] { ... }" | min: 1
   ]
+  
+  ⊕ ecosystem•requirements [
+    kb_directories: create_all_referenced_directories | in: ".cursor/kb/{rule_id}/",
+    guideline_files: provide_comprehensive_guidance | min: 1_per_main_concept,
+    example_files: illustrate_good_and_bad_practices | min: 1_of_each,
+    template_files: supply_reusable_patterns | if: applicable,
+    reference_files: compile_standard_information | if: needed
+  ]
 }
 Σ structural•guidelines | ref: kb•cursor•rules.rule_structure_details
 
-Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration ⊕ documentation•generation 
+↹ implementation•criteria [p=2] {
+  ⊕ quality•levels [
+    minimal_viable: rule_file_with_basic_kb_structure | good_for: initial_setup,
+    standard: complete_rule_with_comprehensive_kb | good_for: most_uses,
+    comprehensive: rich_ecosystem_with_extensive_examples | good_for: critical_rules
+  ]
+  
+  ⊕ certification•criteria [
+    uncertified: missing_required_components | action: prevent_usage,
+    provisional: basic_implementation_with_gaps | action: flag_limitations,
+    certified: complete_implementation_meeting_standards | action: allow_full_usage,
+    exemplary: exceeds_requirements_with_innovations | action: promote_as_model
+  ]
+}
+Σ implementation•standards | ref: kb•cursor•rules.implementation_checklist
+
+↹ constraints•critical [p=2] {
+  ⊕ implementation•constraints [
+    ecosystem_completeness: "NEVER create a rule without its complete KB ecosystem" | priority: highest,
+    reference_integrity: "ALWAYS verify all KB references resolve to actual files" | priority: highest,
+    content_quality: "ENSURE all KB files contain high-quality, useful content" | priority: high,
+    documentation_requirement: "ALWAYS create documentation for every rule" | priority: high,
+    validation_enforcement: "VALIDATE ecosystem completeness before finalizing rule" | priority: highest
+  ]
+}
+Σ critical•constraints | ref: kb•cursor•rules.implementation_checklist
+
+Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration ⊕ documentation•generation ⊕ ecosystem•integrity 
