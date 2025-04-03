@@ -48,7 +48,8 @@ rule_version: 3.1
     cognitive•logic: define_reasoning_process_not_just_information | priority: highest,
     kb•references: point_to_external_knowledge_instead_of_duplication | priority: high,
     llm•delegation: specify_where_and_how_LLM_should_contribute | priority: high,
-    ecosystem•completeness: ensure_all_referenced_files_exist | priority: highest
+    ecosystem•completeness: ensure_all_referenced_files_exist | priority: highest,
+    complexity•adaptation(𝚫*): adjust_workflow_based_on_assessed_complexity | priority: high
   ]
   
   ⊕ design•principles {
@@ -56,63 +57,123 @@ rule_version: 3.1
     modularity: separate_concerns_logically | enable: easier_maintenance,
     externalization: move_knowledge_to_kb | separate_from: reasoning_process,
     guidance: provide_clear_structure_for_llm | not: vague_instructions,
-    implementation•integrity: never_create_partial_implementations | enforce: strictly
+    implementation•integrity: never_create_partial_implementations | enforce: strictly,
+    holistic•validation(Ξ): integrate_validation_with_broader_coherence_checks | priority: medium
   }
 }
 Σ core•principles | ref: kb•cursor•rules.semantic_principles
 
-↹ Ω•create•rule•ecosystem [p=1] -> [
-  ⊕ plan•ecosystem {
-    identify•knowledge•requirements: determine_needed_kb_files | for: rule_functionality,
-    design•directory•structure: plan_kb_directories | based_on: domain_and_requirements,
-    map•file•dependencies: identify_file_relationships | for: consistency
-  }
-  
-  ⊕ create•kb•structure {
-    create•directories: generate_all_required_directories | in: ".cursor/kb/{rule_id}/",
-    prepare•templates: select_appropriate_templates | ref: kb•cursor•rules.ecosystem_templates,
-    define•kb•schema: structure_knowledge_organization | for: optimal_retrieval
-  }
-  
-  ⊕ generate•kb•files {
-    create•guidelines: generate_guideline_files | for: each_needed_guidance,
-    create•examples: generate_good_and_bad_examples | for: implementation_clarity,
-    create•references: generate_reference_files | for: standard_information,
-    create•templates: generate_template_files | for: implementation_support
-  }
-  
-  ⊕ validate•ecosystem {
-    check•file•existence: verify_all_referenced_files_created | action: fail_if_missing,
-    verify•content•quality: ensure_files_have_appropriate_content | standard: high_quality,
-    test•cross•references: confirm_all_references_resolve | across: entire_ecosystem
-  }
-]
+# --- Complexity Assessment Module ---
+↹ Ω•assess•complexity [p=1] {
+    input: rule_request (description, goal, context, etc.)
+
+    ⊕ analyze•intent•and•scope => determine•primary•function•abstraction•level•dependencies•target•audience
+    ⊕ estimate•cognitive•load => evaluate•number•of•reasoning•steps•decision•points•required•integrations
+    ⊕ simulate•required•kb•ecosystem => estimate•kb•types•and•count•based•on•function•abstraction•dependencies [guideline, example, template, reference] | include: self_challenge_feedback_loop | output: estimated_kb_types, estimated_kb_footprint, minimal_kb_suggestion
+    ⊕ calculate•complexity•score => combine•cognitive•load•and•kb•footprint•metrics (weights: w_load=1, w_kb=1 initially) -> complexity_score (0-1)
+    ⊕ classify•complexity => map•score•to•classification•using•thresholds [Simple < 0.3, 0.3 <= Medium < 0.7, Complex >= 0.7] -> complexity_classification
+    ⊕ assess•confidence => evaluate•clarity•of•request•and•simulation•reliability -> confidence_score (0-1), confidence_justification
+    ⊕ generate•assessment•report => compile•all•outputs { score, classification, kb_estimates, suggestion, reasoning, dependencies, justification, confidence } -> assessment_result (object)
+}
+➡️ Output: assessment_result (object containing detailed complexity assessment)
+
+# --- Workflow Adaptation Strategy Module ---
+↹ Ω•adapt•workflow•strategy [p=1] {
+    input: assessment_result (object from Ω•assess•complexity)
+
+    ⊕ analyze•assessment => extract•complexity_classification•confidence_score•estimated_kb_types•minimal_kb_suggestion
+    ⊕ determine•kb_level => map•classification•to•level ['Simple'->'Minimal', 'Medium'->'Standard', 'Complex'->'Comprehensive'] -> calculated_kb_level
+    ⊕ determine•validation_depth => map•classification•and•confidence•to•depth {
+        IF confidence_score < 0.7 THEN 'Standard'
+        ELSE IF classification == 'Simple' THEN 'Basic'
+        ELSE IF classification == 'Medium' THEN 'Standard'
+        ELSE 'Deep'
+    } -> calculated_validation_depth
+    ⊕ refine•required_kb_types => filter•estimated_kb_types•based•on•calculated_kb_level {
+        IF calculated_kb_level == 'Minimal' THEN keep_most_relevant_type(estimated_kb_types) OR [minimal_kb_suggestion]
+        ELSE IF calculated_kb_level == 'Standard' THEN filter_less_critical(estimated_kb_types)
+        ELSE estimated_kb_types
+    } -> calculated_kb_types_list
+    ⊕ determine•user_clarification_need => check•if•confidence_score•<•0.7 -> calculated_clarification_needed (boolean)
+    ⊕ format•additional_guidance => IF calculated_kb_level == 'Minimal' THEN minimal_kb_suggestion ELSE "" -> calculated_guidance_string
+
+    ⊕ generate•output•block => create•structured•text•block•with•calculated•values {
+        "=== Workflow Strategy Configuration ==="
+        "kb_creation_level: [calculated_kb_level]"
+        "required_kb_types: [calculated_kb_types_list]"
+        "validation_depth: [calculated_validation_depth]"
+        "trigger_user_clarification: [calculated_clarification_needed]"
+        "additional_guidance: '[calculated_guidance_string]'"
+        "=== End Configuration ==="
+    }
+}
+➡️ Output: workflow_strategy_configuration_block (structured text block)
+
+# --- Ecosystem Creation Workflow (Adapted) ---
+↹ Ω•create•rule•ecosystem [p=1] -> {
+    // Input parameters now include: rule_request, kb_creation_level, required_kb_types, additional_guidance
+    input: creation_config (object containing rule_request and strategy parameters)
+
+    ⊕ plan•ecosystem•based•on•level => {
+        identify•knowledge•requirements: use creation_config.required_kb_types,
+        design•directory•structure: plan_kb_directories | scale: according_to creation_config.kb_creation_level ('Minimal'/'Standard'/'Comprehensive'),
+        map•file•dependencies: identify_file_relationships
+    }
+
+    ⊕ create•kb•structure•based•on•level => {
+        create•directories: generate_required_directories | scale: according_to creation_config.kb_creation_level,
+        prepare•templates: select_appropriate_templates,
+        define•kb•schema: structure_knowledge_organization
+    }
+
+    ⊕ generate•kb•files•based•on•types => {
+        FOR type IN creation_config.required_kb_types:
+            generate_file_for_type(type) | use: creation_config.additional_guidance
+        ENDFOR
+        // Ensure minimum required files are created even for 'Minimal' level
+    }
+
+    // Existing validate•ecosystem step might be called separately or integrated here based on depth
+    ⊕ preliminary•check => verify_created_files_match_required_types
+}
+// Note: The internal validation might need adjustment based on validation_depth passed later
 Σ ecosystem•creation•workflow | ref: kb•cursor•rules.ecosystem_validation
 
+# --- Rule Creation Workflow (Refactored) ---
 ↹ Ω•create•rule [p=1] -> [
-  ⊕ analyze•need {
-    identify•problem_context → determine•goal_intention → select•rule•category → define•scope
-  }
-  
-  ⊕ structure•knowledge•and•reasoning {
-    setup•external•kb | { identify_required_kb, determine_locations, plan_references },
-    design•cognitive•framework | { define_reasoning_process, identify_decision_points, create_operators },
-    define•llm•integration | { identify_roles, define_boundaries, specify_io_requirements }
-  }
-  
-  ⊕ implement•rule {
-    formulate•core | { description, requirements, constraints },
-    structure•format | { apply_template, implement_semantic_compression },
-    validate•completeness | { run: Ω.validate },
-    generate•documentation | { run: Ω•create•documentation }
-  }
-  
-  ⊕ implement•ecosystem {
-    create•required•structure | { run: Ω•create•rule•ecosystem },
-    populate•kb•files | { generate_content, import_templates, customize },
-    validate•implementation | { run: Ω.validate•ecosystem },
-    link•documentation | { connect_rule_to_kb, ensure_navigation }
-  }
+    input: rule_request (description, goal, context, etc.)
+
+    // --- Phase 1: Assessment & Strategy Definition ---
+    ⊕ step1•assess_complexity => call•Ω•assess•complexity(rule_request) -> assessment_result
+    ⊕ step2•adapt_strategy => call•Ω•adapt•workflow•strategy(assessment_result) -> strategy_output_block
+    ⊕ step3•parse_strategy => extract•values•from•strategy_output_block -> strategy_config {kb_level, kb_types, val_depth, trigger_clarif, guidance}
+
+    // --- Phase 2: Optional User Clarification ---
+    ⊕ step4•check_clarification_need => IF•strategy_config.trigger_clarif•is•true THEN
+        ⊕ initiate•dialogue•with•user => present•assessment_result.justification•assessment_result.confidence_justification•and•ask•for•confirmation•or•clarification
+        ⊕ receive•user•feedback => (optional) adjust•strategy_config•based•on•feedback
+    ⊕ ENDIF
+
+    // --- Phase 3: Ecosystem Creation (Paramétré) ---
+    ⊕ step5•create_ecosystem => call•Ω•create•rule•ecosystem({
+                                    rule_request: rule_request,
+                                    kb_creation_level: strategy_config.kb_level,
+                                    required_kb_types: strategy_config.kb_types,
+                                    additional_guidance: strategy_config.guidance
+                                }) -> created_kb_files_list
+
+    // --- Phase 4: Core Rule Implementation ---
+    ⊕ step6•implement_core_rule => generate•core•rule•file•content(rule_request, strategy_config.kb_level) -> core_rule_file // Core rule might also adapt slightly
+
+    // --- Phase 5: Validation (Paramétrée) ---
+    ⊕ step7•validate_rule_and_ecosystem => call•Ω.validate•ecosystem({
+                                            rule_files: [core_rule_file] + created_kb_files_list,
+                                            validation_depth: strategy_config.val_depth // Pass depth parameter
+                                        }) -> validation_report
+
+    // --- Phase 6: Documentation & Finalization ---
+    ⊕ step8•generate_documentation => call•Ω•create•documentation({core_rule_file, created_kb_files_list}) // Pass context if needed
+    ⊕ step9•finalize => output•results•validation_report•created_files•documentation_link
 ]
 Σ rule•creation•workflow | ref: kb•cursor•rules.structure_guide
 
@@ -154,27 +215,34 @@ rule_version: 3.1
 )
 Σ validation•process
 
+# --- Ecosystem Validation Process (Adapted) ---
 ↹ Ω.validate•ecosystem [p=1] -> (
-  check•kb•files•existence(
-    verify_all_references: check_all_kb_paths_exist | action: fail_if_missing,
-    validate_directory_structure: ensure_kb_directories_exist | action: fail_if_missing,
-    count_required_files: confirm_minimum_file_requirements | ref: kb•cursor•rules.implementation_checklist
-  )
-  → validate•content•quality(
-    check_guidelines: verify_guideline_files_have_content | min_quality: comprehensive,
-    check_examples: ensure_examples_illustrate_principles | min_quality: instructive,
-    check_templates: confirm_templates_are_usable | min_quality: practical
-  )
-  → verify•documentation(
-    documentation_exists: check_documentation_file_exists | in: kb•cursor•rules.documentation_path,
-    documentation_quality: assess_documentation_completeness | min_quality: comprehensive,
-    cross_references: ensure_documentation_links_to_kb | action: fail_if_missing
-  )
-  → generate•implementation•report(
-    summarize_status: create_ecosystem_status_report | with: passed_failed_items,
-    suggest_improvements: identify_enhancement_opportunities | if: minimal_implementation,
-    determine_certification: decide_if_implementation_certified | standard: full_compliance
-  )
+    // Input parameter now includes: validation_depth
+    input: validation_config (object containing rule_files, validation_depth)
+
+    ⊕ check•kb•files•existence•at•depth(validation_config.validation_depth) => { // Depth influences strictness
+        verify_all_references: check_all_kb_paths_exist | action: fail_if_missing | rigor: validation_config.validation_depth,
+        validate_directory_structure: ensure_kb_directories_exist | action: fail_if_missing | rigor: validation_config.validation_depth,
+        count_required_files: confirm_minimum_file_requirements | ref: kb•cursor•rules.implementation_checklist | rigor: validation_config.validation_depth
+    }
+
+    ⊕ validate•content•quality•at•depth(validation_config.validation_depth) => { // Depth influences checks applied
+        check_guidelines: verify_guideline_files_have_content | min_quality: map_depth_to_quality(validation_config.validation_depth),
+        check_examples: ensure_examples_illustrate_principles | min_quality: map_depth_to_quality(validation_config.validation_depth),
+        check_templates: confirm_templates_are_usable | min_quality: map_depth_to_quality(validation_config.validation_depth)
+    }
+
+    ⊕ verify•documentation•at•depth(validation_config.validation_depth) => { // Depth influences checks
+        documentation_exists: check_documentation_file_exists | in: kb•cursor•rules.documentation_path,
+        documentation_quality: assess_documentation_completeness | min_quality: map_depth_to_quality(validation_config.validation_depth),
+        cross_references: ensure_documentation_links_to_kb | action: fail_if_missing | check_depth: validation_config.validation_depth
+    }
+
+    ⊕ generate•implementation•report => {
+        summarize_status: create_ecosystem_status_report | with: passed_failed_items,
+        suggest_improvements: identify_enhancement_opportunities,
+        determine_certification: decide_if_implementation_certified | standard: map_depth_to_standard(validation_config.validation_depth)
+    }
 )
 Σ ecosystem•validation•process | ref: kb•cursor•rules.ecosystem_validation
 

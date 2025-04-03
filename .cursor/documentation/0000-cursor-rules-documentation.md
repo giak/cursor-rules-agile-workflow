@@ -73,6 +73,19 @@ flowchart TD
 
 3. **Délégation LLM** (`LLM•role`): Structure précisément comment le LLM doit contribuer, avec des entrées, sorties, contraintes et validations clairement définies.
 
+### Adaptation Basée sur la Complexité (Nouveauté v3.x)
+
+Pour pallier la rigidité potentielle d'un workflow unique, la version 3.x introduit une approche adaptative basée sur une évaluation préliminaire de la complexité de la règle à créer.
+
+1.  **Classification S/M/C :** Avant la création complète, la complexité de la demande de règle est évaluée et classifiée comme **Simple (S)**, **Moyenne (M)**, ou **Complexe (C)**.
+2.  **Modules Dédiés :** Deux nouveaux modules principaux gèrent ce processus :
+    - `Ω•assess•complexity` : Évalue la demande.
+    - `Ω•adapt•workflow•strategy` : Détermine la stratégie de création (niveau KB, profondeur de validation) en fonction de l'évaluation.
+3.  **Workflow Adapté :** Le workflow principal (`Ω•create•rule`) utilise la stratégie déterminée pour paramétrer les étapes de création de l'écosystème (`Ω•create•rule•ecosystem`) et de validation (`Ω.validate•ecosystem`).
+4.  **Externalisation Maintenue :** Le principe d'externalisation stricte des connaissances est conservé. Même une règle "Simple" requiert un écosystème KB externe minimal. La flexibilité réside dans la **quantité** et le **type** de fichiers KB exigés, ainsi que dans la **profondeur** de la validation.
+
+Cette approche permet d'ajuster l'effort et la rigueur du processus à la nature de la règle, optimisant l'efficacité sans sacrifier la qualité pour les règles complexes.
+
 ### Architecture de la Base de Connaissances (KB)
 
 La règle 2.2 utilise une architecture de connaissances encore plus modulaire avec des modules spécifiques pour différents aspects du système:
@@ -109,87 +122,248 @@ flowchart TD
     class LR,DS,RSD module
 ```
 
-## 🔄 Workflow de Création des Règles (Ω•create•rule)
+## ⚙️ Nouveaux Modules Clés (v3.x)
 
-Le workflow `Ω•create•rule` définit un processus systématique pour créer une règle Cursor efficace et conforme. La version 2.2 maintient ce processus en trois phases principales, avec une emphase sur l'externalisation:
+La version 3.x introduit deux modules essentiels pour l'approche adaptative.
+
+### 1. Module d'Évaluation de Complexité (`Ω•assess•complexity`)
+
+**Objectif :** Évaluer de manière structurée la complexité intrinsèque d'une demande de création de règle.
+
+**Processus Interne :**
+
+```mermaid
+graph TD
+    subgraph Assessment Process [Ω•assess•complexity]
+        direction LR
+        Input[(rule_request)] --> P1{Analyze Intent & Scope}
+        P1 --> P2{Estimate Cognitive Load}
+        P1 --> P3{Simulate Required KB Ecosystem}
+        P2 --> P4{Calculate Complexity Score}
+        P3 --> P4
+        P4 --> P5{Classify S M C}
+        P5 --> P7((assessment_result))
+        P1 --> P6{Assess Confidence}
+        P3 --> P6
+        P6 --> P7
+        P4 --> P7
+        P5 --> P7
+        P6 --> P7
+    end
+
+    classDef inputNode fill:#ffeed8,stroke:#af7d3d,stroke-width:1px
+    classDef processNode fill:#d8e7ff,stroke:#3d6daf,stroke-width:1px
+    classDef decisionNode fill:#e3d2ff,stroke:#6a3daf,stroke-width:1px
+    classDef outputNode fill:#d8ffe7,stroke:#3daf6d,stroke-width:1px
+
+    class Input inputNode
+    class P1,P2,P3,P6 processNode
+    class P4,P5 decisionNode
+    class P7 outputNode
+```
+
+**Annotations pour le diagramme `Ω•assess•complexity` :**
+
+- **P3 (Simulate Required KB Ecosystem) :** Estimation des types KB (guideline, example, template...), Suggestion KB minimal, Feedback interne.
+- **P4 (Calculate Complexity Score) :** Combine Charge Cognitive et Estimation KB (poids initiaux).
+- **P5 (Classify S M C) :** Application des seuils (<0.3, 0.3-0.7, >=0.7).
+- **P6 (Assess Confidence) :** Évaluation clarté requête et fiabilité simulation.
+- **P7 (assessment_result) :** Objet contenant score, classification, estimations, confiance, justification...
+
+**Sortie Clé :** `assessment_result` (objet structuré) contenant le score, la classification S/M/C, l'estimation de l'empreinte KB, une suggestion de KB minimal (pour S), le score de confiance, et la justification.
+
+### 2. Module d'Adaptation de Stratégie (`Ω•adapt•workflow•strategy`)
+
+**Objectif :** Traduire l'évaluation de complexité en une configuration de stratégie concrète pour la suite du workflow.
+
+**Processus Interne :**
+
+```mermaid
+graph TD
+    subgraph Strategy Adaptation [Ω•adapt•workflow•strategy]
+        direction LR
+        Input[(assessment_result)] --> A1{Analyze Assessment}
+        A1 --> D1{Determine KB Level}
+        A1 --> D2{Determine Validation Depth}
+        A1 --> D3{Refine Required KB Types}
+        A1 --> D4{Determine User Clarification Need}
+        D1 --> D3
+        D1 --> F1{Format Output Block}
+        D2 --> F1
+        D3 --> F1
+        D4 --> F1
+        F1 --> Output((workflow_strategy_configuration_block))
+    end
+
+    classDef inputNode fill:#d8ffe7,stroke:#3daf6d,stroke-width:1px
+    classDef processNode fill:#d8e7ff,stroke:#3d6daf,stroke-width:1px
+    classDef decisionNode fill:#e3d2ff,stroke:#6a3daf,stroke-width:1px
+    classDef formatNode fill:#ffe7d8,stroke:#af6d3d,stroke-width:1px
+    classDef outputNode fill:#f9d77e,stroke:#d9b066,stroke-width:1px
+
+    class Input inputNode
+    class A1 processNode
+    class D1,D2,D3,D4 decisionNode
+    class F1 formatNode
+    class Output outputNode
+```
+
+**Annotations pour le diagramme `Ω•adapt•workflow•strategy` :**
+
+- **D1 (Determine KB Level) :** Classification Mappée : S => Minimal, M => Standard, C => Comprehensive.
+- **D2 (Determine Validation Depth) :** Basé sur Classification & Confiance (Ex: Simple/High => Basic, Low Conf => Standard...).
+- **D3 (Refine Required KB Types) :** Filtre les types KB estimés selon le niveau KB (Minimal garde 1-2).
+- **D4 (Determine User Clarification Need) :** Basé sur seuil de confiance (<0.7).
+- **F1 (Format Output Block) :** Crée un bloc texte structuré clé-valeur standardisé.
+
+**Sortie Clé :** `workflow_strategy_configuration_block` (bloc texte structuré) contenant `kb_creation_level`, `required_kb_types`, `validation_depth`, `trigger_user_clarification`, et `additional_guidance`. Ce bloc est ensuite parsé par le workflow principal.
+
+### 3. Module de Création d'Écosystème (`Ω•create•rule•ecosystem`)
+
+**Objectif :** Créer la structure de répertoires et les fichiers initiaux de la Base de Connaissances (KB) associés à une nouvelle règle, en respectant la stratégie de complexité (`kb_creation_level`, `required_kb_types`) déterminée précédemment.
+
+**Inputs :** Objet `creation_config` contenant la requête initiale (`rule_request`) et les paramètres de stratégie (`kb_creation_level`, `required_kb_types`, `additional_guidance`).
+
+**Processus Interne Simplifié :**
+
+```mermaid
+graph TD
+    subgraph Ecosystem Creation [Ω•create•rule•ecosystem]
+        direction LR
+        Input[creation_config] --> P1{Planifier Structure KB}
+        P1 --> P2{Créer Répertoires KB}
+        P2 --> P3{Générer Fichiers KB Initiaux}
+        P3 --> Output((created_kb_files_list))
+    end
+    style Input fill:#f9d77e,stroke:#d9b066
+    style P1,P2,P3 fill:#d8e7ff,stroke:#3d6daf
+    style Output fill:#d8ffe7,stroke:#3daf6d
+```
+
+- **Planification :** Identifie les répertoires nécessaires (ex: `.cursor/kb/<rule_id>/`, `.cursor/kb/<rule_id>/examples/`, etc.) en fonction du `kb_creation_level` (Minimal, Standard, Comprehensive).
+- **Création des Répertoires :** Génère la structure de dossiers planifiée.
+- **Génération des Fichiers :** Crée les fichiers KB initiaux (vides ou basés sur des templates) correspondant aux `required_kb_types` (ex: `guideline.md`, `valid-example.md`, etc.), en utilisant `additional_guidance` si fournie. Garantit la création des fichiers minimaux même pour le niveau 'Minimal'.
+
+**Sortie Clé :** `created_kb_files_list` (Liste des chemins des fichiers KB créés).
+
+## 🔄 Workflow de Création des Règles (Ω•create•rule) Refactorisé (v3.x)
+
+Le workflow `Ω•create•rule` est maintenant orchestré en phases distinctes, intégrant les nouveaux modules d'évaluation et d'adaptation.
 
 ```mermaid
 flowchart TB
-    %% Phases principales du workflow
-    A(["Analyser le besoin"]) --> B(["Structurer connaissances<br>et raisonnement"])
-    B --> C(["Implémenter la règle"])
+    subgraph Phase1 ["Assessment & Strategy"]
+        direction LR
+        R(rule_request) --> C1(Ω•assess•complexity)
+        C1 -- assessment_result --> C2(Ω•adapt•workflow•strategy)
+        C2 -- strategy_output_block --> C3(Parse Strategy)
+    end
 
-    %% Détails des phases connectés par des lignes pointillées
-    A -.-> A1["identify•problem_context"]
-    A -.-> A2["determine•goal_intention"]
-    A -.-> A3["select•rule•category"]
-    A -.-> A4["define•scope"]
+    subgraph Phase2 ["User Clarification (Optional)"]
+        direction LR
+        C3 -- strategy_config --> IF{Check Clarification Need?}
+        IF -- Yes --> DLG[Initiate Dialogue]
+        DLG --> IF
+        IF -- No --> E1
+    end
 
-    B -.-> B1["setup•external•kb"]
-    B -.-> B2["design•cognitive•framework"]
-    B -.-> B3["define•llm•integration"]
+    subgraph Phase3 ["Ecosystem Creation (Parametric)"]
+        direction LR
+         C3 -- strategy_config --> E1(Ω•create•rule•ecosystem)
+         R -- rule_request --> E1
+    end
 
-    C -.-> C1["formulate•core"]
-    C -.-> C2["structure•format"]
-    C -.-> C3["validate•completeness"]
-    C -.-> C4["generate•documentation"]
+     subgraph Phase4 ["Core Rule Implementation"]
+         direction LR
+         E1 -- created_kb_files_list --> R1(Implement Core Rule)
+         R -- rule_request --> R1
+         C3 -- strategy_config --> R1
+     end
 
-    %% Styles améliorés
-    classDef phase fill:#d6e8d5,stroke:#6c8ea0,stroke-width:2px,color:#333,rx:5
-    classDef step fill:#f9f9f9,stroke:none,stroke-width:1px,color:#666
-    classDef newstep fill:#f9f9f9,stroke:#6c8ea0,stroke-width:1px,color:#333
+     subgraph Phase5 ["Validation (Parametric)"]
+         direction LR
+         R1 -- core_rule_file --> V1(Ω.validate•ecosystem)
+         E1 -- created_kb_files_list --> V1
+         C3 -- strategy_config (val_depth) --> V1
+     end
 
-    class A,B,C phase
-    class A1,A2,A3,A4,B1,B2,B3,C1,C2,C3 step
-    class C4 newstep
+     subgraph Phase6 ["Documentation & Finalization"]
+         direction LR
+         V1 -- validation_report --> D1(Ω•create•documentation)
+         R1 -- core_rule_file --> D1
+         E1 -- created_kb_files_list --> D1
+         D1 --> F1(Finalize & Output)
+         V1 -- validation_report --> F1
+         E1 -- created_kb_files_list --> F1
+     end
+
+    %% Connections between phases
+    C3 --> IF
+    Phase2 --> E1
+    Phase3 --> R1
+    Phase4 --> V1
+    Phase5 --> D1
+    Phase6 --> END((Output: Files, Report, Docs))
+
+    %% Styling
+    classDef module fill:#e3d2ff,stroke:#6a3daf,rx:5
+    classDef check fill:#ffe7d8,stroke:#af6d3d,rx:5
+    classDef output fill:#d8ffe7,stroke:#3daf6d,shape:cylinder
+    classDef phase fill:none,stroke:#ccc,stroke-width:1px,stroke-dasharray: 5 5,rx:10
+    class C1,C2,E1,R1,V1,D1 module
+    class IF,DLG check
+    class R,assessment_result,strategy_output_block,strategy_config,created_kb_files_list,core_rule_file,validation_report output
+    class Phase1,Phase2,Phase3,Phase4,Phase5,Phase6 phase
 ```
 
-### Détail du Workflow Amélioré
+**Étapes Clés du Workflow Refactorisé :**
 
-1. **analyze•need**: Identifier le contexte du problème et l'intention
+1.  **Évaluation & Stratégie :** Appel séquentiel de `Ω•assess•complexity` et `Ω•adapt•workflow•strategy`. Le bloc de configuration est parsé.
+2.  **Clarification Utilisateur (Optionnelle) :** Si le score de confiance est bas, un dialogue est initié pour confirmer/ajuster la stratégie.
+3.  **Création de l'Écosystème :** Appel de `Ω•create•rule•ecosystem` avec les paramètres `kb_creation_level`, `required_kb_types`, et `additional_guidance` issus de la stratégie.
+4.  **Implémentation de la Règle Cœur :** Génération du fichier `.mdc` principal. Le `kb_creation_level` peut influencer légèrement le détail de la règle elle-même.
+5.  **Validation :** Appel de `Ω.validate•ecosystem` avec les fichiers créés et le paramètre `validation_depth` issu de la stratégie.
+6.  **Documentation & Finalisation :** Génération de la documentation (`Ω•create•documentation`) et finalisation.
 
-   - Identifier le contexte du problème à résoudre
-   - Déterminer l'objectif précis de la règle
-   - Sélectionner la catégorie appropriée
-   - Définir la portée
+Ce workflow modulaire permet une adaptation fine du processus tout en gardant une structure claire.
 
-2. **structure•knowledge•and•reasoning**: Organiser les connaissances et le raisonnement
+_Note : La règle `0000-cursor-rules.mdc` contient également une section `Ω.validate` plus simple, focalisée sur la vérification de la présence et de la conformité des trois piliers structurels fondamentaux (références KB, opérations cognitives, délégation LLM) au sein du fichier `.mdc` de la règle elle-même. Cette validation structurelle complète la validation plus large de l'écosystème gérée par `Ω.validate•ecosystem`._
 
-   - Configurer les fichiers KB externes pour stocker les connaissances du domaine
-   - Concevoir le cadre cognitif en identifiant les processus de raisonnement
-   - Définir les points d'intégration du LLM
+## 🔍 Protocole de Validation de l'Écosystème (Ω.validate•ecosystem) Adapté (v3.x)
 
-3. **implement•rule**: Implémenter et valider la règle
-   - Formuler le contenu central (description, exigences, contraintes)
-   - Structurer et formater selon les standards
-   - Valider la complétude avec `Ω.validate`
-   - **Générer la documentation** automatiquement avec `Ω•create•documentation` (nouveau dans v2.2)
+Le protocole de validation de l'écosystème est maintenant paramétré par la `validation_depth` déterminée lors de la phase de stratégie.
 
-## 🔍 Protocole de Validation (Ω.validate)
+**Input :** `validation_config` (objet contenant `rule_files` et `validation_depth`).
 
-Le protocole de validation de la version 2.2 maintient la même structure simplifiée que la version 2.1, en référençant des critères externalisés:
+**Processus Adapté :**
 
 ```mermaid
-flowchart LR
-    CS["check structure"] --> VCF["validate cognitive focus"]
-    VCF --> VKE["validate kb externalization"]
-    VKE --> VLG["validate llm guidance"]
-    VLG --> CC["check completeness"]
+graph TD
+    subgraph Validation Process [Ω.validate•ecosystem]
+        direction LR
+        Input[validation_config] --> C1{Check KB Files Existence}
+        Input --> C2{Validate Content Quality}
+        Input --> C3{Verify Documentation}
+        C1 -- Status --> C4{Generate Report}
+        C2 -- Status --> C4
+        C3 -- Status --> C4
+        C4 --> Output((validation_report))
+    end
 
-    style CS fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
-    style VCF fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
-    style VKE fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
-    style VLG fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
-    style CC fill:#f2dddb,stroke:#a52a2a,stroke-width:1px
+    style Input fill:#f9d77e,stroke:#d9b066
+    style C1,C2,C3 fill:#d8e7ff,stroke:#3d6daf
+    style C4 fill:#ffe7d8,stroke:#af6d3d
+    style Output fill:#d8ffe7,stroke:#3daf6d
 ```
 
-### Étapes de validation externalisées
+**Annotations pour le diagramme `Ω.validate•ecosystem` :**
 
-1. **check•structure**: Vérifier la présence des trois piliers (kb•references, Ω•operators, LLM•delegation)
-2. **validate•cognitive•focus**: S'assurer que les processus cognitifs sont bien définis
-3. **validate•kb•externalization**: Vérifier que les connaissances sont externalisées
-4. **validate•llm•guidance**: Valider la clarté des instructions pour le LLM
-5. **check•completeness**: Vérifier la complétude selon les critères du fichier externalisé `.cursor/kb/0000-cursor-rules/validation-criteria.yaml`
+- **C1 (Check KB Files Existence) :** La rigueur dépend de `validation_depth` (Basic, Standard, Deep).
+- **C2 (Validate Content Quality) :** La qualité minimale dépend de `validation_depth`.
+- **C3 (Verify Documentation) :** Les vérifications dépendent de `validation_depth`.
+- **C4 (Generate Report) :** Le standard de certification dépend de `validation_depth`.
+
+Cela garantit que les règles simples ne sont pas soumises à une validation excessivement lourde, tandis que les règles complexes bénéficient d'un examen approfondi.
 
 ## 🔄 Processus de Génération de Documentation (Ω•create•documentation)
 
@@ -271,6 +445,30 @@ Cette structure avec référence externe garantit que:
 - La règle principale reste concise et focalisée sur l'essentiel
 - Les détails d'implémentation sont externalisés dans des modules spécialisés
 - Les mises à jour de l'un n'affectent pas nécessairement l'autre
+
+#### LLM•kb•content•generator
+
+Ce rôle est responsable de la génération du contenu substantiel pour les fichiers de la Base de Connaissances (KB).
+
+- **Rôles :**
+  - `guideline_author`: Rédige des guides clairs et utiles.
+  - `example_creator`: Développe des exemples (bons et mauvais) illustratifs.
+  - `template_designer`: Conçoit des modèles réutilisables.
+  - `reference_compiler`: Assemble des informations standardisées et faisant autorité.
+- **Entrées Requises :** Spécifications de la règle, public cible, cas d'utilisation.
+- **Sorties Attendues :** Fichiers KB peuplés (guides, exemples, templates, références).
+- **Contraintes :** Contenu complet, pratique, et cohérent avec la règle.
+
+#### LLM•documentation•generator
+
+Ce rôle prend en charge la création de la documentation utilisateur pour la règle.
+
+- **Rôles :**
+  - `content_analyzer`: Extrait les concepts clés de la règle.
+  - `structure_designer`: Crée une structure de documentation logique.
+  - `diagram_creator`: Génère des diagrammes explicatifs.
+  - `ecosystem_documenter`: Documente la structure KB associée.
+- **Sorties Attendues :** Fichier de documentation complet, guide d'implémentation.
 
 ## 🧩 Modules Factorisés (Nouveauté v2.2)
 
@@ -453,17 +651,18 @@ L'organisation des fichiers de la méta-règle v2.2 suit une structure hiérarch
 
 Cette structure améliorée illustre le principe de factorisation et d'externalisation des connaissances, démontrant dans sa propre structure les principes qu'elle promeut.
 
-## ✅ Liste de Vérification v2.2
+## ✅ Liste de Vérification v3.x
 
-Utilisez cette liste pour valider votre règle selon la version 2.2:
+Utilisez cette liste pour valider votre règle selon la version 3.x:
 
 - [ ] Contient les trois piliers: Références KB, Processus Cognitifs, Délégation LLM
-- [ ] Externalise correctement les connaissances dans des fichiers KB
+- [ ] Externalise correctement les connaissances dans des fichiers KB (Minimal, Standard ou Comprehensive selon complexité)
 - [ ] Applique le principe de factorisation pour les détails d'implémentation
 - [ ] Définit clairement les processus de raisonnement (pas juste des informations)
 - [ ] Structure précisément la contribution du LLM avec références aux modules
 - [ ] Utilise la compression sémantique de manière cohérente
-- [ ] A été validée avec `Ω.validate`
+- [ ] **Intègre l'évaluation de complexité et l'adaptation de stratégie (si applicable)**
+- [ ] A été validée avec `Ω.validate•ecosystem` (avec la profondeur appropriée)
 - [ ] Intègre le processus de génération de documentation
 - [ ] Maintient la concision de la règle principale
 - [ ] Respecte la structure recommandée pour chaque section
