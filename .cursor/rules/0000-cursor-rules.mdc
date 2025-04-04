@@ -5,6 +5,15 @@ categories: [meta, foundation, cognitive, rule-creation]
 glob: ".cursor/rules/*.mdc"
 always_apply: true
 rule_version: 3.1
+kb_dependencies:
+  core:
+    - ".cursor/kb/core/semantic-language.yaml"
+    - ".cursor/kb/core/rule-structure-standard.yaml"
+  rule_specific_0000:
+    - ".cursor/kb/0000-cursor-rules/validation/validation-rules.yaml"
+    - ".cursor/kb/0000-cursor-rules/core/implementation-checklist.yaml"
+    - ".cursor/kb/0000-cursor-rules/core/modules/llm-roles.yaml"
+    - ".cursor/kb/0000-cursor-rules/core/modules/documentation-structure.yaml"
 ---
 
 # Méta-Règle pour la Création de Règles Cursor
@@ -15,8 +24,8 @@ rule_version: 3.1
   ⊕ rule_kb: ".cursor/kb/0000-cursor-rules/",
   
   # KB central et guides
-  ⊕ semantic_principles: core_kb + "semantic-principles.yaml",
-  ⊕ rule_structure: core_kb + "rule-structure.yaml",
+  ⊕ semantic_language: core_kb + "semantic-language.yaml",
+  ⊕ rule_structure_standard: core_kb + "rule-structure-standard.yaml",
   ⊕ rule_examples: rule_kb + "examples/",
   ⊕ naming_conventions: "@1000-meta-rules-naming-convention.md",
   ⊕ structure_guide: rule_kb + "templates/implementation/structure_guide_template.md",
@@ -35,7 +44,6 @@ rule_version: 3.1
   ⊕ core_modules: rule_kb + "core/modules/",
   ⊕ llm_roles: core_modules + "llm-roles.yaml",
   ⊕ documentation_structure: core_modules + "documentation-structure.yaml",
-  ⊕ rule_structure_details: core_modules + "rule-structure-details.yaml",
   
   # Écosystème et validation
   ⊕ ecosystem_templates: templates_path + "ecosystem/",
@@ -61,7 +69,7 @@ rule_version: 3.1
     holistic•validation(Ξ): integrate_validation_with_broader_coherence_checks | priority: medium
   }
 }
-Σ core•principles | ref: kb•cursor•rules.semantic_principles
+Σ core•principles | ref: kb•cursor•rules.semantic_language
 
 # --- Complexity Assessment Module ---
 ↹ Ω•assess•complexity [p=1] {
@@ -335,7 +343,7 @@ rule_version: 3.1
     reference_files: compile_standard_information | if: needed
   ]
 }
-Σ structural•guidelines | ref: kb•cursor•rules.rule_structure_details
+Σ structural•guidelines | ref: kb•cursor•rules.rule_structure_standard
 
 ↹ implementation•criteria [p=2] {
   ⊕ quality•levels [

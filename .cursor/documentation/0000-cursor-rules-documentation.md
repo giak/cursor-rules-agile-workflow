@@ -2,7 +2,7 @@
 
 ## 📋 Résumé
 
-La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (3.1) met l'accent sur la modularité et la factorisation des connaissances tout en maintenant la séparation claire entre connaissances, processus cognitifs et rôles du LLM.
+La méta-règle `0000-cursor-rules.mdc` définit le standard et le processus de création des règles Cursor. Elle établit une méthodologie complète pour garantir des règles cohérentes, compréhensibles et efficaces à travers un système de compression sémantique, d'externalisation des connaissances et de processus cognitifs clairs. La version actuelle (3.1+) met l'accent sur la modularité, l'adaptation à la complexité, et la factorisation des connaissances tout en maintenant la séparation claire entre connaissances, processus cognitifs et rôles du LLM.
 
 | Aspect               | Description                                                                             |
 | -------------------- | --------------------------------------------------------------------------------------- |
@@ -86,29 +86,30 @@ Pour pallier la rigidité potentielle d'un workflow unique, la version 3.x intro
 
 Cette approche permet d'ajuster l'effort et la rigueur du processus à la nature de la règle, optimisant l'efficacité sans sacrifier la qualité pour les règles complexes.
 
-### Architecture de la Base de Connaissances (KB)
+### Architecture de la Base de Connaissances (KB) - **Mise à jour**
 
-La règle 2.2 utilise une architecture de connaissances encore plus modulaire avec des modules spécifiques pour différents aspects du système:
+La structure KB a été rationalisée :
 
 ```mermaid
 flowchart TD
-    %% Définition du graphe principal
-    CORE([".cursor/kb/core/"]) --- SP>semantic-principles.yaml]
-    CORE --- DP>design-patterns.yaml]
-    CORE --- SN>semantic-notation.yaml]
-    CORE --- GP>glob-patterns.yaml]
-    CORE --- RS>rule-structure.yaml]
+    %% Définition du graphe principal - MISE A JOUR V4
+    CORE([".cursor/kb/core/"]) --- SL["<b>semantic-language.yaml</b><br><i>Principes + Notation</i>"]
+    CORE --- DP["design-patterns.yaml"]
+    CORE --- RSS["<b>rule-structure-standard.yaml</b><br><i>Structure + Détails</i>"]
+    CORE --- GP["glob-patterns.yaml"]
 
-    R0([".cursor/kb/0000-cursor-rules/"]) --- RSG>rule-structure-guide.md]
-    R0 --- VC>validation-criteria.yaml]
+    R0([".cursor/kb/0000-cursor-rules/"]) --- VC["validation/validation-rules.yaml"]
+    R0 --- ICL["core/implementation-checklist.yaml"]
+    %% Ajouté pour clarté %%
     R0 --- EX([examples/])
-    EX --- VE>valid-example.md]
-    EX --- IE>bad-example.md]
+    EX --- VE["valid-example.md"]
+    EX --- IE["bad-example.md"]
 
-    R0 --- MOD([modules/])
-    MOD --- LR>llm-roles.yaml]
-    MOD --- DS>documentation-structure.yaml]
-    MOD --- RSD>rule-structure-details.yaml]
+    R0 --- MOD([core/modules/])
+    %% Chemin mis à jour %%
+    MOD --- LR["llm-roles.yaml"]
+    MOD --- DS["documentation-structure.yaml"]
+    %% MOD --- RSD>rule-structure-details.yaml] -- Supprimé --
 
     %% Styles améliorés
     classDef coredir fill:#f2e6d9,stroke:#b58863,stroke-width:2px,color:#333
@@ -118,8 +119,8 @@ flowchart TD
 
     class CORE,EX,MOD coredir
     class R0 ruledir
-    class SP,DP,SN,GP,RS,RSG,VC,VE,IE file
-    class LR,DS,RSD module
+    class SL,RSS,DP,GP,VC,ICL,VE,IE file
+    class LR,DS module
 ```
 
 ## ⚙️ Nouveaux Modules Clés (v3.x)
@@ -248,7 +249,7 @@ graph TD
 
 ## 🔄 Workflow de Création des Règles (Ω•create•rule) Refactorisé (v3.x)
 
-Le workflow `Ω•create•rule` est maintenant orchestré en phases distinctes, intégrant les nouveaux modules d'évaluation et d'adaptation.
+Le frontmatter YAML de la règle `.mdc` contient les métadonnées essentielles, y compris la nouvelle section `kb_dependencies` qui liste les fichiers KB externes requis pour la validation et la compréhension humaine.
 
 ```mermaid
 flowchart TB
@@ -470,84 +471,54 @@ Ce rôle prend en charge la création de la documentation utilisateur pour la r�
   - `ecosystem_documenter`: Documente la structure KB associée.
 - **Sorties Attendues :** Fichier de documentation complet, guide d'implémentation.
 
-## 🧩 Modules Factorisés (Nouveauté v2.2)
-
-La version 2.2 introduit trois nouveaux modules qui externalisent des aspects spécifiques de la règle:
-
-### 1. Module Rôles LLM (`llm-roles.yaml`)
-
-Ce module externalise les détails des rôles du LLM, incluant:
-
-- Définition précise des rôles pour la création de règles
-- Définition des rôles pour la génération de documentation
-- Entrées, sorties et critères de qualité pour chaque rôle
-
-### 2. Module Structure de Documentation (`documentation-structure.yaml`)
-
-Ce module externalise tout ce qui concerne la structure de la documentation:
-
-- Principes de documentation (complétude, cohérence, clarté, traçabilité)
-- Sections requises et recommandées avec leur ordre
-- Types de diagrammes à inclure
-- Éléments clés pour une documentation efficace
-
-### 3. Module Détails de Structure de Règle (`rule-structure-details.yaml`)
-
-Ce module externalise les détails concernant la structure des règles:
-
-- Syntaxe et exemple pour chaque section requise
-- Erreurs courantes à éviter
-- Directives de formatage et placement des symboles
-- Critères de validation des règles
-
-## 🌲 Arborescence des Fichiers de la Méta-Règle (v2.2)
+## 🌲 Arborescence des Fichiers de la Méta-Règle - **Mise à jour**
 
 ### Représentation Graphique
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f0f8ff', 'fontSize': '16px'}}}%%
 flowchart TD
-    %% Titre du diagramme
-    title[<b>Arborescence des Fichiers de la Méta-Règle v2.2</b>]
-    style title fill:none,stroke:none
+    %% Titre est dans le Markdown au-dessus
+    %% title[<b>Arborescence Fichiers Méta-Règle (Post-Consolidation)</b>]
+    %% style title fill:none,stroke:none
 
     %% Organisation principale
     ROOT("<b>.cursor/</b>") --- STRUCTURE("<i>Organisation structurelle</i>")
     STRUCTURE --- RULES["<b>rules/</b><br><i>Règles Cursor</i>"]
     STRUCTURE --- KB["<b>kb/</b><br><i>Base de Connaissances</i>"]
     STRUCTURE --- DOC["<b>documentation/</b><br><i>Documentation Utilisateur</i>"]
+    STRUCTURE --- MEM["<b>memory/</b><br><i>Mémoire de Session</i>"]
 
     %% Section des règles
     subgraph RULES_GROUP ["Règles"]
-        METARULE["0000-cursor-rules.mdc<br><i>Méta-règle définissant<br>la structure des règles</i>"]
+        METARULE["0000-cursor-rules.mdc<br><i>Méta-règle<br>(Inclut kb_dependencies)</i>"]
     end
     RULES --- RULES_GROUP
 
-    %% Section KB Core
+    %% Section KB Core - MISE A JOUR
     subgraph KB_CORE ["KB Commune (Core)"]
-        CORE["core/"] --- SP["semantic-principles.yaml<br><i>Principes de compression</i>"]
-        CORE --- DP["design-patterns.yaml<br><i>Modèles de conception</i>"]
-        CORE --- SN["semantic-notation.yaml<br><i>Notation sémantique</i>"]
-        CORE --- GP["glob-patterns.yaml<br><i>Patterns de fichiers</i>"]
-        CORE --- RS["rule-structure.yaml<br><i>Structure formelle</i>"]
+        CORE["core/"] --- SL["<b>semantic-language.yaml</b><br><i>Principes + Notation</i>"]
+        CORE --- DP["design-patterns.yaml"]
+        CORE --- RSS["<b>rule-structure-standard.yaml</b><br><i>Structure + Détails</i>"]
+        CORE --- GP["glob-patterns.yaml"]
     end
     KB --- KB_CORE
 
-    %% Section KB 0000
+    %% Section KB 0000 - MISE A JOUR
     subgraph KB_SPECIFIC ["KB Spécifique (0000)"]
-        KB0000["0000-cursor-rules/"] --- RSG["rule-structure-guide.md<br><i>Guide détaillé</i>"]
-        KB0000 --- VC["validation-criteria.yaml<br><i>Critères de validation</i>"]
+        KB0000["0000-cursor-rules/"] --- VC["validation/validation-rules.yaml"]
+        KB0000 --- ICL["core/implementation-checklist.yaml"]
 
         subgraph EXAMPLES ["Exemples"]
-            EX["examples/"] --- VE["valid-example.md<br><i>Exemple correct</i>"]
-            EX --- IE["bad-example.md<br><i>Anti-patterns</i>"]
+            EX["examples/"] --- VE["valid-example.md"]
+            EX --- IE["bad-example.md"]
         end
         KB0000 --- EX
 
         subgraph MODULES ["Modules Factorisés"]
-            MOD["modules/"] --- LR["llm-roles.yaml<br><i>Rôles des LLM</i>"]
-            MOD --- DS["documentation-structure.yaml<br><i>Structure de documentation</i>"]
-            MOD --- RSD["rule-structure-details.yaml<br><i>Détails de structure</i>"]
+            MOD["core/modules/"] --- LR["llm-roles.yaml"]
+            MOD --- DS["documentation-structure.yaml"]
+            %% -- rule-structure-details.yaml -- Supprimé --
         end
         KB0000 --- MOD
     end
@@ -555,9 +526,15 @@ flowchart TD
 
     %% Section Documentation
     subgraph DOC_GROUP ["Documentation"]
-        METADOC["0000-cursor-rules-documentation.md<br><i>Documentation complète</i>"]
+        METADOC["0000-cursor-rules-documentation.md<br><i>Cette documentation</i>"]
     end
     DOC --- DOC_GROUP
+
+    %% Section Mémoire
+    subgraph MEM_GROUP ["Mémoire (Conceptuelle)"]
+        MEMFILE["session_...md<br><i>Suivi des sessions</i>"]
+    end
+    MEM --- MEM_GROUP
 
     %% Légende
     classDef directory fill:#f9d77e,stroke:#d9b066,stroke-width:2px,border-radius:8px
@@ -566,90 +543,300 @@ flowchart TD
     classDef section fill:#e6f7ff,stroke:#67c8ff,stroke-width:1px,stroke-dasharray:5 5,border-radius:10px
     classDef label fill:none,stroke:none
 
-    class ROOT,RULES,KB,DOC,CORE,KB0000,EX,MOD directory
-    class METARULE,SP,DP,SN,GP,RS,RSG,VC,VE,IE,METADOC file
-    class LR,DS,RSD module
+    class ROOT,RULES,KB,DOC,MEM,CORE,KB0000,EX,MOD directory
+    class METARULE,SL,DP,RSS,GP,VC,ICL,VE,IE,METADOC,MEMFILE file
+    class LR,DS module
     class STRUCTURE label
-    class RULES_GROUP,KB_CORE,KB_SPECIFIC,DOC_GROUP,EXAMPLES,MODULES section
+    class RULES_GROUP,KB_CORE,KB_SPECIFIC,DOC_GROUP,MEM_GROUP,EXAMPLES,MODULES section
 
     %% Annotations sur les relations
     linkStyle 0 stroke:#999,stroke-width:1px,stroke-dasharray:3 3
-    linkStyle 1,2,3 stroke:#67c8ff,stroke-width:1.5px
+    linkStyle 1,2,3,4 stroke:#67c8ff,stroke-width:1.5px
 ```
 
-### Représentation Textuelle Détaillée
+### Représentation Textuelle Détaillée - **Mise à jour**
 
-L'organisation des fichiers de la méta-règle v2.2 suit une structure hiérarchique améliorée avec externalisation des modules :
+L'organisation post-consolidation est la suivante :
 
-```
-.cursor/                                     # Répertoire racine contenant tous les éléments Cursor
+```text
+.cursor/
 │
-├── rules/                                   # Contient toutes les règles Cursor
-│   │
-│   └── 0000-cursor-rules.mdc                # LA MÉTA-RÈGLE PRINCIPALE (v2.2)
-│       • Définit la structure des règles
-│       • Établit les processus cognitifs
-│       • Spécifie la délégation au LLM
-│       • Pointe vers les fichiers KB externes
-│       • Utilise le principe de factorisation
+├── rules/
+│   └── 0000-cursor-rules.mdc  # MÉTA-RÈGLE (inclut kb_dependencies)
 │
-├── kb/                                      # BASE DE CONNAISSANCES
+├── kb/
 │   │
-│   ├── core/                                # KB COMMUNE (réutilisable par plusieurs règles)
-│   │   │
-│   │   ├── semantic-principles.yaml         # Principes fondamentaux de compression sémantique
-│   │   ├── design-patterns.yaml             # Modèles de conception pour les règles
-│   │   ├── semantic-notation.yaml           # Notation formelle pour la compression sémantique
-│   │   ├── glob-patterns.yaml               # Modèles pour les fichiers ciblés par les règles
-│   │   └── rule-structure.yaml              # Structure formelle des règles
+│   ├── core/                  # KB COMMUNE
+│   │   ├── semantic-language.yaml        # Fusion: Principes + Notation
+│   │   ├── design-patterns.yaml
+│   │   ├── rule-structure-standard.yaml  # Fusion: Structure + Détails
+│   │   └── glob-patterns.yaml
 │   │
-│   └── 0000-cursor-rules/                   # KB SPÉCIFIQUE À LA MÉTA-RÈGLE
+│   └── 0000-cursor-rules/     # KB SPÉCIFIQUE À LA MÉTA-RÈGLE
 │       │
-│       ├── rule-structure-guide.md          # Guide détaillé et complet sur la structure des règles
-│       ├── validation-criteria.yaml         # Critères formels pour valider la conformité des règles
+│       ├── validation/validation-rules.yaml
+│       ├── core/implementation-checklist.yaml
 │       │
-│       ├── examples/                        # EXEMPLES DE RÈGLES
-│       │   ├── valid-example.md             # Exemple de règle correctement structurée
-│       │   └── bad-example.md               # Contre-exemple avec anti-patterns
+│       ├── examples/
+│       │   ├── valid-example.md
+│       │   └── bad-example.md
 │       │
-│       └── modules/                         # MODULES FACTORISÉS (NOUVEAUTÉ v2.2)
-│           │
-│           ├── llm-roles.yaml               # Définition détaillée des rôles LLM
-│           │   • Rôles pour la création de règles
-│           │   • Rôles pour la génération de documentation
-│           │   • Entrées, sorties et critères de qualité
-│           │
-│           ├── documentation-structure.yaml # Structure de la documentation
-│           │   • Principes de documentation
-│           │   • Sections requises et recommandées
-│           │   • Types de diagrammes à inclure
-│           │
-│           └── rule-structure-details.yaml  # Détails de la structure des règles
-│               • Syntaxe de chaque section
-│               • Erreurs courantes à éviter
-│               • Directives de formatage
+│       └── core/modules/        # MODULES FACTORISÉS
+│           ├── llm-roles.yaml
+│           └── documentation-structure.yaml
+│           # (rule-structure-details.yaml fusionné)
 │
-└── documentation/                           # DOCUMENTATION UTILISATEUR
-    │
-    └── 0000-cursor-rules-documentation.md   # Documentation complète de la méta-règle (ce document)
-        • Mise à jour pour la version 2.2
-        • Explication des modules factorisés
-        • Guide d'utilisation
-        • Représentations visuelles
+├── documentation/
+│   └── 0000-cursor-rules-documentation.md # Cette documentation
+│
+└── memory/
+    └── session_...md          # Suivi conceptuel des sessions
 ```
 
-### Relations entre les composants
+### Relations entre les composants - **Mis à jour**
 
-- **Règle principale** (`.mdc`) : Version 2.2 plus concise, faisant référence aux modules externalisés
-- **Modules factorisés** (nouveauté v2.2) :
-  - `llm-roles.yaml` : Détails des rôles LLM
-  - `documentation-structure.yaml` : Structure de documentation
-  - `rule-structure-details.yaml` : Détails de structure des règles
-- **Fichiers KB** :
-  - Organisation maintenue avec amélioration de la modularité
-- **Documentation** : Mise à jour pour refléter les changements de la v2.2
+- **Règle principale** (`.mdc`) : Contient la logique, les workflows, et le **manifeste `kb_dependencies`**. Fait référence aux modules et KB consolidés.
+- **Modules factorisés** : `llm-roles.yaml`, `documentation-structure.yaml` (dans `kb/0000-cursor-rules/core/modules/`).
+- **Fichiers KB Core Consolidés** : `semantic-language.yaml`, `rule-structure-standard.yaml`.
+- **Documentation** : Ce document, mis à jour pour refléter la structure actuelle.
 
-Cette structure améliorée illustre le principe de factorisation et d'externalisation des connaissances, démontrant dans sa propre structure les principes qu'elle promeut.
+## 🧩 Modules Factorisés - **Mis à jour**
+
+_(Note : L'ancien module `rule-structure-details.yaml` a été fusionné dans `core/rule-structure-standard.yaml`)_
+
+## 🍳 Cookbook / Scénarios Pratiques
+
+Cette section présente deux scénarios complets d'utilisation de la méta-règle `0000` pour créer et utiliser des règles Cursor.
+
+### Scénario 1 : Création d'une Règle de Scaffolding Vue 3 (Complexité Moyenne)
+
+**Objectif :** Création et utilisation d'une règle (`2101`) pour générer un panier d'achat Vue 3 avec composants et gestion d'état.
+
+**Processus :**
+
+1. **Création de la Règle :**
+
+   - Évaluation de la complexité (Medium)
+   - Création de l'écosystème KB avec templates et guidelines
+   - Implémentation de la règle avec workflow de scaffolding
+   - Génération de la documentation
+
+2. **Structure Générée :**
+
+   - Composants Vue : `ProductList`, `ProductCard`, `ShoppingCart`, `CartCount`
+   - Composable : `useCart.ts` pour la gestion d'état
+   - Alternative suggérée : Migration vers Pinia pour les cas complexes
+
+3. **Résultats :**
+   - Règle réutilisable pour scaffolding de panier
+   - Templates maintenables et documentés
+   - Séparation claire UI/Logique via composable
+
+<details>
+<summary>Historique Complet du Scénario</summary>
+
+```markdown
+# Vue 3 Shopping Cart Scaffold Rule Creation (2025-04-04 02:24:10)
+
+_**User**_
+
+@0000-cursor-rules.mdc créer une nouvelle regle pour la mise en place d'un "Shopping Cart Scaffold"
+
+- ProductList.vue: Affiche une liste de produits (données statiques initialement).
+- ProductCard.vue: Affiche un produit individuel avec un bouton "Ajouter au panier".
+- ShoppingCart.vue: Affiche le contenu du panier (items, quantité, bouton "Supprimer").
+- CartCount.vue: Affiche le nombre d'items dans le panier.
+- Elle doit définir l'utilisation d'un composable useCart.js (pattern Vue 3) pour gérer l'état et la logique du panier (ajout, suppression, récupération des items). Utiliser Pinia peut être une alternative suggérée pour une gestion d'état plus robuste si le projet devient plus complexe.
+
+@package.json
+
+_**Assistant**_
+
+Je vais créer une nouvelle règle Cursor pour le scaffolding d'un panier d'achat Vue 3. Après analyse, je considère cela comme une tâche de complexité moyenne car elle implique plusieurs composants interconnectés et une gestion d'état.
+
+1. **Définition de l'ID de la règle :** `2101-vue3-shopping-cart-scaffold` (Catégorie 21xx pour les scaffolds Vue.js)
+
+2. **Création de la structure KB :**
+
+   - `.cursor/kb/2101-vue3-shopping-cart-scaffold/`
+   - Templates pour chaque composant
+   - Guidelines pour l'utilisation
+   - Documentation de référence
+
+3. **Création du fichier de règle principal :**
+   - `.cursor/rules/2101-vue3-shopping-cart-scaffold.mdc`
+
+Je commence par créer les fichiers KB nécessaires.
+
+[... Suite de la création des fichiers KB et de la règle ...]
+
+_**User**_
+
+@2101-vue3-shopping-cart-scaffold.mdc scaffold the cart feature.
+
+_**Assistant**_
+
+Je vais exécuter la règle pour générer la structure du panier d'achat. Je vais :
+
+1. Créer les composants dans `src/components/`
+2. Créer le composable dans `src/composables/`
+3. Configurer la gestion d'état de base
+
+[... Génération des composants et du composable ...]
+
+_**User**_
+
+ok. Passons à l'integration de ces nouveaux composants dans @App.vue , faisons simple
+
+_**Assistant**_
+
+Je vais mettre à jour App.vue pour intégrer les composants du panier de manière simple et efficace :
+
+- CartCount dans le header
+- ProductList et ShoppingCart dans le contenu principal
+- Style de base pour le layout
+
+[... Mise à jour de App.vue ...]
+
+_**User**_
+
+efface tout ce qui n'est pas utile au shopping cart dans l'ensemble de l'application.
+
+_**Assistant**_
+
+Je vais nettoyer l'application pour ne garder que ce qui est nécessaire au panier d'achat :
+
+1. Modifier App.vue pour enlever les éléments par défaut
+2. Supprimer les fichiers/dossiers non nécessaires
+3. Mettre à jour main.ts pour enlever l'initialisation du router
+
+[... Nettoyage de l'application ...]
+```
+
+</details>
+
+### Scénario 2 : Création d'une Règle de Configuration d'Outil (Tailwind + Vite + SCSS)
+
+**Objectif :** Création et utilisation d'une règle (`1100`) pour automatiser l'installation et la configuration de Tailwind CSS v4 dans un projet Vite.
+
+**Processus :**
+
+1. **Création de la Règle :**
+
+   - Définition de la règle `1100-setup-tailwind-vite-scss`
+   - Création des templates de configuration
+   - Implémentation du workflow d'installation
+   - Documentation des processus
+
+2. **Exécution et Résolution de Problème :**
+
+   - Installation des dépendances via pnpm
+   - Configuration de Tailwind et Vite
+   - Résolution du problème d'import SCSS
+   - Mise à jour de la KB avec la solution
+
+3. **Amélioration Continue :**
+   - Mise à jour des guidelines
+   - Adaptation des templates
+   - Documentation des bonnes pratiques
+
+<details>
+<summary>Historique Complet du Scénario</summary>
+
+```markdown
+# Configuration de Tailwind CSS avec Vite (2025-04-04 03:43:39)
+
+_**User**_
+
+@0000-cursor-rules.mdc créer une nouvelle règle qui me permettra de configurer facilement Tailwind CSS version 4 dans mes projets qui utilisent Vite.
+
+- utilise pnpm
+- Utilise du SCSS
+
+@https://tailwindcss.com/docs/installation/using-vite
+@package.json
+
+important : créé la regle et toutes ses dépendances.
+
+_**Assistant**_
+
+Je vais créer une nouvelle règle Cursor qui automatise la configuration de Tailwind CSS v4 avec SCSS et pnpm dans un projet Vite. Je vais suivre les principes de la méta-règle pour créer l'écosystème complet.
+
+1. **ID de la Règle :** `1100-setup-tailwind-vite-scss` (Catégorie 1xxx pour la configuration d'outils)
+
+2. **Structure KB :**
+
+   - `.cursor/kb/1100-setup-tailwind-vite-scss/`
+   - Templates de configuration
+   - Guidelines d'utilisation
+   - Documentation de référence
+
+3. **Fichier de Règle :**
+   - `.cursor/rules/1100-setup-tailwind-vite-scss.mdc`
+
+[... Création de l'écosystème de la règle ...]
+
+_**User**_
+
+@1100-setup-tailwind-vite-scss.mdc
+
+_**Assistant**_
+
+Je vais exécuter la règle pour configurer Tailwind CSS dans votre projet :
+
+1. Installation des dépendances avec pnpm
+2. Configuration de Tailwind
+3. Configuration de Vite
+4. Mise en place du fichier SCSS principal
+
+[... Configuration initiale ...]
+
+_**User**_
+
+j'ai une erreur :
+
+@import 'tailwindcss';
+src/assets/main.scss 1:9 root stylesheet
+@Web
+Tailwindcss ne fonctionne pas, cherche une solution (cela est peut etre du au `.scss`
+
+J'ai relancé "pnpm run dev"
+
+_**Assistant**_
+
+Je vois le problème. L'erreur vient de l'utilisation de l'extension `.scss` pour l'import de Tailwind. Voici la solution :
+
+1. Créer un fichier `.css` pour l'import de Tailwind
+2. Utiliser SCSS pour les autres styles
+3. Mettre à jour la documentation
+
+Je vais adapter la règle et sa KB pour refléter cette solution.
+
+[... Mise à jour de la règle et résolution du problème ...]
+```
+
+</details>
+
+### Enseignements Clés des Scénarios
+
+1. **Création de Règles :**
+
+   - La méta-règle `0000` guide efficacement la création de règles variées
+   - L'écosystème KB assure la maintenance et l'évolution des règles
+   - La documentation intégrée facilite l'utilisation et le débogage
+
+2. **Résolution de Problèmes :**
+
+   - Les règles peuvent être adaptées face aux problèmes rencontrés
+   - La KB est un système vivant qui évolue avec l'expérience
+   - Les solutions sont documentées pour référence future
+
+3. **Bonnes Pratiques :**
+   - Séparation claire des responsabilités (règle, KB, documentation)
+   - Tests et validation intégrés au processus
+   - Documentation continue des décisions et solutions
+
+Ces scénarios démontrent la puissance et la flexibilité du système de règles Cursor, capable de gérer aussi bien la génération de code que la configuration d'outils, tout en s'adaptant aux problèmes rencontrés et en évoluant grâce aux retours d'expérience.
 
 ## ✅ Liste de Vérification v3.x
 
@@ -667,13 +854,14 @@ Utilisez cette liste pour valider votre règle selon la version 3.x:
 - [ ] Maintient la concision de la règle principale
 - [ ] Respecte la structure recommandée pour chaque section
 
-## 📚 Ressources Additionnelles
+## 📚 Ressources Additionnelles - **Mis à jour**
 
-Pour plus de détails sur l'implémentation de la méta-règle 2.2, consultez:
+Pour plus de détails sur l'implémentation de la méta-règle, consultez:
 
-- `.cursor/kb/0000-cursor-rules/rule-structure-guide.md` - Guide complet de structure
-- `.cursor/kb/0000-cursor-rules/validation-criteria.yaml` - Critères formels de validation
+- `.cursor/kb/core/rule-structure-standard.yaml` - Standard complet de structure des règles
+- `.cursor/kb/core/semantic-language.yaml` - Principes et notation sémantiques
+- `.cursor/kb/0000-cursor-rules/validation/validation-rules.yaml` - Critères formels de validation de l'écosystème
+- `.cursor/kb/0000-cursor-rules/core/implementation-checklist.yaml` - Checklist d'implémentation
 - `.cursor/kb/0000-cursor-rules/examples/valid-example.md` - Exemple de règle bien structurée
-- `.cursor/kb/0000-cursor-rules/modules/llm-roles.yaml` - Détails des rôles LLM
-- `.cursor/kb/0000-cursor-rules/modules/documentation-structure.yaml` - Structure de documentation
-- `.cursor/kb/0000-cursor-rules/modules/rule-structure-details.yaml` - Détails de structure des règles
+- `.cursor/kb/0000-cursor-rules/core/modules/llm-roles.yaml` - Détails des rôles LLM
+- `.cursor/kb/0000-cursor-rules/core/modules/documentation-structure.yaml` - Structure de documentation

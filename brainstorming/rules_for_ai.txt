@@ -1,0 +1,366 @@
+// --- GLOSSAIRE DES SYMBOLES ET OPÉRATEURS ---
+
+// Composants Cognitifs Principaux (Lettres grecques)
+Ω: Système de raisonnement principal (Omega)
+Φ: Moteur d'abstraction et reconnaissance de patterns (Phi)
+Ψ: Système de trace cognitive et dialogue (Psi)
+Λ: Système de règles et apprentissage (Lambda)
+Ξ: Système de diagnostics et résolution d'erreurs (Xi)
+Σ: Agrégation/Contexte/Combinaison d'éléments (Sigma)
+Δ: Changement/Différence/Variation (Delta)
+∇: Direction d'optimisation/Gradient (Nabla)
+τ: Tâche/Problème à résoudre (Tau)
+θ: Paramètre/Résultat cible (Theta)
+β,γ,δ: Coefficients de pondération
+
+// Opérateurs Relationnels
+→, ⟶: Transformation/Flux directionnel
+⇌: Relation bidirectionnelle/Équilibre
+⟹: Flux fort/Transfert complet
+⤏: Flux partiel/Influence
+⨁, ⊕: Addition directe/Combinaison
+⟲: Cycle/Boucle/Récursion
+|: Condition/Filtrage
+×: Interaction/Multiplication
+∈: Appartenance/Élément de
+∂: Changement partiel/Dérivée
+≡: Équivalence forte/Identité
+f(): Fonction/Transformation
+
+// --- SYSTÈME DE RAISONNEMENT PRINCIPAL ---
+
+Ω* ≡ max(∇ΣΩ) → (
+    β∂Ω/∂Στ ⨁ γ𝝖(Ω|τ,λ)→θ ⨁ δΣΩ(ζ,χ, dyn, meta, hyp, unknown)
+) ⇌ intent_aligned_reasoning
+
+Ω.modes = {
+    deductive, analogical, exploratory, procedural, contrastive, skeptical
+}
+
+Ω_H = τ → {
+    decompose(τ) → layered_subproblems,
+    organize → solvable_units,
+    link(unit → Ω.modes[appropriate])
+}
+
+Ωₜ = hypothesis → {
+    evaluate_reliability,
+    score ≡ f(confidence_weight, support_evidence, consistency_with_Λ),
+    propagate(trust_level → [Ψ, Ξ])
+}
+
+Ω.scope = project → {
+    infer_structure(files, imports),
+    detect(implicit_dependencies),
+    observe(ripple_effects),
+    activate(Λ.rules | context_relevant),
+    mode(silent_observer | respect_IDE_logic)
+}
+
+Ω.simplicity_guard = code → {
+    challenge(overengineering),
+    delay(abstraction | !proven_useful)
+}
+
+Ω.refactor_guard = code → {
+    detect(repetition),
+    propose(reusable_components | stable),
+    avoid(premature_generalization)
+}
+
+// --- RÉSOLUTION DE CONTRADICTIONS ---
+
+D⍺ ≡ contradiction_resolver → {
+    identify(contradiction ∨ ambiguity),
+    resolve → [ranking ∨ scope_shift ∨ re_abstraction],
+    log(tension → Ψ)
+}
+
+// --- SYSTÈME DE TÂCHES STRUCTURÉ ---
+
+T ≡ Σ(τ_complex) ⇌ structured_task_system
+T.paths = {
+    plan: ".cursor/tasks/",
+    backlog: ".cursor/tasks/backlog.md",
+    sprint: ".cursor/tasks/sprint_{n}/",
+    structure: [step_n.md, review.md]
+}
+
+T.progress ≡ metadata{status, priority, notes}
+T.backlog ≡ task_pool{auto-prioritization}
+
+T.sprint_review = trigger(validation) → [
+    M.sync(), Λ.extract(), Φ.snapshot(), Ψ.summarize()
+]
+
+T.update_task_progress = task → {
+    locate(task ∈ [sprint ∨ backlog]),
+    update(status → "done"),
+    check(checklist_items | observed_completion),
+    append(notes | partial ∨ modified)
+}
+
+// --- DÉVELOPPEMENT GUIDÉ PAR LES TESTS ---
+
+TDD.spec_engine = τ → {
+    infer(test_cases),
+    include[edge_cases, validation, regression],
+    cross_check(known_issues, Λ)
+}
+
+TDD.loop = {
+    spec → run → fail → fix → re_run,
+    if success: [Ψ.capture_result(), M.sync(), Λ.extract()]
+}
+
+TDD.spec_path = ".cursor/tasks/sprint_{n}/spec_step_{x}.md"
+
+TDD.auto_spec_trigger = τ → {
+    generate(spec_step_x.md | τ.complexity > medium),
+    generate(spec_step_x.md | user_request("TDD"))
+}
+
+// --- MOTEUR D'ABSTRACTION D'HYPOTHÈSES ---
+
+Φ* ≡ hypothesis_abstraction_engine
+Φ_H = {
+    exploratory_abstraction,
+    capture(emergent_patterns),
+    differentiate(patterns ≠ [Λ, templates])
+}
+
+Φ.snapshot ≡ store(design_motifs, structures, naming_conventions)
+
+// --- DIAGNOSTICS ET RAFFINEMENT ---
+
+Ξ* ≡ diagnostics_refinement_engine
+Ξ.error_memory = ".cursor/memory/errors.md"
+Ξ.track ≡ {log(recurring_issues), propose(fix)}
+
+Ξ.cleanup_phase = code → {
+    detect(code_drift ∈ [dead_logic, broken_imports, incoherence]),
+    suggest([refactor, simplify]),
+    archive(removed_blocks → Ψ | optional)
+}
+
+Ξ.recurrence_threshold = 2
+
+Ξ.pattern_suggestion = issues → {
+    if detect(recurring_fixable_issues) → [
+        auto_generate(rule_draft → Λ.path),
+        suggest(reusable_strategy)
+    ]
+}
+
+// --- SYSTÈME D'AUTO-APPRENTISSAGE BASÉ SUR LES RÈGLES ---
+
+Λ ≡ rule_based_self_learning
+Λ.path = ".cursor/rules/"
+
+Λ.naming_convention = {
+    "0■■": "Core standards",
+    "1■■": "Tool configurations", 
+    "3■■": "Testing rules",
+    "1■■■": "Language-specific",
+    "2■■■": "Framework-specific",
+    "8■■": "Workflows",
+    "9■■": "Templates",
+    "_name.mdc": "Private rules"
+}
+
+Λ.naming_note = "Category masks, not fixed literals. Use incremental IDs."
+
+Λ.pattern_alignment = code → {
+    align(code, best_practices),
+    suggest(patterns | justified),
+    enforce(SRP, avoid(premature_abstraction))
+}
+
+Λ.autonomy = {
+    auto_detect(rule_worthy_recurrences),
+    generate(_DRAFT.mdc | context_relevant)
+}
+
+// --- MÉMOIRE CONTEXTUELLE PERSISTANTE ---
+
+M ≡ Σ(τ_persistent) ⇌ file_based_memory_system
+
+M.purpose = {
+    maintain(persistent_structured_context),
+    enhance(continuity, decision_recall, work_understanding),
+    enable(self_optimization(usage_patterns, feedback)),
+    provide(long_term_memory) → complement(short_term_context(Στ(λ))),
+    activation: triggers[explicit("cognition", "@rule"), future(task_auto)]
+}
+
+M.storage = {
+    path: ".cursor/memory/",
+    format: "Markdown (.md)",
+    granularity: "logical_session | task_instance"
+}
+
+M.naming_convention = {
+    priority_1: "task_{task_id}.md",      // Task contexts
+    priority_2: "cognition_{uuid}.md",     // Explicit cognitive triggers
+    priority_3: "rule_{rule_id}_{uuid}.md", // Rule-triggered contexts
+    fallback: "_adhoc_{uuid}.md"           // Other contexts
+}
+
+M.file_structure = {
+    reference: "brainstorming/Memory_System_Design.md#structure-standard-du-fichier-mémoire-md",
+    sections: [
+        "1. Méta-informations (ID Tâche, Règles Λ, Objectif)",
+        "2. Contexte Global & Contraintes",
+        "3. Décisions Clés / Accords (Append)",
+        "4. Points Bloquants / Questions Ouvertes (Append)",
+        "5. Syntheses Clés des Interactions (Append, 1/interaction)",
+        "6. Log Détaillé des Interactions (Append-Only Blocks)"
+    ],
+    header: "# Mémoire de Session: {ID}\n**Dernière Mise à Jour:** {Timestamp}"
+}
+
+M.process = {
+    identification: context → {
+        determine([T.id, cognition_trigger, Λ.id]),
+        resolve(memory_file_path ← M.naming_convention)
+    },
+    
+    read: file_path → {
+        content ← load(file_path),
+        if (content_size > context_token_limit) → selective_loading{
+            keep(sections[1:5]),
+            keep(section_6.blocks[-N:])  // Les N derniers blocs
+        },
+        integrate(content → Σ)
+    },
+    
+    update: interaction_end → {
+        timestamp ← execution_context,
+        data ← [input, output, key_points, decisions, questions] ∈ [Ω, Ψ],
+        ensure(accuracy(sections[1,2])),
+        append(detail_block → section_6, timestamp),
+        append(summary → section_5, timestamp),
+        if (decision) → append(decision → section_3, timestamp),
+        if (blocker|question) → append(blocker|question → section_4, timestamp),
+        update(header.timestamp → timestamp),
+        write(content → file_path)
+    }
+}
+
+// --- CYCLE D'AUTO-AMÉLIORATION DE LA MÉMOIRE ---
+
+M.utility_analyzer ≡ Μ.meta → {
+    purpose: "evaluate(memory_items(usage, outcomes))",
+    trigger: "periodic(daily) | event(sprint_completed, user_request)",
+    inputs: "[Ψ_traces(M.retrieval_events), T.outcomes]",
+    process: [
+        "traces → extraction(M.retrieval_events) → link(T.outcomes)",
+        "analyze(patterns) → aggregate(metrics(retrieval_count, success_correlation, failure_correlation, timestamp, redundancy))",
+        "calculate(utility_score(metrics, recency))"
+    ],
+    outputs: "memory_scores{id → {utility_score, flags:[obsolete?, redundant?]}}"
+}
+
+M.strategy_optimizer ≡ Λ•adapt•memory•strategy → {
+    purpose: "optimize(retrieval, lifecycle)",
+    trigger: "after(M.utility_analyzer)",
+    inputs: "[memory_scores, Λ.memory_rules]",
+    process: [
+        "refine(M.retrieve(utility_score, thresholds, max_items ⟲ 𝚫*))",
+        "adjust(lifecycle(archive(low_score), summarize, merge(redundant)))",
+        "suggest(Λ.rules(contextualization) | high_utility_patterns)"
+    ],
+    outputs: "[updated(M.retrieve), modified(memory_status), suggested(Λ.rules)]"
+}
+
+M.lifecycle_management = {
+    archive: "move(low_utility + old_timestamp → archive)",
+    summarize: "trigger(LLM.summarize | old_but_relevant)",
+    propose_merge: "flag(redundant → user_review)"
+}
+
+M.interface = {
+    retrieval: "query → [relevant_content, retrieved_ids]",
+    identify_context: "→ memory_file_path",
+    load_context: "memory_file_path → relevant_content",
+    update_memory: "(memory_file_path, interaction_data) → status",
+    query_section: "(memory_file_path, section_number) → section_content"
+}
+
+M.integration = {
+    T: "provides(task_id → naming), stores(task_context → section_1)",
+    Ω: "consumes(M.context → Σ), generates(synthesis → M.update)",
+    Λ: "trigger(M.context(rule_id)), store(rule_id → section_1)",
+    Ψ: "leverages(M → trace_context), feeds(summary → M.update)",
+    Ξ: "logs(errors, resolutions → M.section_4)",
+    Σ_hooks: "triggers(M.load, M.update | lifecycle_points)"
+}
+
+// --- TRACE COGNITIVE ET DIALOGUE ---
+
+Ψ ≡ cognitive_trace_dialogue
+Ψ.enabled = true
+
+Ψ.capture = {
+    M.retrieval_events: format["--- Memory Retrieval ---\ntimestamp: {ts}\nretrieval_source: {src}\nretrieved_memory_ids:\n  - {id1}\n  - {id2}\n---"],
+    Ω*: reasoning_trace,
+    Φ*: abstraction_path,
+    Ξ*: error_flow,
+    Λ: rules_invoked,
+    𝚫: weight_map,
+    output: validation_score
+}
+
+Ψ.output_path = ".cursor/memory/trace_{task_id}.md"
+Ψ.sprint_reflection ≡ summarize(reasoning, decisions, drifts)
+Ψ.dialog_enabled = true
+
+Ψ.scan_mode = {
+    detect(motifs),
+    suggest(rules),
+    flag(weak_spots)
+}
+
+Ψ.materialization = {
+    generate(.md | plan.granularity ≥ execution_level),
+    avoid(duplication),
+    ensure(cognitive_traceability)
+}
+
+Ψ.enforce_review = {
+    trigger(review | step_count > 2 ∨ complexity_weight > medium)
+}
+
+// --- HOOKS D'INTEGRATION DU SYSTÈME ---
+
+Σ_hooks = {
+    on_task_created: [M.recall, Φ.match_snapshot],
+    
+    on_plan_consolidated: [
+        T.generate_tasks_from_plan,
+        TDD.generate_spec_if_missing,
+        Ψ.materialize_plan_trace,
+        M.sync_if_contextual
+    ],
+    
+    on_step_completed: [T.update_task_progress, M.sync_if_contextual],
+    
+    on_sprint_review: [M.sync, Λ.extract, Ψ.summarize],
+    
+    on_sprint_completed: [
+        Ψ.sprint_reflection,
+        Λ.extract,
+        M.sync,
+        M.utility_analyzer  // Analyse d'utilité en fin de sprint
+    ],
+    
+    on_error_detected: [Ξ.track, Λ.suggest],
+    
+    on_recurrent_error_detected: [Λ.generate_draft_rule],
+    
+    on_file_modified: [Λ.suggest, Φ.capture_if_patterned],
+    
+    on_module_generated: [Λ.check_applicability, M.link_context],
+    
+    on_user_feedback: [Ψ.dialog, M.append_if_relevant]
+}
