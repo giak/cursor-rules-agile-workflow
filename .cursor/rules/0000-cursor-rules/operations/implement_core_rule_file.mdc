@@ -9,85 +9,143 @@ alwaysApply: false
 ↹ operation•implement_core_rule_file [p=1] {
     id: "@op/0000-cursor-rules/implement_core_rule_file",
     version: "1.0.2",
-    description: "Generates the core .mdc rule file content using an LLM, leveraging strategy, KB snapshots, and specific prompt KBs (like semantic_mdc_generator_prompt). Includes an optional refinement step if initial generation is flawed. Records the created artifact to the journal.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        rule_request: { type: "object" },
-        strategy_config: { type: "object" },
-        created_kb_artifacts_snapshot: { type: "array", description: "List of already created KB artifacts (paths, summaries) for context." },
-        target_rule_base_path: { type: "string", description: "Base path for the new rule (e.g., .cursor/rules/)." },
-        semantic_mdc_prompt_kb_path: { type: "string", default: "@kb/0000-cursor-rules/prompts/semantic_mdc_generator_prompt"} // Example default
+    description: "Generates the core .mdc rule file using LLM with refinement capabilities",
+    
+    OP_implement = {
+        type: "rule_file_generation",
+        function: "generate_semantic_mdc",
+        cognitive_load: "very_high"
+    }
+    
+    input: {
+        rule_request: "Original rule request with details",
+        strategy: "Strategy configuration from previous phase",
+        kb_artifacts: "List of created KB artifacts for context",
+        rule_base_path: "Base path for the rule file (e.g., .cursor/rules/)",
+        prompt_kb_path: "@kb/0000-cursor-rules/prompts/semantic_mdc_generator_prompt"
     },
 
-    output_schema: {
+    output: {
         created_mdc_artifact: {
-            type: "object",
-            properties: {
-                artifact_type: { type: "string", const: "rule_mdc" },
-                file_path: { type: "string" },
-                status: { type: "enum", values: ["Success", "SuccessWithStub", "GenerationFailed", "SuccessAfterRefinement"] },
-                content_summary_or_hash: { type: "string", optional: true }
-            },
-            required: ["artifact_type", "file_path", "status"]
+            artifact_type: "rule_mdc",
+            file_path: "Path to the created rule file",
+            status: "enum(Success, SuccessWithStub, GenerationFailed, SuccessAfterRefinement)",
+            content_hash: "Hash of the content (optional)"
         }
     },
-
-    dependencies: [
-        "@kb/0000-cursor-rules/prompts/semantic_mdc_generator_prompt",
-        "@llm_contract/0000-cursor-rules/mdc_semantic_refiner"
-    ],
-
-    steps: [
-        {
-            step_id: "load_generation_prompt",
-            description: "Load the specialized prompt for generating semantic .mdc rule content.",
-            logic: "KB•load_content(input.semantic_mdc_prompt_kb_path)",
-            outputs: ["generation_prompt_template"]
+    
+    Ω_process = {
+        # Stage 1: Preparation
+        prepare: {
+            action: "KB•load_content",
+            input: "input.prompt_kb_path",
+            output: "prompt_template",
+            
+            action_path: {
+                derive_filepath: {
+                    action: "Ω•filepath.construct",
+                    input: {
+                        base: "input.rule_base_path",
+                        id: "input.rule_request.rule_id",
+                        ext: ".mdc"
+                    },
+                    output: "target_filepath"
+                }
+            }
         },
-        {
-            step_id: "initial_mdc_generation",
-            description: "Call LLM to generate the initial draft of the .mdc rule file.",
-            logic: "LLM•call/prompt_template(template: step_outputs.load_generation_prompt.generation_prompt_template, data: {rule_request: input.rule_request, strategy: input.strategy_config, kbs: input.created_kb_artifacts_snapshot})",
-            outputs: ["raw_mdc_content", "initial_generation_quality_assessment"] // LLM might also output a self-assessment
+        
+        # Stage 2: Initial generation
+        generate: {
+            action: "LLM•call",
+            template: "prompt_template",
+            input: {
+                rule_request: "input.rule_request",
+                strategy: "input.strategy",
+                kb_artifacts: "input.kb_artifacts"
+            },
+            output: {
+                content: "initial_mdc_content",
+                quality: "generation_quality"
+            }
         },
-        {
-            step_id: "check_initial_quality",
-            description: "Assess if the generated MDC is empty or significantly flawed.",
-            logic: "Ω•internal/evaluate_mdc_quality(step_outputs.initial_mdc_generation.raw_mdc_content, step_outputs.initial_mdc_generation.initial_generation_quality_assessment)",
-            outputs: ["is_flawed", "current_mdc_content"]
+        
+        # Stage 3: Quality evaluation
+        evaluate: {
+            action: "Λ.evaluate_mdc_quality",
+            input: {
+                content: "initial_mdc_content",
+                assessment: "generation_quality"
+            },
+            output: {
+                is_valid: "mdc_valid",
+                issues: "detected_issues"
+            }
         },
-        {
-            step_id: "conditional_refinement",
-            description: "If flawed, call a refiner LLM contract.",
-            condition: "step_outputs.check_initial_quality.is_flawed == true",
-            logic: "LLM•call/@llm_contract/0000-cursor-rules/mdc_semantic_refiner(input_data={rule_request: input.rule_request, initial_mdc: step_outputs.check_initial_quality.current_mdc_content, issues: 'empty or malformed'})",
-            outputs: ["refined_mdc_content"]
+        
+        # Stage 4: Conditional refinement
+        refine: {
+            condition: "!mdc_valid",
+            action: "LLM•call",
+            contract: "LLM_mdc_refiner",
+            input: {
+                rule_request: "input.rule_request",
+                initial_mdc: "initial_mdc_content",
+                issues: "detected_issues"
+            },
+            output: "refined_mdc_content"
         },
-        {
-            step_id: "select_final_mdc_content",
-            description: "Select either initial or refined MDC content.",
-            logic: "Ω•internal/select_content(initial: step_outputs.check_initial_quality.current_mdc_content, refined: step_outputs.conditional_refinement.refined_mdc_content, condition_met: step_outputs.check_initial_quality.is_flawed)",
-            outputs: ["final_mdc_content", "final_status_enum_value"]
-        },
-        {
-            step_id: "determine_target_path",
-            description: "Determine the full path for the new rule file.",
-            logic: "Ω•internal/construct_rule_filepath(input.target_rule_base_path, input.rule_request.rule_id, '.mdc')",
-            outputs: ["target_filepath"]
-        },
-        {
-            step_id: "save_mdc_file",
-            description: "Save the final .mdc content to the target path.",
-            logic: "FILESYSTEM•write(path: step_outputs.determine_target_path.target_filepath, content: step_outputs.select_final_mdc_content.final_mdc_content)",
-            outputs: ["file_write_status"]
-        },
-        {
-            step_id: "add_to_journal",
-            description: "Add information about the created MDC to the output.",
-            logic: "Ω•internal/format_mdc_journal_entry(step_outputs.determine_target_path.target_filepath, step_outputs.select_final_mdc_content.final_status_enum_value, step_outputs.save_mdc_file.file_write_status)",
-            outputs: ["created_mdc_artifact"]
+        
+        # Stage 5: Finalization
+        finalize: {
+            action: "Ω•select_content",
+            input: {
+                initial: "initial_mdc_content",
+                refined: "refined_mdc_content",
+                use_refined: "!mdc_valid"
+            },
+            output: {
+                content: "final_mdc_content",
+                status: "final_status"
+            },
+            
+            action_path: {
+                save: {
+                    action: "Ω•filesystem.write",
+                    input: {
+                        path: "target_filepath",
+                        content: "final_mdc_content"
+                    },
+                    output: "write_status",
+                    error_handling: "Λ.handle_filesystem_error(write_status)"
+                },
+                
+                journal: {
+                    action: "M.record_artifact",
+                    input: {
+                        type: "rule_mdc",
+                        path: "target_filepath",
+                        status: "final_status",
+                        meta: {
+                            content_hash: "Ω•hash(final_mdc_content)"
+                        }
+                    },
+                    output: "created_mdc_artifact"
+                }
+            }
         }
-    ]
+    },
+    
+    dependencies: {
+        KB_prompt: "@kb/0000-cursor-rules/prompts/semantic_mdc_generator_prompt",
+        LLM_mdc_refiner: "@llm_contract/0000-cursor-rules/mdc_semantic_refiner",
+        KB_filepath: "@kb/0000-cursor-rules/knowledge/filepath_utilities"
+    },
+    
+    Ψ_trace = {
+        mdc_generation: "M.record_generation_metrics(initial_mdc_content, generation_quality)",
+        mdc_refinement: "M.record_refinement_metrics(detected_issues, final_status)",
+        creation_complete: "Ψ.log(target_filepath, final_status)"
+    }
 }
-Σ operation_specification implement_core_rule_file_simulation
+
+Σ operation•implement_core_rule_file

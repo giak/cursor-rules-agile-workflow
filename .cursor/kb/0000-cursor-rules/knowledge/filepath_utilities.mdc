@@ -1,0 +1,67 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Filepath Utilities for Cursor Rules System
+# Version 1.0.0
+# This KB file defines utility functions for constructing file paths consistently throughout the system
+
+↹ kb•filepath_utilities [p=1] {
+    id: "@kb/0000-cursor-rules/knowledge/filepath_utilities",
+    version: "1.0.0",
+    description: "Defines utility functions for file path construction across the rules system",
+    
+    functions: {
+        # Constructs a filepath for a rule file
+        "Ω•filepath.construct": {
+            description: "Constructs a filepath for a rule MDC file",
+            parameters: {
+                base: "Base directory path",
+                id: "Rule ID (e.g., 0002-hello-world-semantic)",
+                ext: "File extension (default: .mdc)"
+            },
+            implementation: "return base + id + (ext || '.mdc')"
+        },
+        
+        # Constructs a filepath for a documentation file
+        "Ω•filepath.construct_doc": {
+            description: "Constructs a filepath for a rule's documentation file",
+            parameters: {
+                manifest: "Documentation manifest from strategy",
+                rule_id: "Rule ID (e.g., 0002-hello-world-semantic)"
+            },
+            implementation: """
+            // Default documentation path pattern
+            const docBase = '.cursor/documentation/';
+            const filename = rule_id + '-documentation.md';
+            
+            // Use manifest path if available
+            if (manifest && manifest.target_path_pattern) {
+                return manifest.target_path_pattern.replace('{rule_id}', rule_id);
+            }
+            
+            // Default fallback
+            return docBase + filename;
+            """
+        },
+        
+        # Constructs a filepath for a KB file
+        "Ω•filepath.construct_kb": {
+            description: "Constructs a filepath for a knowledge base file",
+            parameters: {
+                base: "Base KB directory path",
+                rule_id: "Rule ID (e.g., 0002-hello-world-semantic)",
+                kb_type: "Type of KB file",
+                ext: "File extension based on format"
+            },
+            implementation: """
+            // Extract numerical prefix from rule_id (e.g., 0002 from 0002-hello-world-semantic)
+            const prefix = rule_id.split('-')[0];
+            return base + prefix + '/' + kb_type + ext;
+            """
+        }
+    }
+}
+
+Σ kb•filepath_utilities ⊕ system•utilities ⊕ filesystem•helpers

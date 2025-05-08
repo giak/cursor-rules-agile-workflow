@@ -9,52 +9,102 @@ alwaysApply: false
 ↹ operation•request_clarification [p=1] {
     id: "@op/0000-cursor-rules/request_clarification",
     version: "1.0.0",
-    description: "Presents ambiguities or low-confidence assessments to the user and requests clarification. Uses an LLM contract to interpret the feedback.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        justification_text: { type: "string", description: "Text explaining why clarification is needed (e.g., from complexity assessment)." },
-        confidence_text: { type: "string", optional: true, description: "Text related to confidence level, if applicable." },
-        initial_strategy_or_understanding: { type: "object", description: "The current understanding or strategy that needs clarification." },
-        prompt_for_user: { type: "string", description: "The specific question or prompt to display to the user." }
+    description: "Solicits and interprets user clarification for ambiguities or low confidence",
+    
+    OP_clarify = {
+        type: "interactive_clarification",
+        function: "resolve_ambiguities_with_user",
+        cognitive_load: "medium"
+    }
+    
+    input: {
+        justification: "Explanation of why clarification is needed",
+        confidence: "Text related to confidence level (optional)",
+        strategy: "Current understanding or strategy needing clarification",
+        prompt: "Specific question or prompt to display to the user"
     },
 
-    output_schema: {
-        user_feedback_interpretation: {
-            type: "object",
-            description: "The result of interpreting the user's feedback.",
-            properties: { // Mirrors output of the interpret_clarification_feedback LLM contract
-                adjusted_strategy: { type: "object", optional: true },
-                feedback_summary: { type: "string" },
-                outstanding_questions: { type: "array", items: {type: "string"}, optional: true }
+    output: {
+        user_feedback: {
+            adjusted_strategy: "Updated strategy based on user feedback (optional)",
+            feedback_summary: "Concise summary of user's clarifications",
+            outstanding_questions: ["Any remaining questions after feedback"]
+        }
+    },
+    
+    Ω_process = {
+        # Stage 1: User interaction
+        interact: {
+            action: "Ψ.dialog.request_input",
+            input: {
+                prompt: "input.prompt",
+                context: "input.strategy",
+                justification: "input.justification",
+                confidence_info: "input.confidence"
+            },
+            output: "raw_feedback",
+            
+            validation: {
+                action: "Λ.validate_user_response",
+                input: "raw_feedback",
+                on_empty: "Ψ.dialog.repeat_request"
             }
+        },
+        
+        # Stage 2: Feedback interpretation
+        interpret: {
+            action: "LLM•call",
+            contract: "LLM_feedback_interpreter",
+            input: {
+                original_understanding: "input.strategy",
+                user_feedback: "raw_feedback"
+            },
+            output: "interpretation_result"
+        },
+        
+        # Stage 3: Strategy adjustment
+        adjust: {
+            action: "Λ.process_interpretation",
+            input: "interpretation_result",
+            output: {
+                updated_strategy: "adjusted_strategy",
+                summary: "feedback_summary",
+                questions: "remaining_questions"
+            },
+            
+            # Check if strategy adjustment is significant
+            validation: {
+                action: "M.assess_strategy_change",
+                input: {
+                    original: "input.strategy",
+                    adjusted: "adjusted_strategy"
+                },
+                output: "is_significant_change",
+                on_true: "M.record_strategy_adjustment(adjusted_strategy)"
+            }
+        },
+        
+        # Stage 4: Output formatting
+        format: {
+            action: "M.format_feedback_response",
+            input: {
+                strategy: "adjusted_strategy",
+                summary: "feedback_summary",
+                questions: "remaining_questions"
+            },
+            output: "user_feedback"
         }
     },
-
-    dependencies: [
-        "@llm_contract/0000-cursor-rules/interpret_clarification_feedback"
-    ],
-
-    steps: [
-        {
-            step_id: "present_to_user_and_get_feedback",
-            description: "Display the prompt and current understanding to the user and capture their textual response.",
-            logic: "Ψ.dialog•request_user_input_with_context(prompt: input.prompt_for_user, context_data: input.initial_strategy_or_understanding, justification: input.justification_text)",
-            outputs: ["user_raw_feedback_text"]
-        },
-        {
-            step_id: "interpret_user_feedback",
-            description: "Use an LLM contract to interpret the user's raw feedback.",
-            logic: "LLM•call/@llm_contract/0000-cursor-rules/interpret_clarification_feedback(input_data={original_understanding: input.initial_strategy_or_understanding, user_feedback_text: step_outputs.present_to_user_and_get_feedback.user_raw_feedback_text})",
-            outputs: ["interpretation_result"] // This should match the contract's output_schema
-        },
-        {
-            step_id: "format_output",
-            description: "Format the interpreted feedback according to the operation's output_schema.",
-            logic: "Ω•internal/map_to_output(step_outputs.interpret_user_feedback.interpretation_result) → user_feedback_interpretation",
-            // Ensure this mapping produces the 'adjusted_strategy', 'feedback_summary', etc.
-            outputs: ["user_feedback_interpretation"]
-        }
-    ]
+    
+    dependencies: {
+        LLM_feedback_interpreter: "@llm_contract/0000-cursor-rules/interpret_clarification_feedback"
+    },
+    
+    Ψ_trace = {
+        clarification_requested: "M.record_clarification_request(input.prompt)",
+        feedback_received: "M.record_user_feedback(raw_feedback)",
+        strategy_adjusted: "Ψ.log(feedback_summary, is_significant_change)"
+    }
 }
-Σ operation_specification user_interaction clarification_dialogue feedback_processing
+
+Σ operation•request_clarification | Ψ.interactive

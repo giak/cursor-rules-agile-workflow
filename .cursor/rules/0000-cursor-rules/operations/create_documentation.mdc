@@ -9,64 +9,98 @@ alwaysApply: false
 ↹ operation•create_documentation [p=1] {
     id: "@op/0000-cursor-rules/create_documentation",
     version: "1.0.1",
-    description: "Generates documentation (e.g., a README.md type file) for the new rule, summarizing its purpose, usage, KBs, and potentially auto-documenting its schema if applicable. Records the created artifact to the journal.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        rule_creation_context: {
-            type: "object",
-            properties: {
-                core_rule_file_info: { type: "object", description: "Journal entry for the created core rule file (path, summary)." },
-                created_kb_artifacts: { type: "array", description: "Journal entries for all created KB artifacts." },
-                rule_id: { type: "string", description: "The ID of the newly created rule (e.g., 0002-hello-world-semantic)." },
-                target_documentation_manifest_entry: { type: "object", description: "Manifest entry detailing expected documentation." }
-            },
-            required: ["core_rule_file_info", "rule_id", "target_documentation_manifest_entry"]
-        }
+    description: "Generates comprehensive documentation for the rule and its ecosystem",
+    
+    OP_document = {
+        type: "documentation_generation",
+        function: "create_rule_documentation",
+        cognitive_load: "medium"
+    }
+    
+    input: {
+        core_rule: "Journal entry for the created core rule file",
+        kb_artifacts: "Journal entries for all created KB artifacts",
+        rule_id: "ID of the newly created rule",
+        doc_manifest: "Documentation specification from the manifest"
     },
 
-    output_schema: {
+    output: {
         created_documentation_artifact: {
-            type: "object",
-            properties: {
-                artifact_type: { type: "string", const: "documentation_md" }, // Example
-                file_path: { type: "string" },
-                status: { type: "enum", values: ["Success", "SuccessWithStub", "GenerationFailed"] },
-                content_summary_or_hash: { type: "string", optional: true }
-            },
-            required: ["artifact_type", "file_path", "status"]
+            artifact_type: "documentation_md",
+            file_path: "Path to the created documentation file",
+            status: "enum(Success, SuccessWithStub, GenerationFailed)",
+            content_sections: ["Array of documented sections"]
         }
     },
-
-    dependencies: [
-         "@llm_contract/0000-cursor-rules/documentation_generator"
-    ],
-
-    steps: [
-        {
-            step_id: "generate_documentation_content",
-            description: "Call LLM to generate the documentation content.",
-            logic: "LLM•call/@llm_contract/0000-cursor-rules/documentation_generator(input_data=input.rule_creation_context)",
-            outputs: ["generated_doc_content", "generation_status"]
+    
+    Ω_process = {
+        # Stage 1: Preparation and path resolution
+        prepare: {
+            action: "Ω•filepath.construct_doc",
+            input: {
+                manifest: "input.doc_manifest",
+                rule_id: "input.rule_id"
+            },
+            output: "target_filepath"
         },
-        {
-            step_id: "determine_target_path",
-            description: "Determine the full path for the documentation file from manifest or convention.",
-            logic: "Ω•internal/construct_doc_filepath(input.rule_creation_context.target_documentation_manifest_entry, input.rule_creation_context.rule_id)",
-            outputs: ["target_filepath"]
+        
+        # Stage 2: Documentation generation
+        generate: {
+            action: "LLM•call",
+            contract: "LLM_doc_generator",
+            input: {
+                rule_file: "input.core_rule",
+                kb_artifacts: "input.kb_artifacts",
+                rule_id: "input.rule_id",
+                doc_structure: "input.doc_manifest.main_sections",
+                target_path: "target_filepath"
+            },
+            output: {
+                content: "doc_content",
+                status: "generation_status",
+                sections_covered: "sections_covered"
+            }
         },
-        {
-            step_id: "save_documentation_file",
-            description: "Save the generated documentation to the target path.",
-            logic: "FILESYSTEM•write(path: step_outputs.determine_target_path.target_filepath, content: step_outputs.generate_documentation_content.generated_doc_content)",
-            outputs: ["file_write_status"]
-        },
-        {
-            step_id: "add_to_journal",
-            description: "Add information about the created documentation to the output.",
-            logic: "Ω•internal/format_doc_journal_entry(step_outputs.determine_target_path.target_filepath, step_outputs.generate_documentation_content.generation_status, step_outputs.save_documentation_file.file_write_status)",
-            outputs: ["created_documentation_artifact"]
+        
+        # Stage 3: Finalization and storage
+        finalize: {
+            action: "Ω•filesystem.write",
+            input: {
+                path: "target_filepath",
+                content: "doc_content"
+            },
+            output: "write_status",
+            
+            action_path: {
+                journal: {
+                    action: "M.record_artifact",
+                    input: {
+                        type: "documentation_md",
+                        path: "target_filepath",
+                        status: "generation_status",
+                        meta: {
+                            sections: "sections_covered",
+                            format: "input.doc_manifest.format || 'markdown'"
+                        }
+                    },
+                    output: "created_documentation_artifact"
+                }
+            },
+            
+            error_handling: "Λ.handle_filesystem_error(write_status)"
         }
-    ]
+    },
+    
+    dependencies: {
+        LLM_doc_generator: "@llm_contract/0000-cursor-rules/documentation_generator",
+        KB_doc_templates: "@kb/0000-cursor-rules/templates/documentation_templates",
+        KB_filepath: "@kb/0000-cursor-rules/knowledge/filepath_utilities"
+    },
+    
+    Ψ_trace = {
+        doc_created: "M.record_documentation_metrics(sections_covered)",
+        completion: "Ψ.log(target_filepath, generation_status)"
+    }
 }
-Σ operation_specification create_documentation_simulation
+
+Σ operation•create_documentation

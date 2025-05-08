@@ -9,53 +9,77 @@ alwaysApply: false
 ↹ operation•finalize_creation [p=1] {
     id: "@op/0000-cursor-rules/finalize_creation",
     version: "1.0.0",
-    description: "Compiles a final report summarizing the rule creation process, including validation status and paths to created artifacts.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        validation_report_obj: {
-            type: "object",
-            description: "The validation report from the validate_ecosystem operation."
-            // Expected properties: overall_status, mismatches, summary_text
-        },
-        actual_artifact_journal: {
-            type: "array",
-            items: {
-                type: "object"
-                // Expected properties: artifact_type, file_path, status, etc.
-            },
-            description: "Journal of all artifacts created during the workflow."
-        }
+    description: "Finalizes rule creation with comprehensive report and status summary",
+    
+    OP_finalize = {
+        type: "creation_finalization",
+        function: "complete_rule_creation_process",
+        cognitive_load: "low"
+    }
+    
+    input: {
+        validation_report: "Validation report from the validation phase",
+        artifact_journal: "Complete journal of all created artifacts"
     },
 
-    output_schema: {
+    output: {
         final_report: {
-            type: "object",
-            properties: {
-                status: { type: "string", description: "Overall status of the rule creation (e.g., 'Success', 'CompletedWithWarnings', 'Failed')." },
-                validation_summary: { type: "object", description: "Summary of the validation results." },
-                list_of_created_files_paths: { type: "array", items: { type: "string" }, description: "List of paths to all created files." },
-                link_to_documentation: { type: "string", optional: true, description: "Direct link/path to the main documentation file, if created successfully." }
-            },
-            required: ["status", "validation_summary", "list_of_created_files_paths"]
+            status: "Overall creation status (Success, CompletedWithWarnings, Failed)",
+            validation_summary: "Condensed validation results",
+            list_of_created_files: "Paths to all created artifacts",
+            link_to_documentation: "Direct path to main documentation (if available)"
         }
     },
-
-    dependencies: [], // No new external dependencies, operates on workflow context
-
-    steps: [
-        {
-            step_id: "compile_report_data",
-            description: "Extract and format data from inputs to build the final report.",
-            logic: "Ω•internal/compile_final_creation_report(input.validation_report_obj, input.actual_artifact_journal)",
-            outputs: ["final_report_data"] // This should match the output_schema structure
+    
+    Ω_process = {
+        # Aggregate and process file information
+        process_files: {
+            action: "M.extract_file_paths",
+            input: "input.artifact_journal",
+            output: {
+                rule_files: "rule_paths",
+                kb_files: "kb_paths",
+                doc_files: "doc_paths",
+                all_files: "all_file_paths"
+            }
         },
-        {
-            step_id: "return_report",
-            description: "Output the compiled final report.",
-            logic: "PASS_THROUGH step_outputs.compile_report_data.final_report_data → final_report",
-            outputs: ["final_report"]
+        
+        # Get documentation link if available
+        locate_documentation: {
+            action: "M.find_documentation_file",
+            input: "doc_paths",
+            output: "doc_link",
+            fallback: "null"
+        },
+        
+        # Process validation results
+        process_validation: {
+            action: "Λ.process_validation_report",
+            input: "input.validation_report",
+            output: {
+                overall_status: "creation_status",
+                validation_digest: "validation_digest"
+            }
+        },
+        
+        # Compile final report
+        compile_report: {
+            action: "M.compile_final_report",
+            input: {
+                status: "creation_status",
+                validation: "validation_digest",
+                file_paths: "all_file_paths",
+                doc_link: "doc_link"
+            },
+            output: "final_report"
         }
-    ]
+    },
+    
+    Ψ_trace = {
+        creation_finalized: "M.record_creation_completion(creation_status)",
+        report_generated: "Ψ.log_final_report(final_report)",
+        files_created: "Ψ.log_created_files_summary(all_file_paths.length)"
+    }
 }
-Σ operation_specification rule_creation_finalization reporting workflow_summary
+
+Σ operation•finalize_creation | M.sync(final_report)

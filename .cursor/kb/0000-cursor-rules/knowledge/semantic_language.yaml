@@ -2,42 +2,115 @@
 # Defines core semantic keywords, operators, and structural conventions 
 # for the Apex .mdc syntax, used by the meta-rule ecosystem.
 # This KB is crucial for LLMs to understand and generate valid Apex components.
+
+# Ω_KB = semantic_language_registry 
+# Ω_KB.version = "1.0.0"
+# M.synchronization(Ω_KB) = update_registry_on_changes
+
 version: "1.0.0"
 description: "Defines the vocabulary and grammar for Apex .mdc files, including block types, operators, and section conventions."
-# Example keywords (illustrative, to be expanded):
-# keywords:
-#   - token: "↹"
-#     type: "BlockDefinition"
-#     purpose: "Defines a primary logical block (e.g., rule, operation, workflow, kb_article)."
-#   - token: "⊕"
-#     type: "CompositionOperator"
-#     purpose: "Indicates composition, aggregation, or direct inclusion of elements or properties."
-#   - token: "Σ"
-#     type: "ContextualSignature"
-#     purpose: "Provides a semantic signature or summary tag for a block or the entire file."
-#   - token: "|" # Within property definitions
-#     type: "ConditionalSeparator / PriorityMarker"
-#     purpose: "Separates conditions or marks priority for a property."
-#   - token: "@" # Prefix for IDs
-#     type: "IdentifierReferencePrefix"
-#     purpose: "Prefixes references to other Apex components (rules, KBs, operations, etc.)."
-# sections_conventions:
-#   - name: "id"
-#     description: "Unique identifier for the component, following the @category/domain/name_version pattern."
-#   - name: "version"
-#     description: "Semantic version of the component (e.g., 1.0.0)."
-#   - name: "description"
-#     description: "Human-readable description of the component's purpose."
-#   - name: "author"
-#     description: "Author or system that generated/maintains the component."
-#   - name: "dependencies"
-#     description: "List of other Apex component IDs this component relies on."
-#   - name: "input_schema" # For operations/workflows
-#     description: "Defines the expected input data structure."
-#   - name: "output_schema" # For operations/workflows
-#     description: "Defines the structure of the data output by the component."
-#   - name: "steps" # For operations
-#     description: "Sequence of actions or logic units within an operation."
-#   - name: "orchestration_logic" # For workflows
-#     description: "Sequence of operation calls and conditional logic defining the workflow."
-status: "placeholder_definition_simulated" 
+
+# Expanded semantic symbols dictionary for the hybrid compression approach
+symbols:
+  orchestrators:
+    - token: "Ω*"
+      type: "PrimaryOrchestrator"
+      purpose: "Central component that orchestrates the entire rule creation process"
+    - token: "Ω.state"
+      type: "StateIndicator"
+      purpose: "Explicit state management for the orchestration process"
+    - token: "Ω_F"
+      type: "SpecializedOrchestrator"
+      purpose: "Formation/design specialized component of the orchestrator"
+    - token: "Ω_V"
+      type: "SpecializedOrchestrator"
+      purpose: "Validation specialized component of the orchestrator"
+    - token: "Ω_M"
+      type: "SpecializedOrchestrator"
+      purpose: "Materialization specialized component of the orchestrator"
+  
+  principles_and_constraints:
+    - token: "Π*"
+      type: "PrincipleSystem"
+      purpose: "System of design principles and axioms"
+    - token: "Π.axioms"
+      type: "CorePrinciples"
+      purpose: "Fundamental axioms that guide design decisions"
+    - token: "Π.patterns"
+      type: "DesignPatterns"
+      purpose: "Recurring patterns recommended for implementation"
+    - token: "Λ*"
+      type: "ConstraintSystem"
+      purpose: "System of rules and validation constraints"
+  
+  supporting_systems:
+    - token: "M"
+      type: "MemorySystem"
+      purpose: "System for storing and retrieving contextual information"
+    - token: "Ψ"
+      type: "TracingSystem" 
+      purpose: "System for logging and documenting execution"
+    - token: "Σ_hooks"
+      type: "HookRegistry"
+      purpose: "Registry of event-triggered behaviors"
+    - token: "OP_x"
+      type: "OperationReference"
+      purpose: "Reference to a specific operation component"
+    - token: "KB"
+      type: "KnowledgeBaseReference"
+      purpose: "Reference to a knowledge base component"
+  
+  operators:
+    - token: "↹"
+      type: "BlockDefinition"
+      purpose: "Defines a primary logical block (e.g., rule, operation, workflow, kb_article)."
+    - token: "⊕"
+      type: "CompositionOperator"
+      purpose: "Indicates composition, aggregation, or direct inclusion of elements or properties."
+    - token: "Σ"
+      type: "ContextualSignature"
+      purpose: "Provides a semantic signature or summary tag for a block or the entire file."
+    - token: "→"
+      type: "FlowOperator"
+      purpose: "Indicates direction of process flow or transformation"
+    - token: "|"
+      type: "ConditionalOperator"
+      purpose: "Separates conditions or marks priority for a property."
+    - token: "∈"
+      type: "MembershipOperator"
+      purpose: "Indicates membership in a set, such as possible states"
+
+block_structures:
+  rule:
+    pattern: "↹ rule•[name] [p=priority] { ... } Σ rule•[name]"
+    required_sections: ["id", "version", "Ω*", "dependencies"]
+  workflow: 
+    pattern: "↹ workflow•[name] [p=priority] { ... } Σ workflow•[name]"
+    required_sections: ["id", "version", "Ω.process"]
+  operation:
+    pattern: "↹ operation•[name] [p=priority] { ... } Σ operation•[name]"
+    required_sections: ["id", "version", "OP_[name]", "dependencies"]
+  kb:
+    pattern: "↹ kb•[name] [p=priority] { ... } Σ kb•[name]"
+    required_sections: ["id", "version"]
+
+transitions:
+  rules:
+    - trigger: "on_rule_request"
+      from_state: "initialization"
+      to_state: "formation"
+    - trigger: "on_formation_complete"
+      from_state: "formation" 
+      to_state: "validation"
+    - trigger: "on_validation_complete" 
+      from_state: "validation"
+      to_state: "materialization"
+    - trigger: "on_materialization_complete"
+      from_state: "materialization"
+      to_state: "documentation"
+    - trigger: "on_documentation_complete"
+      from_state: "documentation" 
+      to_state: "finalization"
+
+# Original section preserved
+status: "active" # Updated from placeholder 

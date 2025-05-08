@@ -7,23 +7,37 @@ alwaysApply: false
 # Source: Refactored from 0000-cursor-rules.mdc
 # Part of the Apex Solution Framework
 
-↹ principles•fundamental [p=1] {
-  ⊕ mandatory•pillars [
-    cognitive•logic: define_reasoning_process_not_just_information | priority: highest,
-    kb•references: point_to_external_knowledge_instead_of_duplication | priority: high,
-    llm•delegation: specify_where_and_how_LLM_should_contribute | priority: high,
-    ecosystem•completeness: ensure_all_referenced_files_exist | priority: highest,
-    complexity•adaptation(𝚫*): adjust_workflow_based_on_assessed_complexity | priority: high
-  ]
+↹ kb•core_principles [p=1] {
+  id: "@kb/0000-cursor-rules/knowledge/core_principles",
+  version: "1.0.0",
   
-  ⊕ design•principles {
-    clarity: express_intention_clearly | not: verbose_or_ambiguous,
-    modularity: separate_concerns_logically | enable: easier_maintenance,
-    externalization: move_knowledge_to_kb | separate_from: reasoning_process,
-    guidance: provide_clear_structure_for_llm | not: vague_instructions,
-    implementation•integrity: never_create_partial_implementations | enforce: strictly,
-    holistic•validation(Ξ): integrate_validation_with_broader_coherence_checks | priority: medium
+  Π* = meta_rule_design_principles
+  Π.axioms = {
+    cognitive_logic: "Define reasoning process not just information",
+    kb_references: "Point to external knowledge instead of duplication",
+    llm_delegation: "Specify where and how LLM should contribute",
+    ecosystem_completeness: "Ensure all referenced files exist",
+    complexity_adaptation: "Adjust workflow based on assessed complexity"
+  }
+  
+  Π.patterns = {
+    clarity: "Express intention clearly, not verbose or ambiguous",
+    modularity: "Separate concerns logically for easier maintenance",
+    externalization: "Move knowledge to KB, separate from reasoning process",
+    guidance: "Provide clear structure for LLM, not vague instructions",
+    implementation_integrity: "Never create partial implementations, enforce strictly",
+    holistic_validation: "Integrate validation with broader coherence checks"
+  }
+  
+  Π.priorities = {
+    critical: ["cognitive_logic", "ecosystem_completeness"],
+    high: ["kb_references", "llm_delegation", "complexity_adaptation"],
+    medium: ["holistic_validation"]
+  }
+  
+  dependencies: {
+    KB_lang: "@kb/0000-cursor-rules/knowledge/semantic_language"
   }
 }
-Σ core•principles | ref: "@kb/0000-cursor-rules/knowledge/semantic_language" 
-// Assuming semantic_language.yaml would also be versioned and placed appropriately
+
+Σ kb•core_principles

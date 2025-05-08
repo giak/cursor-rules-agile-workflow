@@ -9,81 +9,99 @@ alwaysApply: false
 ↹ operation•create_rule_ecosystem [p=1] {
     id: "@op/0000-cursor-rules/create_rule_ecosystem",
     version: "1.0.1",
-    description: "Creates the knowledge base (KB) files (e.g., examples, detailed specs, prompts) for a new rule based on the defined strategy and the KB entries in the target_artifact_manifest. Records created artifacts to the journal.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        creation_config: {
-            type: "object",
-            properties: {
-                rule_request: { type: "object", description: "Original rule request details." },
-                strategy: { type: "object", description: "Overall strategy guiding creation." },
-                target_kb_manifest_entries: { 
-                    type: "array", 
-                    items: { 
-                        type: "object", 
-                        properties: { 
-                            name_pattern: "string", 
-                            target_path: "string", 
-                            purpose: "string", 
-                            key_content_points: "array" 
-                        } 
-                    },
-                    description: "Specific KB files to create from the manifest."
-                }
-            },
-            required: ["rule_request", "target_kb_manifest_entries"]
-        }
+    description: "Creates the knowledge base ecosystem for a new rule based on target manifest",
+    
+    OP_ecosystem = {
+        type: "kb_ecosystem_creation",
+        function: "materialize_knowledge_artifacts",
+        cognitive_load: "high"
+    }
+    
+    input: {
+        rule_request: "Original rule request details",
+        strategy: "Overall strategy guiding creation",
+        kb_manifest: "Array of KB files specification from the target manifest"
     },
 
-    output_schema: {
-        created_kb_artifacts: {
-            type: "array",
-            items: {
-                type: "object",
-                properties: {
-                    artifact_type: { type: "string", description: "e.g., kb_example_md, kb_prompt_txt, kb_spec_mdc" },
-                    file_path: { type: "string" },
-                    status: { type: "enum", values: ["Success", "SuccessWithStub", "GenerationFailed"] },
-                    content_summary_or_hash: { type: "string", optional: true }
-                },
-                required: ["artifact_type", "file_path", "status"]
+    output: {
+        created_kb_artifacts: [
+            {
+                artifact_type: "Type identifier (kb_example, kb_spec, kb_prompt, etc.)",
+                file_path: "Full path to the created file",
+                status: "enum(Success, SuccessWithStub, GenerationFailed)",
+                content_hash: "Hash/checksum of the content (optional)"
             }
+        ]
+    },
+    
+    Ω_process = {
+        # Primary process flow: iterate over KB entries and generate content
+        iterate_manifest: {
+            action: "Ω•foreach(kb_entry IN input.kb_manifest)",
+            process: {
+                generate: {
+                    action: "LLM•call",
+                    contract: "LLM_kb_generator",
+                    input: {
+                        rule_request: "input.rule_request",
+                        kb_purpose: "kb_entry.purpose",
+                        key_points: "kb_entry.key_content_points",
+                        template_context: "input.strategy.template_context || {}"
+                    },
+                    output: {
+                        content: "generated_content",
+                        status: "generation_status"
+                    }
+                },
+                
+                save: {
+                    action: "Ω•filesystem.write",
+                    input: {
+                        path: "kb_entry.target_path", 
+                        content: "generated_content"
+                    },
+                    output: "file_status",
+                    error_handling: "Λ.handle_filesystem_error(file_status)"
+                },
+                
+                journal: {
+                    action: "M.record_artifact",
+                    input: {
+                        type: "M.derive_kb_type(kb_entry.name_pattern)",
+                        path: "kb_entry.target_path",
+                        status: "generation_status",
+                        meta: {
+                            purpose: "kb_entry.purpose",
+                            content_hash: "Ω•hash(generated_content)"
+                        }
+                    },
+                    output: "kb_journal_entry",
+                    aggregate: "M.append_to(created_kb_artifacts)"
+                }
+            }
+        },
+        
+        # Final validation of the created artifacts
+        validate: {
+            action: "Λ.validate_ecosystem",
+            input: {
+                artifacts: "created_kb_artifacts",
+                expected: "input.kb_manifest"
+            },
+            on_failure: "M.record_validation_error(validation_result)"
         }
     },
-
-    dependencies: [
-        "@llm_contract/0000-cursor-rules/kb_content_generator"
-    ],
-
-    steps: [
-        {
-            step_id: "iterate_manifest_kb_entries",
-            description: "For each KB file in the manifest, generate its content and save.",
-            logic: "LOOP input.creation_config.target_kb_manifest_entries AS kb_entry",
-            loop_steps: [
-                {
-                    step_id: "generate_kb_content",
-                    description: "Use LLM to generate content for the current KB entry.",
-                    logic: "LLM•call/@llm_contract/0000-cursor-rules/kb_content_generator(input_data={rule_request: input.creation_config.rule_request, kb_purpose: loop_item.kb_entry.purpose, key_points: loop_item.kb_entry.key_content_points})",
-                    outputs: ["generated_content", "generation_status"]
-                },
-                {
-                    step_id: "save_kb_file",
-                    description: "Save the generated content to the target_path.",
-                    logic: "FILESYSTEM•write(path: loop_item.kb_entry.target_path, content: step_outputs.generate_kb_content.generated_content)",
-                    outputs: ["file_write_status"]
-                },
-                {
-                    step_id: "add_to_journal",
-                    description: "Add information about the created KB to the output list.",
-                    logic: "Ω•internal/format_kb_journal_entry(loop_item.kb_entry, step_outputs.generate_kb_content, step_outputs.save_kb_file)",
-                    outputs: ["journal_entry_for_this_kb"]
-                }
-            ],
-            // Aggregates "journal_entry_for_this_kb" from loop iterations into created_kb_artifacts
-            output_aggregation: { from: "journal_entry_for_this_kb", to: "created_kb_artifacts", mode: "append_list" }
-        }
-    ]
+    
+    dependencies: {
+        LLM_kb_generator: "@llm_contract/0000-cursor-rules/kb_content_generator",
+        KB_templates: "@kb/0000-cursor-rules/templates/kb_templates",
+        KB_filepath: "@kb/0000-cursor-rules/knowledge/filepath_utilities"
+    },
+    
+    Ψ_trace = {
+        ecosystem_created: "M.record_creation_metrics(created_kb_artifacts)",
+        kb_content_generated: "Ψ.log_generation_stats(created_kb_artifacts)"
+    }
 }
-Σ operation_specification create_rule_ecosystem_simulation
+
+Σ operation•create_rule_ecosystem

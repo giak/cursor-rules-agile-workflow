@@ -1,39 +1,87 @@
 # Initial Knowledge Base References and Configurations
-# This file serves as a placeholder for bootstrapping the meta-rule.
-# It can be populated with references to other KBs, parameters, or
-# initial settings required by the Apex framework's meta-rule operations.
+# Ω_KB = kb_reference_registry
+# Version: 1.0.0
+# Purpose: Bootstrap configuration for the meta-rule system with KB references
 
-# Example structure (can be adapted as needed):
-# initial_kb_paths:
-#   - "@kb/some_category/some_kb_v1.0.0.md"
-#
-# global_parameters:
-#   default_author: "ApexSystem"
-#   strict_mode: true
+# M.sync_config(Ω_KB) = update_registry_on_system_changes
+# Λ.validate(kb_references) = ensure_references_resolvable
 
-# For now, keeping it minimal:
-status: "placeholder_definition_simulated"
 version: "1.0.0"
+description: "Core KB references configuration for the rule creation orchestrator process"
+status: "active"
 
-# Provides a list of initial or commonly referenced Knowledge Base (KB) artifacts
-# that might be used by various operations within the meta-rule workflow,
-# particularly for seeding new rule ecosystems or providing base templates.
-description: "Configuration listing common/default KB references for the rule creation process."
-references:
-  # Example: Default prompt for generating examples for a new rule
-  - id: "@kb/shared/prompts/default_example_generator_prompt"
-    purpose: "Default prompt to guide LLM in generating usage examples for a new rule."
-    type: "prompt_kb"
-    status: "to_be_created_or_verified" # Indicates this itself might need creation if not present
+# Organized reference registry following the hybrid compression model
+kb_registry:
+  # Core knowledge and principles
+  knowledge:
+    KB_core_principles:
+      id: "@kb/0000-cursor-rules/knowledge/core_principles"
+      purpose: "Fundamental axioms and principles for rule creation"
+      type: "core_knowledge"
+      state: "active"
+    
+    KB_semantic_language:
+      id: "@kb/0000-cursor-rules/knowledge/semantic_language"
+      purpose: "Core semantic language definition for Apex .mdc syntax"
+      type: "knowledge_source"
+      state: "active"
+  
+  # Templates for various artifacts
+  templates:
+    KB_doc_templates:
+      id: "@kb/0000-cursor-rules/templates/documentation_templates" 
+      purpose: "Standard documentation structure templates"
+      type: "template"
+      state: "active"
+    
+    KB_rule_templates:
+      id: "@kb/0000-cursor-rules/templates/rule_templates"
+      purpose: "Core templates for generating rule files"
+      type: "template"
+      state: "active"
+    
+    KB_kb_templates:
+      id: "@kb/0000-cursor-rules/templates/kb_templates"
+      purpose: "Templates for generating KB component files"
+      type: "template"
+      state: "active"
+  
+  # Prompt libraries for LLM interactions
+  prompts:
+    KB_generation_prompts:
+      id: "@kb/0000-cursor-rules/prompts/semantic_mdc_generator_prompt"
+      purpose: "Prompts for generating .mdc semantic rule files"
+      type: "prompt"
+      state: "active"
+    
+    KB_documentation_prompts: 
+      id: "@kb/0000-cursor-rules/prompts/documentation_generator_prompt"
+      purpose: "Prompts for generating comprehensive documentation"
+      type: "prompt"
+      state: "active"
+  
+  # Strategy patterns
+  strategies:
+    KB_strategy_patterns:
+      id: "@kb/0000-cursor-rules/knowledge/strategy_patterns"
+      purpose: "Patterns for strategy selection based on complexity"
+      type: "strategy"
+      state: "active"
 
-  # Example: Standard documentation template structure
-  - id: "@kb/shared/templates/documentation/standard_readme_structure"
-    purpose: "Provides a standard structural template for new rule documentation (README.md)."
-    type: "template_kb"
-    status: "to_be_created_or_verified"
+# Default configuration parameters for rule creation process
+config_parameters:
+  Ω.defaults:
+    validation_depth: "deep"
+    include_examples: true
+    max_complexity_threshold: "high"
+    auto_request_clarification: true
+  
+  M.defaults:
+    journal_format: "structured_json"
+    tracking_verbosity: "detailed"
 
-  # Example: Semantic language guide (already created, but could be listed here for explicitness)
-  - id: "@kb/0000-cursor-rules/knowledge/semantic_language"
-    purpose: "Core semantic language definition for Apex .mdc syntax."
-    type: "knowledge_source_kb"
-    status: "existing" # Assumed created or verified 
+# Trace and monitor configuration  
+Ψ_config:
+  log_level: "info"
+  monitor_kb_changes: true
+  record_generation_metrics: true 

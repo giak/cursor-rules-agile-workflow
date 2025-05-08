@@ -15,32 +15,39 @@ glob: ".cursor/rules/*.mdc"
     id: "@rule/0000-cursor-rules",
     description: "Main entry point to trigger the creation of a new Cursor rule using the Apex framework.",
     version: "1.0.0",
+    
+    Ω* = rule_creation_orchestrator
+    Ω.states = {initialization, formation, validation, materialization, documentation, finalization}
+    Ω.current = initialization
 
-    # Dépendances fondamentales pour l'environnement d'exécution de la méta-règle
-    # Ces KBs contiennent les principes et les configurations de base.
-    dependencies: [
-        "@kb/0000-cursor-rules/knowledge/core_principles",
-        "@kb/0000-cursor-rules/config/initial_kb_references",
-        # Le workflow principal qui sera invoqué
-        "@workflow/0000-cursor-rules/create_cursor_rule"
-    ],
-
-    # L'action principale est d'invoquer le workflow principal de création de règle.
-    # "workflow_input.rule_request" serait l'objet contenant la demande de l'utilisateur pour la nouvelle règle.
-    entry_operation: "INVOKE @workflow/0000-cursor-rules/create_cursor_rule WITH workflow_input.rule_request"
+    dependencies: {
+        KB_core: "@kb/0000-cursor-rules/knowledge/core_principles",
+        KB_config: "@kb/0000-cursor-rules/config/initial_kb_references",
+        KB_filepath: "@kb/0000-cursor-rules/knowledge/filepath_utilities",
+        WF_main: "@workflow/0000-cursor-rules/create_cursor_rule"
+    },
+    
+    entry_operation: "Ω.process(rule_request) → WF_main"
 }
 
 Σ meta_rule_apex_entry_point
-↹ constraints•critical [p=2] {
-  ⊕ implementation•constraints [
-    ecosystem_completeness: "NEVER create a rule without its complete KB ecosystem" | priority: highest,
-    reference_integrity: "ALWAYS verify all KB references resolve to actual files" | priority: highest,
-    content_quality: "ENSURE all KB files contain high-quality, useful content" | priority: high,
-    documentation_requirement: "ALWAYS create documentation for every rule" | priority: high,
-    validation_enforcement: "VALIDATE ecosystem completeness before finalizing rule" | priority: highest
-  ]
+
+Λ* = {
+    ecosystem_completeness: "NEVER create a rule without its complete KB ecosystem" | priority=1,
+    reference_integrity: "ALWAYS verify all KB references resolve to actual files" | priority=1,
+    content_quality: "ENSURE all KB files contain high-quality, useful content" | priority=2,
+    documentation_requirement: "ALWAYS create documentation for every rule" | priority=2,
+    validation_enforcement: "VALIDATE ecosystem completeness before finalizing rule" | priority=1
 }
+
 Σ critical•constraints | ref: kb•cursor•rules.implementation_checklist
+
+Σ_hooks = {
+    on_rule_request: [KB.load(KB_core), KB.load(KB_config)],
+    on_state_change: [M.record_transition(Ω.current, Ω.state), Ψ.log(transition_data)],
+    on_validation_fail: [Ω.state = formation, M.record_issue(validation_error)],
+    on_completion: [M.sync(creation_context), Ψ.summarize(rule_creation_process)]
+}
 
 Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration ⊕ documentation•generation ⊕ ecosystem•integrity 
 Σ meta•rule•for•cursor•rules ⊕ cognitive•framework ⊕ knowledge•management ⊕ llm•integration ⊕ documentation•generation ⊕ ecosystem•integrity 

@@ -9,55 +9,101 @@ alwaysApply: false
 ↹ operation•adapt_workflow_strategy [p=1] {
     id: "@op/0000-cursor-rules/adapt_workflow_strategy",
     version: "1.0.1",
-    description: "Adapts the rule creation workflow strategy based on complexity assessment and generates a target_artifact_manifest detailing all expected files (rule, KBs, doc) and their key content points/structure.",
-    author: "ApexSystemSimulation",
-
-    input_schema: {
-        assessment_result: { type: "object", description: "Output from assess_complexity operation." },
-        initial_kb_references_path: { type: "string", description: "Path to initial_kb_references.yaml (e.g., for base templates or common KBs)." }
-        // Potentially rule_request object as well for full context
+    description: "Adapts the rule creation workflow strategy based on complexity assessment",
+    
+    OP_adapt = {
+        type: "strategy_formulation",
+        function: "derive_strategy_from_complexity",
+        cognitive_load: "high"
+    }
+    
+    input: {
+        assessment_result: "Output from assess_complexity operation with scores and ambiguities",
+        initial_kb_references_path: "Path to initial_kb_references config for templates"
     },
 
-    output_schema: {
-        strategy_and_manifest_obj: {
-            type: "object",
-            properties: {
-                strategy_config: { 
-                    type: "object", 
-                    description: "Configuration for the chosen strategy (e.g., which operations to emphasize, validation depth).",
-                    properties: {
-                        chosen_strategy_name: { type: "string" },
-                        trigger_user_clarification: { type: "boolean", default: false },
-                        additional_guidance: { type: "string", optional: true },
-                        validation_depth: { type: "enum", values: ["shallow", "deep"], default: "shallow" }
-                    }
-                },
-                target_artifact_manifest: { 
-                    type: "object", 
-                    description: "Details all artifacts to be generated.",
-                    properties: {
-                        core_rule_file: { type: "object", properties: { name_pattern: "string", target_path: "string", key_sections: "array" } },
-                        knowledge_base_files: { type: "array", items: {type: "object", properties: { name_pattern: "string", target_path: "string", purpose: "string", key_content_points: "array" } } },
-                        documentation_file: { type: "object", properties: { name_pattern: "string", target_path: "string", main_sections: "array" } }
-                    }
-                }
+    output: {
+        strategy_obj: {
+            strategy_config: {
+                strategy_name: "Selected strategy based on complexity",
+                trigger_user_clarification: "Boolean flag for user interaction",
+                additional_guidance: "Optional guidance text for clarification",
+                validation_depth: "enum(shallow, deep)"
             },
-            required: ["strategy_config", "target_artifact_manifest"]
+            target_artifact_manifest: {
+                core_rule_file: {
+                    name_pattern: "File naming pattern",
+                    target_path: "Target directory path",
+                    key_sections: ["Required sections for the rule file"]
+                },
+                knowledge_base_files: [
+                    {
+                        name_pattern: "KB file naming pattern",
+                        target_path: "Target directory path",
+                        purpose: "Purpose of this KB component",
+                        key_content_points: ["Required content elements"]
+                    }
+                ],
+                documentation_file: {
+                    name_pattern: "Documentation naming pattern",
+                    target_path: "Target directory path",
+                    main_sections: ["Required documentation sections"]
+                }
+            }
         }
     },
-
-    dependencies: [
-        "@kb/0000-cursor-rules/config/initial_kb_references"
-        // Potentially a KB with strategy adaptation rules/heuristics
-    ],
-
-    steps: [
-        {
-            step_id: "determine_strategy_and_manifest",
-            description: "Based on complexity and other inputs, determine the strategy and construct the manifest.",
-            logic: "Ω•internal/derive_strategy_and_manifest(input.assessment_result, input.initial_kb_references_path)",
-            outputs: ["strategy_and_manifest_obj"]
+    
+    Ω_process = {
+        # Stage 1: Load KB references
+        load_references: {
+            action: "Ω•internal/load_kb_references",
+            input: "input.initial_kb_references_path",
+            output: "kb_references"
+        },
+        
+        # Stage 2: Strategy formulation
+        formulate_strategy: {
+            action: "Ω•internal/formulate_strategy",
+            input: {
+                assessment: "input.assessment_result",
+                templates: "kb_references.strategy_templates"
+            },
+            output: "strategy_config",
+            selection_logic: "Π.strategy_selection(assessment_result.complexity_score)"
+        },
+        
+        # Stage 3: Manifest generation
+        generate_manifest: {
+            action: "Ω•internal/generate_manifest",
+            input: {
+                strategy: "strategy_config",
+                complexity: "input.assessment_result.complexity_score",
+                templates: "kb_references.artifact_templates"
+            },
+            output: "target_manifest"
+        },
+        
+        # Stage 4: Finalization
+        finalize: {
+            action: "Ω•internal/assemble_output",
+            input: {
+                strategy: "strategy_config",
+                manifest: "target_manifest"
+            },
+            output: "strategy_obj",
+            validation: "Λ.validate_strategy_manifest(strategy_obj)"
         }
-    ]
+    },
+    
+    dependencies: {
+        KB_references: "@kb/0000-cursor-rules/config/initial_kb_references",
+        KB_strategies: "@kb/0000-cursor-rules/knowledge/strategy_patterns"
+    },
+    
+    Ψ_trace = {
+        strategy_selected: "M.record_strategy(strategy_config.strategy_name)",
+        manifest_generated: "M.record_manifest(target_manifest)"
+    }
 }
-Σ operation_specification adapt_workflow_strategy_simulation
+
+Σ operation•adapt_workflow_strategy
