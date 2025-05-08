@@ -1,0 +1,72 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Create Documentation (Version 1.0.1)
+# Generates documentation for the newly created rule and its ecosystem.
+
+↹ operation•create_documentation [p=1] {
+    id: "@op/0000-cursor-rules/create_documentation",
+    version: "1.0.1",
+    description: "Generates documentation (e.g., a README.md type file) for the new rule, summarizing its purpose, usage, KBs, and potentially auto-documenting its schema if applicable. Records the created artifact to the journal.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        rule_creation_context: {
+            type: "object",
+            properties: {
+                core_rule_file_info: { type: "object", description: "Journal entry for the created core rule file (path, summary)." },
+                created_kb_artifacts: { type: "array", description: "Journal entries for all created KB artifacts." },
+                rule_id: { type: "string", description: "The ID of the newly created rule (e.g., 0002-hello-world-semantic)." },
+                target_documentation_manifest_entry: { type: "object", description: "Manifest entry detailing expected documentation." }
+            },
+            required: ["core_rule_file_info", "rule_id", "target_documentation_manifest_entry"]
+        }
+    },
+
+    output_schema: {
+        created_documentation_artifact: {
+            type: "object",
+            properties: {
+                artifact_type: { type: "string", const: "documentation_md" }, // Example
+                file_path: { type: "string" },
+                status: { type: "enum", values: ["Success", "SuccessWithStub", "GenerationFailed"] },
+                content_summary_or_hash: { type: "string", optional: true }
+            },
+            required: ["artifact_type", "file_path", "status"]
+        }
+    },
+
+    dependencies: [
+         "@llm_contract/0000-cursor-rules/documentation_generator"
+    ],
+
+    steps: [
+        {
+            step_id: "generate_documentation_content",
+            description: "Call LLM to generate the documentation content.",
+            logic: "LLM•call/@llm_contract/0000-cursor-rules/documentation_generator(input_data=input.rule_creation_context)",
+            outputs: ["generated_doc_content", "generation_status"]
+        },
+        {
+            step_id: "determine_target_path",
+            description: "Determine the full path for the documentation file from manifest or convention.",
+            logic: "Ω•internal/construct_doc_filepath(input.rule_creation_context.target_documentation_manifest_entry, input.rule_creation_context.rule_id)",
+            outputs: ["target_filepath"]
+        },
+        {
+            step_id: "save_documentation_file",
+            description: "Save the generated documentation to the target path.",
+            logic: "FILESYSTEM•write(path: step_outputs.determine_target_path.target_filepath, content: step_outputs.generate_documentation_content.generated_doc_content)",
+            outputs: ["file_write_status"]
+        },
+        {
+            step_id: "add_to_journal",
+            description: "Add information about the created documentation to the output.",
+            logic: "Ω•internal/format_doc_journal_entry(step_outputs.determine_target_path.target_filepath, step_outputs.generate_documentation_content.generation_status, step_outputs.save_documentation_file.file_write_status)",
+            outputs: ["created_documentation_artifact"]
+        }
+    ]
+}
+Σ operation_specification create_documentation_simulation

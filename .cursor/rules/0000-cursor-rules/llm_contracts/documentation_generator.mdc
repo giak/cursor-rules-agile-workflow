@@ -1,0 +1,98 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LLM Contract: Documentation Generator (Version 1.0.0)
+# Generates documentation for a new rule and its ecosystem.
+
+↹ llm_contract•documentation_generator [p=1] {
+    id: "@llm_contract/0000-cursor-rules/documentation_generator",
+    version: "1.0.0",
+    description: "Generates a documentation file (e.g., README.md) for a newly created rule, summarizing its purpose, usage, associated KBs, and other relevant details from the rule_creation_context.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        rule_creation_context: {
+            type: "object",
+            properties: {
+                core_rule_file_info: { 
+                    type: "object", 
+                    description: "Information about the created core rule file (e.g., path, id, description, summary from its content)."
+                    // Define specific properties expected, e.g., file_path, rule_id, rule_description, input_schema_summary, output_schema_summary
+                },
+                created_kb_artifacts: { 
+                    type: "array", 
+                    items: { 
+                        type: "object", 
+                        description: "Information for each created KB artifact (e.g., path, type, purpose, summary)." 
+                        // Define specific properties, e.g., file_path, artifact_type, kb_purpose, content_summary
+                    }
+                },
+                rule_id: { type: "string", description: "The main ID of the newly created rule (e.g., 0002-hello-world-semantic)." },
+                target_documentation_manifest_entry: { 
+                    type: "object", 
+                    description: "Manifest entry detailing expected documentation structure or key sections."
+                    // Define specific properties, e.g., target_path, main_sections_to_include
+                }
+            },
+            required: ["core_rule_file_info", "rule_id", "target_documentation_manifest_entry"]
+        }
+    },
+
+    output_schema: {
+        documentation_generation_result: {
+            type: "object",
+            properties: {
+                generated_doc_content: { type: "string", description: "The generated textual content for the documentation file (e.g., Markdown)." },
+                generation_status: { type: "enum", values: ["Success", "SuccessWithPartialContent", "GenerationFailed"], description: "Status of the documentation generation." }
+            },
+            required: ["generated_doc_content", "generation_status"]
+        }
+    },
+
+    prompt_source: {
+        type: "inline",
+        content: """
+        You are tasked with generating a comprehensive documentation file (e.g., a README.md in Markdown format) for a newly created rule and its ecosystem.
+
+        Rule ID: {{rule_creation_context.rule_id}}
+
+        Core Rule File Information:
+        Path: {{rule_creation_context.core_rule_file_info.file_path}}
+        Description: {{rule_creation_context.core_rule_file_info.rule_description}}
+        Input Schema Summary: {{rule_creation_context.core_rule_file_info.input_schema_summary}}
+        Output Schema Summary: {{rule_creation_context.core_rule_file_info.output_schema_summary}}
+        (Additional core rule details as available...)
+
+        Associated Knowledge Base (KB) Artifacts:
+        {{#each rule_creation_context.created_kb_artifacts}}
+        - KB Artifact:
+          Path: {{this.file_path}}
+          Type: {{this.artifact_type}}
+          Purpose: {{this.kb_purpose}}
+          Summary: {{this.content_summary}}
+        {{/each}}
+
+        Documentation Requirements (from manifest):
+        Expected Sections: {{#join rule_creation_context.target_documentation_manifest_entry.main_sections_to_include ", "}}{{/join}}
+        Target Path (for reference): {{rule_creation_context.target_documentation_manifest_entry.target_path}}
+
+        Please generate the documentation content. It should typically include:
+        1.  An overview of the rule: What it does, its purpose.
+        2.  How to use the rule: Inputs, outputs, expected behavior.
+        3.  Dependencies: Any other rules or KBs it directly relies on (beyond those listed as part of its own ecosystem).
+        4.  Associated KBs: A list or description of the KBs created alongside this rule (examples, prompts, specs), explaining their role.
+        5.  Key sections as specified in the manifest.
+        6.  (Optional) Auto-documentation of input/output schemas if complex.
+        
+        Format the output in clear, well-structured Markdown. 
+        Your entire response will be treated as the documentation file content.
+        """
+        // Note: Actual implementation would require more detailed placeholders in the prompt
+        // based on the precise structure of core_rule_file_info and created_kb_artifacts.
+        // Status handling similar to other generator contracts.
+    },
+    model_parameters: { temperature: 0.4 }
+}
+Σ llm_contract_specification documentation_generator_simulation

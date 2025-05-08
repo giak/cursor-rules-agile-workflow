@@ -1,0 +1,64 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LLM Contract: Complexity Assessor (Version 1.0.0)
+# Assesses the complexity of a rule_request.
+
+↹ llm_contract•complexity_assessor [p=1] {
+    id: "@llm_contract/0000-cursor-rules/complexity_assessor",
+    version: "1.0.0",
+    description: "Assesses the complexity of a rule_request object and provides a structured assessment.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        rule_request: { 
+            type: "object", 
+            description: "The rule_request object to assess.",
+            properties: {
+                goal: { type: "string" },
+                context: { type: "string" },
+                description_detail: { type: "string" },
+                constraints: { type: "array", items: { type: "string" }, optional: true },
+                examples: { type: "array", items: { type: "string" }, optional: true }
+            }
+        }
+    },
+
+    output_schema: {
+        assessment_output: {
+            type: "object",
+            properties: {
+                complexity_score: { type: "enum", values: ["low", "medium", "high", "very_high"] },
+                justification: { type: "string" },
+                confidence: { type: "float" },
+                potential_ambiguities: { type: "array", items: {type: "string"}, optional: true }
+            },
+            required: ["complexity_score", "justification", "confidence"]
+        }
+    },
+
+    prompt_source: {
+        type: "inline",
+        content: """
+        Given the following rule_request:
+        Goal: {{rule_request.goal}}
+        Context: {{rule_request.context}}
+        Description: {{rule_request.description_detail}}
+        Constraints: {{rule_request.constraints}}
+        Examples: {{rule_request.examples}}
+
+        Please assess its complexity.
+        Provide:
+        1. A complexity_score (low, medium, high, very_high).
+        2. A textual justification for the score.
+        3. Your confidence in this assessment (0.0 to 1.0).
+        4. A list of potential_ambiguities or areas needing clarification (optional).
+        
+        Structure your output as a JSON object with keys: "complexity_score", "justification", "confidence", "potential_ambiguities" (optional list of strings).
+        """
+    },
+    model_parameters: { temperature: 0.3 }
+}
+Σ llm_contract_specification complexity_assessor_simulation

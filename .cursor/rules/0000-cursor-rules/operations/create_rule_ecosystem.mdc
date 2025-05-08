@@ -1,0 +1,89 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Create Rule Ecosystem (Version 1.0.1)
+# Creates the Knowledge Base (KB) ecosystem for a new rule.
+
+↹ operation•create_rule_ecosystem [p=1] {
+    id: "@op/0000-cursor-rules/create_rule_ecosystem",
+    version: "1.0.1",
+    description: "Creates the knowledge base (KB) files (e.g., examples, detailed specs, prompts) for a new rule based on the defined strategy and the KB entries in the target_artifact_manifest. Records created artifacts to the journal.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        creation_config: {
+            type: "object",
+            properties: {
+                rule_request: { type: "object", description: "Original rule request details." },
+                strategy: { type: "object", description: "Overall strategy guiding creation." },
+                target_kb_manifest_entries: { 
+                    type: "array", 
+                    items: { 
+                        type: "object", 
+                        properties: { 
+                            name_pattern: "string", 
+                            target_path: "string", 
+                            purpose: "string", 
+                            key_content_points: "array" 
+                        } 
+                    },
+                    description: "Specific KB files to create from the manifest."
+                }
+            },
+            required: ["rule_request", "target_kb_manifest_entries"]
+        }
+    },
+
+    output_schema: {
+        created_kb_artifacts: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    artifact_type: { type: "string", description: "e.g., kb_example_md, kb_prompt_txt, kb_spec_mdc" },
+                    file_path: { type: "string" },
+                    status: { type: "enum", values: ["Success", "SuccessWithStub", "GenerationFailed"] },
+                    content_summary_or_hash: { type: "string", optional: true }
+                },
+                required: ["artifact_type", "file_path", "status"]
+            }
+        }
+    },
+
+    dependencies: [
+        "@llm_contract/0000-cursor-rules/kb_content_generator"
+    ],
+
+    steps: [
+        {
+            step_id: "iterate_manifest_kb_entries",
+            description: "For each KB file in the manifest, generate its content and save.",
+            logic: "LOOP input.creation_config.target_kb_manifest_entries AS kb_entry",
+            loop_steps: [
+                {
+                    step_id: "generate_kb_content",
+                    description: "Use LLM to generate content for the current KB entry.",
+                    logic: "LLM•call/@llm_contract/0000-cursor-rules/kb_content_generator(input_data={rule_request: input.creation_config.rule_request, kb_purpose: loop_item.kb_entry.purpose, key_points: loop_item.kb_entry.key_content_points})",
+                    outputs: ["generated_content", "generation_status"]
+                },
+                {
+                    step_id: "save_kb_file",
+                    description: "Save the generated content to the target_path.",
+                    logic: "FILESYSTEM•write(path: loop_item.kb_entry.target_path, content: step_outputs.generate_kb_content.generated_content)",
+                    outputs: ["file_write_status"]
+                },
+                {
+                    step_id: "add_to_journal",
+                    description: "Add information about the created KB to the output list.",
+                    logic: "Ω•internal/format_kb_journal_entry(loop_item.kb_entry, step_outputs.generate_kb_content, step_outputs.save_kb_file)",
+                    outputs: ["journal_entry_for_this_kb"]
+                }
+            ],
+            // Aggregates "journal_entry_for_this_kb" from loop iterations into created_kb_artifacts
+            output_aggregation: { from: "journal_entry_for_this_kb", to: "created_kb_artifacts", mode: "append_list" }
+        }
+    ]
+}
+Σ operation_specification create_rule_ecosystem_simulation

@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# KB Operation Spec: Assess Complexity Criteria (Version 1.0.0)
+# Defines the criteria and methodology for the assess_complexity operation.
+
+↹ kb_operation_spec•assess_complexity_criteria [p=1] {
+    id: "@kb/0000-cursor-rules/specs/assess_complexity",
+    version: "1.0.0",
+    description: "Provides detailed criteria, scoring rubrics, and factors to consider when assessing the complexity of a rule request. This KB guides the @op/0000-cursor-rules/assess_complexity operation.",
+    author: "ApexSystemSimulation",
+
+    assessment_factors: [
+        { factor: "Clarity of Goal", weight: 0.2, description: "How well-defined and unambiguous is the rule's primary objective?" },
+        { factor: "Scope of Context", weight: 0.15, description: "How broad or narrow is the context in which the rule operates? More contexts can increase complexity." },
+        { factor: "Detail Level of Description", weight: 0.2, description: "Is the textual description sufficiently detailed to understand the logic without major assumptions?" },
+        { factor: "Number and Nature of Constraints", weight: 0.15, description: "Are there many constraints, and are they simple or complex to satisfy?" },
+        { factor: "Availability and Quality of Examples", weight: 0.1, description: "Do examples clearly illustrate behavior, or are they missing/ambiguous?" },
+        { factor: "Implicit Knowledge Required", weight: 0.1, description: "Does the rule rely on extensive domain knowledge not explicitly provided?" },
+        { factor: "Number of Estimated Logical Steps/Components", weight: 0.1, description: "A rough estimate of how many distinct logical parts the rule might have." }
+    ],
+
+    scoring_rubric: {
+        low: "Clear goal, narrow context, detailed description, few simple constraints, good examples. Few logical steps.",
+        medium: "Reasonably clear goal, moderate context or some ambiguity, some complex constraints. Moderate logical steps.",
+        high: "Ambiguous goal, broad context, vague description, many complex/conflicting constraints, poor examples. Many logical steps, potential for deep nesting or recursion.",
+        very_high: "Very unclear goal, extremely broad or ill-defined context, severe lack of detail, highly complex or contradictory constraints. Requires significant research or deconstruction."
+    },
+    status: "placeholder_definition_simulated"
+}
+Σ kb_spec operation_assessment_criteria rule_complexity_metrics

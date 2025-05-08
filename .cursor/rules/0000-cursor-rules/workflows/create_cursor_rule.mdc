@@ -1,0 +1,192 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workflow Blueprint: Create Cursor Rule (Version 1.0.1)
+# Part of the Apex Solution Framework
+# This workflow orchestrates the end-to-end process of creating a new Cursor rule, 
+# now including target manifest generation and actual artifact journaling.
+
+↹ workflow_blueprint•create_cursor_rule [p=1] {
+    id: "@workflow/0000-cursor-rules/create_cursor_rule",
+    description: "Orchestrates creating a Cursor rule: complexity assessment, strategy & target manifest generation, optional user clarification, ecosystem creation, core implementation, validation against manifest, and documentation.",
+    author: "ApexTransformationProcess",
+    version: "1.0.1",
+
+    input_schema: { 
+        rule_request: {
+            description: "Detailed description of the rule to be created.",
+            goal: "The primary objective of the rule.",
+            context: "Contextual information relevant to the rule's application.",
+            dependencies: "Known dependencies (optional).",
+            target_audience: "Intended users (optional).",
+            rule_id: "string (The proposed ID for the new rule, e.g., 0002-hello-world-semantic)"
+        }
+    },
+
+    # Workflow local context/variables
+    context_variables: {
+        actual_artifact_journal: { 
+            description: "A list of artifacts actually created by the operations.",
+            initial_value: [], // Starts empty
+            schema: [
+                {
+                    artifact_type: "string (e.g., rule_mdc, kb_example, documentation_md)",
+                    file_path: "string",
+                    status: "enum (Success, SuccessWithStub, GenerationFailed)", // from create_documentation, etc.
+                    content_summary_or_hash: "string (optional)",
+                    key_sections_covered: "list_of_strings (optional, especially for documentation)"
+                }
+            ]
+        }
+    },
+
+    orchestration_logic: [
+        {
+            step_id: "phase1_assess_and_strategize_with_manifest",
+            description: "Assess complexity, adapt workflow strategy, and generate target artifact manifest.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/assess_complexity",
+                    input_mapping: { "rule_request": "workflow_input.rule_request" },
+                    output_alias: "assessment_data"
+                },
+                { 
+                    call_operation: "@op/0000-cursor-rules/adapt_workflow_strategy",
+                    input_mapping: { 
+                        "assessment_result": "step_outputs.assessment_data",
+                        "initial_kb_references_path": "@kb/0000-cursor-rules/config/initial_kb_references"
+                    },
+                    output_alias: "strategy_and_manifest_obj"
+                }
+            ]
+        },
+        {
+            step_id: "phase2_user_clarification_optional",
+            description: "Optionally initiate dialogue with user for clarification if confidence is low.",
+            condition: "step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj.strategy_config.trigger_user_clarification == true",
+            sequence: [ 
+                { 
+                    call_operation: "@op/0000-cursor-rules/request_clarification",
+                    input_mapping: {
+                        "justification_text": "step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj.strategy_config.additional_guidance", // Example source
+                        "confidence_text": "step_outputs.phase1_assess_and_strategize_with_manifest.assessment_data.confidence.justification", // Example source
+                        "initial_strategy_or_understanding": "step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj.strategy_config",
+                        "prompt_for_user": "Des ambiguïtés ont été détectées ou la confiance est faible. Pouvez-vous fournir les clarifications suivantes : ...?"
+                    },
+                    output_alias: "user_feedback_obj"
+                }
+            ],
+            output_propagation: { 
+                "strategy_and_manifest_obj": "IF_DEFINED(step_outputs.user_feedback_obj.adjusted_strategy, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj)"
+            }
+        },
+        {
+            step_id: "phase3_create_ecosystem_and_journal",
+            description: "Create the KB ecosystem based on the strategy and target manifest, record to journal.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/create_rule_ecosystem",
+                    input_mapping: {
+                        "creation_config": {
+                            "rule_request": "workflow_input.rule_request",
+                            "strategy": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config",
+                            "target_kb_manifest_entries": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config.target_artifact_manifest.knowledge_base_files"
+                        }
+                    },
+                    output_alias: "ecosystem_creation_result"
+                }
+            ],
+            on_complete: "ADD_TO_CONTEXT(workflow_context.actual_artifact_journal, step_outputs.ecosystem_creation_result.created_kb_artifacts)"
+        },
+        {
+            step_id: "phase4_implement_core_rule_and_journal",
+            description: "Generate the core rule file content, record to journal.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/implement_core_rule_file",
+                    input_mapping: {
+                        "rule_request": "workflow_input.rule_request",
+                        "strategy_config": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config",
+                        "created_kb_artifacts_snapshot": "GET_ARTIFACTS_BY_TYPE(workflow_context.actual_artifact_journal, type_regex=\'kb_.*\')",
+                        "target_rule_base_path": ".cursor/rules/" 
+                    },
+                    output_alias: "core_rule_creation_result"
+                }
+            ],
+            on_complete: "ADD_TO_CONTEXT(workflow_context.actual_artifact_journal, step_outputs.core_rule_creation_result.created_mdc_artifact)"
+        },
+        {
+            step_id: "phase5_generate_documentation_and_journal",
+            description: "Generate documentation, record to journal.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/create_documentation",
+                    input_mapping: {
+                        "rule_creation_context": { 
+                            "core_rule_file_info": "FIND_IN_JOURNAL(workflow_context.actual_artifact_journal, artifact_type=\'rule_mdc\')",
+                            "created_kb_artifacts": "GET_ARTIFACTS_BY_TYPE(workflow_context.actual_artifact_journal, type_regex=\'kb_.*\')",
+                            "rule_id": "workflow_input.rule_request.rule_id", 
+                            "target_documentation_manifest_entry": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config.target_artifact_manifest.documentation_file"
+                        }
+                    },
+                    output_alias: "documentation_creation_result"
+                }
+            ],
+            on_complete: "ADD_TO_CONTEXT(workflow_context.actual_artifact_journal, step_outputs.documentation_creation_result.created_documentation_artifact)"
+        },
+        {
+            step_id: "phase6_validate_against_manifest",
+            description: "Validate the created artifacts (from journal) against the target manifest.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/validate_ecosystem",
+                    input_mapping: {
+                        "validation_config": {
+                            "target_manifest": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config.target_artifact_manifest",
+                            "actual_journal": "workflow_context.actual_artifact_journal",
+                            "validation_depth": "GET_VALUE(output_propagation.strategy_and_manifest_obj, step_outputs.phase1_assess_and_strategize_with_manifest.strategy_and_manifest_obj).strategy_config.validation_depth"
+                        }
+                    },
+                    output_alias: "validation_report_obj"
+                }
+            ]
+        },
+        {
+            step_id: "phase7_finalize_creation_process",
+            description: "Finalize the rule creation process and compile final report.",
+            sequence: [
+                { 
+                    call_operation: "@op/0000-cursor-rules/finalize_creation",
+                    input_mapping: {
+                        "validation_report_obj": "step_outputs.phase6_validate_against_manifest.validation_report_obj",
+                        "actual_artifact_journal": "workflow_context.actual_artifact_journal"
+                    },
+                    output_alias: "final_output_summary"
+                }
+            ]
+        }
+    ],
+
+    output_schema: {
+        final_report: {
+            status: "string",
+            validation_summary: "object",
+            list_of_created_files_paths: "list_of_strings", // from actual_artifact_journal
+            link_to_documentation: "string" // from actual_artifact_journal
+        }
+    },
+    dependencies: [
+        "@kb/0000-cursor-rules/config/initial_kb_references",
+        "@op/0000-cursor-rules/assess_complexity",
+        "@op/0000-cursor-rules/adapt_workflow_strategy",
+        "@op/0000-cursor-rules/request_clarification",
+        "@op/0000-cursor-rules/create_rule_ecosystem",
+        "@op/0000-cursor-rules/implement_core_rule_file",
+        "@op/0000-cursor-rules/create_documentation",
+        "@op/0000-cursor-rules/validate_ecosystem",
+        "@op/0000-cursor-rules/finalize_creation"
+    ]
+}
+Σ workflow_blueprint meta_rule_create_cursor_rule_with_manifest_and_journal

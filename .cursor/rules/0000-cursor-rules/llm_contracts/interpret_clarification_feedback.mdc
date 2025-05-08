@@ -1,0 +1,51 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LLM Contract: Interpret Clarification Feedback (Version 1.0.0)
+# Interprets user's textual feedback to adjust strategy or understanding.
+
+↹ llm_contract•interpret_clarification_feedback [p=1] {
+    id: "@llm_contract/0000-cursor-rules/interpret_clarification_feedback",
+    version: "1.0.0",
+    description: "Interprets textual user feedback in response to a clarification request. Aims to extract actionable insights and suggest modifications to the initial understanding or strategy.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        original_understanding: { type: "object", description: "The initial strategy or understanding that was presented for clarification." },
+        user_feedback_text: { type: "string", description: "The raw textual feedback from the user." }
+    },
+
+    output_schema: {
+        interpretation_result: {
+            type: "object",
+            properties: {
+                adjusted_strategy: { type: "object", optional: true, description: "The modified strategy/understanding if the feedback led to clear adjustments." },
+                feedback_summary: { type: "string", description: "A concise summary of the user's key feedback points." },
+                outstanding_questions: { type: "array", items: {type: "string"}, optional: true, description: "Any remaining ambiguities or new questions arising from feedback."}
+            },
+            required: ["feedback_summary"]
+        }
+    },
+
+    prompt_source: {
+        type: "inline", // Could also be a KB reference
+        content: """
+        Given an initial understanding/strategy:
+        {{original_understanding}}
+
+        And user feedback on it:
+        {{user_feedback_text}}
+
+        Please:
+        1. Summarize the key points of the user's feedback.
+        2. If the feedback provides clear actionable changes, provide an adjusted version of the original understanding/strategy.
+        3. List any remaining ambiguities or new questions that arise from this feedback.
+        
+        Structure your output as a JSON object with keys: "feedback_summary", "adjusted_strategy" (optional), "outstanding_questions" (optional list of strings).
+        """
+    },
+    model_parameters: { temperature: 0.3 }
+}
+Σ llm_contract_specification interpret_clarification_feedback_simulation

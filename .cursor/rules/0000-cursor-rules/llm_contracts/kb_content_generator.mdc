@@ -1,0 +1,66 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LLM Contract: KB Content Generator (Version 1.0.0)
+# Generates content for a Knowledge Base file.
+
+↹ llm_contract•kb_content_generator [p=1] {
+    id: "@llm_contract/0000-cursor-rules/kb_content_generator",
+    version: "1.0.0",
+    description: "Generates content for a Knowledge Base (KB) file based on its purpose and key content points, in relation to a specific rule request.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        input_data: {
+            type: "object",
+            properties: {
+                rule_request: { type: "object", description: "Original rule request details for context." },
+                kb_purpose: { type: "string", description: "The specific purpose of this KB file." },
+                key_content_points: { type: "array", items: {type: "string"}, description: "Key points, topics, or structural elements to include in the KB content." }
+            },
+            required: ["rule_request", "kb_purpose", "key_content_points"]
+        }
+    },
+
+    output_schema: {
+        kb_generation_result: {
+            type: "object",
+            properties: {
+                generated_content: { type: "string", description: "The generated textual content for the KB file." },
+                generation_status: { type: "enum", values: ["Success", "SuccessWithPartialContent", "GenerationFailed"], description: "Status of the content generation." }
+            },
+            required: ["generated_content", "generation_status"]
+        }
+    },
+
+    prompt_source: {
+        type: "inline",
+        content: """
+        You are tasked with generating content for a Knowledge Base (KB) file.
+        This KB is related to the following rule request:
+        Rule Request Goal: {{input_data.rule_request.goal}}
+        Rule Request Description: {{input_data.rule_request.description_detail}}
+
+        The specific purpose of this KB file is:
+        {{input_data.kb_purpose}}
+
+        The KB content should cover the following key points/structural elements:
+        {{#each input_data.key_content_points}}
+        - {{this}}
+        {{/each}}
+
+        Please generate the full textual content for this KB file. 
+        Ensure the content is comprehensive, well-structured, and directly addresses the purpose and key points provided.
+        If you cannot fully address all points, generate what you can and indicate any omissions or assumptions made.
+        
+        Output the generated content directly. Your entire response will be treated as the KB file content.
+        """
+        // Note: For actual use, the output would need to be structured (e.g. JSON) 
+        // if generation_status needs to be returned separately from content by the LLM.
+        // For this simulation, we assume the calling operation handles status based on LLM output quality.
+    },
+    model_parameters: { temperature: 0.5 } 
+}
+Σ llm_contract_specification kb_content_generator_simulation

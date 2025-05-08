@@ -1,0 +1,63 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Adapt Workflow Strategy (Version 1.0.1)
+# Adapts workflow strategy and generates the target artifact manifest.
+
+↹ operation•adapt_workflow_strategy [p=1] {
+    id: "@op/0000-cursor-rules/adapt_workflow_strategy",
+    version: "1.0.1",
+    description: "Adapts the rule creation workflow strategy based on complexity assessment and generates a target_artifact_manifest detailing all expected files (rule, KBs, doc) and their key content points/structure.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        assessment_result: { type: "object", description: "Output from assess_complexity operation." },
+        initial_kb_references_path: { type: "string", description: "Path to initial_kb_references.yaml (e.g., for base templates or common KBs)." }
+        // Potentially rule_request object as well for full context
+    },
+
+    output_schema: {
+        strategy_and_manifest_obj: {
+            type: "object",
+            properties: {
+                strategy_config: { 
+                    type: "object", 
+                    description: "Configuration for the chosen strategy (e.g., which operations to emphasize, validation depth).",
+                    properties: {
+                        chosen_strategy_name: { type: "string" },
+                        trigger_user_clarification: { type: "boolean", default: false },
+                        additional_guidance: { type: "string", optional: true },
+                        validation_depth: { type: "enum", values: ["shallow", "deep"], default: "shallow" }
+                    }
+                },
+                target_artifact_manifest: { 
+                    type: "object", 
+                    description: "Details all artifacts to be generated.",
+                    properties: {
+                        core_rule_file: { type: "object", properties: { name_pattern: "string", target_path: "string", key_sections: "array" } },
+                        knowledge_base_files: { type: "array", items: {type: "object", properties: { name_pattern: "string", target_path: "string", purpose: "string", key_content_points: "array" } } },
+                        documentation_file: { type: "object", properties: { name_pattern: "string", target_path: "string", main_sections: "array" } }
+                    }
+                }
+            },
+            required: ["strategy_config", "target_artifact_manifest"]
+        }
+    },
+
+    dependencies: [
+        "@kb/0000-cursor-rules/config/initial_kb_references"
+        // Potentially a KB with strategy adaptation rules/heuristics
+    ],
+
+    steps: [
+        {
+            step_id: "determine_strategy_and_manifest",
+            description: "Based on complexity and other inputs, determine the strategy and construct the manifest.",
+            logic: "Ω•internal/derive_strategy_and_manifest(input.assessment_result, input.initial_kb_references_path)",
+            outputs: ["strategy_and_manifest_obj"]
+        }
+    ]
+}
+Σ operation_specification adapt_workflow_strategy_simulation

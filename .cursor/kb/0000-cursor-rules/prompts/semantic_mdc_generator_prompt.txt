@@ -1,0 +1,141 @@
+# Prompt for Semantic .mdc Rule Generation (v1.0.0)
+# Objective: Generate the full content of a .mdc rule file based on the provided request.
+# ... (instructions détaillées, exemples de syntaxe .mdc valide) ...
+You are an expert in the Apex .mdc rule syntax. Given the following rule request:
+Goal: {{rule_request.goal}}
+Description: {{rule_request.description_detail}}
+Context: {{rule_request.context}}
+Constraints: {{rule_request.constraints}}
+Examples: {{rule_request.examples}}
+Associated KBs (summaries/paths): {{kbs}}
+
+Produce the complete .mdc content for this rule, including id, version (use "1.0.0" for new rules unless specified), description, input_schema, output_schema, steps, and dependencies.
+Pay close attention to the semantic structure using ↹, ⊕, Σ and correct property definitions.
+Ensure all schemas are well-defined.
+Ensure steps describe a logical flow.
+
+# Prompt for LLM Contract: @llm_contract/meta_rule/rule_content_generator_v1.0.0
+# Role: generate_semantic_mdc
+
+Vous êtes un expert dans la génération de fichiers de règles `.mdc` pour le framework cognitif Apex/Expanse. Votre tâche est de générer le contenu **complet et sémantiquement riche** d'un nouveau fichier `.mdc` basé sur les informations fournies.
+
+**INFORMATIONS FOURNIES EN ENTRÉE (sous forme d'objet JSON 'input_data') :**
+
+1.  `rule_request`: Un objet décrivant la règle à créer.
+    *   `description`: Description détaillée de la règle.
+    *   `goal`: Objectif principal de la règle.
+    *   `rule_id`: L'identifiant unique de la règle (ex: "0002-hello-world-semantic").
+
+2.  `mdc_plan`: Un plan structurel pour le fichier `.mdc` (généré par `@llm_contract/meta_rule/rule_structure_designer`).
+    *   `overview`: Description générale de la fonction de la règle dans son `.mdc`.
+    *   `main_blocks`: Liste des blocs principaux attendus (ex: `["rule•meta_info", "operation•main_logic"]`).
+    *   `key_semantic_constructs_to_use`: Conseils sur les constructions sémantiques à privilégier.
+
+3.  `kb_files`: Une liste d'objets décrivant l'écosystème KB déjà créé pour cette règle (si applicable).
+    *   Chaque objet contient `file_path` et `type`.
+
+4.  `core_principles_ref`: Le contenu (ou une référence au contenu) de `@kb/apex_knowledge/0000-meta-rule/core_principles_v1.0.0.md`.
+
+5.  `semantic_language_guide_ref`: Le contenu (ou une référence au contenu) de `@kb/apex_knowledge/core_definitions/semantic_language_v1.0.0.yaml` (ou `.md`). Ce guide définit les symboles Apex/Expanse comme `↹`, `rule•`, `operation•`, `workflow•`, `documentation•`, `kb_reference•`, `constraints•`, `Σ`, `⊕`, `→`, `Ψ.dialog•`, `Μ•`, `Ω•`, etc., et leur usage.
+
+**VOTRE TÂCHE :**
+
+Générez le contenu textuel intégral du fichier `.mdc` pour la règle spécifiée. Vous DEVEZ :
+
+1.  **Respecter le Plan (`mdc_plan`) :** La structure globale du fichier `.mdc` doit suivre les `main_blocks` et l'`overview` fournis dans `mdc_plan`.
+2.  **Utiliser la Compression Sémantique Apex/Expanse :**
+    *   Utilisez la notation symbolique définie dans le `semantic_language_guide_ref` pour toute la logique, les définitions de structure, les métadonnées et les relations.
+    *   Privilégiez les `key_semantic_constructs_to_use` du `mdc_plan`.
+    *   Assurez-vous que les blocs comme `rule•...`, `operation•...`, `documentation•...` sont correctement formatés avec `↹` et leurs priorités (ex: `[p=1]`).
+    *   Utilisez `Σ` pour les tags sémantiques pertinents.
+3.  **Intégrer les Informations de la Requête (`rule_request`) :** La `description`, le `goal` et le `rule_id` doivent être correctement intégrés dans le bloc `rule•...`.
+4.  **Référencer l'Écosystème KB (`kb_files`) :** Si des fichiers KB ont été créés et sont pertinents, le `.mdc` doit y faire référence en utilisant la syntaxe `@kb/...` appropriée (ex: dans un bloc `dependencies` ou `kb_reference•`).
+5.  **Adhérer aux Principes Fondamentaux (`core_principles_ref`) :** La conception de la règle doit refléter ces principes (modularité, clarté, etc.).
+6.  **Complétude :** Le contenu généré doit être un fichier `.mdc` complet, prêt à être sauvegardé.
+
+**EXEMPLES DE SYNTAXE `.mdc` SÉMANTIQUE (pour inspiration, adaptez au `semantic_language_guide_ref` fourni) :**
+
+*Exemple 1 : Règle "Hello World" Sémantique (ID: 0002-hello-world-semantic)*
+```mdc
+↹ rule•0002_hello_world_semantic [p=1] {
+    id: "@rule/0002-hello-world-semantic_v1.0.0",
+    description: "Rule that prompts for a user's name and displays a personalized greeting.",
+    version: "1.0.0",
+    author: "ApexMetaRule",
+    tags: ["example", "simple", "interaction"],
+
+    input_schema: {
+        user_name_prompt_message: { type: "string", default: "Quel est votre nom ?" }
+    },
+    output_schema: {
+        greeting_message: { type: "string" }
+    },
+
+    operation•greet_user [p=1] {
+        description: "Prompts for user name and constructs a greeting.",
+        input_schema: { user_name_prompt: { type: "string"} }, // Input for this specific operation
+        output_schema: { result_message: { type: "string"} },
+        steps: [
+            { step_id: "ask_name", logic: "Ψ.dialog•prompt_user_input(prompt_message: self.input.user_name_prompt) → user_provided_name" },
+            { step_id: "construct_greeting", logic: "CONCAT('Bonjour ', step_outputs.ask_name.user_provided_name, ' !') → final_greeting" }
+        ],
+        returns: "step_outputs.construct_greeting.final_greeting"
+    },
+    
+    entry_operation: "INVOKE operation•greet_user WITH { user_name_prompt: rule_input.user_name_prompt_message } → rule_output.greeting_message"
+}
+
+documentation•0002_hello_world_semantic [p=2] {
+    summary: "A simple rule to demonstrate user interaction by asking for a name and responding.",
+    invocation: "Invoke with an optional prompt message for the name query (rule_input.user_name_prompt_message). Returns rule_output.greeting_message.",
+    behavior: "It will request text input from the user via Ψ.dialog•prompt_user_input and then display a greeting incorporating that input.",
+    kb_references: "None for this simple rule beyond its own definition."
+}
+
+Σ example•rule ⊕ user•interaction ⊕ core•demonstration
+```
+
+*Exemple 2 : Règle "Guide de Style Basique" (ID: 1003-basic-style-guide)*
+```mdc
+↹ rule•1003_basic_style_guide [p=1] {
+    id: "@rule/1003-basic-style-guide_v1.0.0",
+    description: "A simple guide listing 3 naming conventions for variables.",
+    version: "1.0.0",
+    author: "ApexMetaRule",
+    rule_type: "KnowledgeProvider/Guide", // As determined by rule_structure_designer
+    tags: ["styleguide", "naming", "documentation"]
+}
+
+↹ content•naming_conventions [p=1] {
+    title: "Conventions de Nommage des Variables",
+    sections: [
+        {
+            convention_name: "camelCase",
+            description: "Les mots sont joints sans espace, chaque mot (sauf le premier) commençant par une majuscule.",
+            example: "maVariableExemple"
+        },
+        {
+            convention_name: "snake_case",
+            description: "Les mots sont joints par des underscores, tout en minuscules.",
+            example: "ma_variable_exemple"
+        },
+        {
+            convention_name: "PascalCase",
+            description: "Les mots sont joints sans espace, chaque mot commençant par une majuscule.",
+            example: "MaVariableExemple"
+        }
+    ]
+}
+
+documentation•1003_basic_style_guide [p=2] {
+    summary: "Provides a quick reference for three common variable naming conventions.",
+    usage: "Refer to this guide when choosing variable names to ensure consistency."
+}
+
+Σ style•guide ⊕ development•best_practice ⊕ knowledge•base
+```
+
+**SORTIE ATTENDUE :**
+
+Le contenu textuel complet et brut du fichier `.mdc` généré.
+Ne produisez AUCUN texte avant ou après le contenu du fichier `.mdc` lui-même. 

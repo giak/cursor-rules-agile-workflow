@@ -1,0 +1,61 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Finalize Creation (Version 1.0.0)
+# Finalizes the rule creation process and compiles a summary report.
+
+↹ operation•finalize_creation [p=1] {
+    id: "@op/0000-cursor-rules/finalize_creation",
+    version: "1.0.0",
+    description: "Compiles a final report summarizing the rule creation process, including validation status and paths to created artifacts.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        validation_report_obj: {
+            type: "object",
+            description: "The validation report from the validate_ecosystem operation."
+            // Expected properties: overall_status, mismatches, summary_text
+        },
+        actual_artifact_journal: {
+            type: "array",
+            items: {
+                type: "object"
+                // Expected properties: artifact_type, file_path, status, etc.
+            },
+            description: "Journal of all artifacts created during the workflow."
+        }
+    },
+
+    output_schema: {
+        final_report: {
+            type: "object",
+            properties: {
+                status: { type: "string", description: "Overall status of the rule creation (e.g., 'Success', 'CompletedWithWarnings', 'Failed')." },
+                validation_summary: { type: "object", description: "Summary of the validation results." },
+                list_of_created_files_paths: { type: "array", items: { type: "string" }, description: "List of paths to all created files." },
+                link_to_documentation: { type: "string", optional: true, description: "Direct link/path to the main documentation file, if created successfully." }
+            },
+            required: ["status", "validation_summary", "list_of_created_files_paths"]
+        }
+    },
+
+    dependencies: [], // No new external dependencies, operates on workflow context
+
+    steps: [
+        {
+            step_id: "compile_report_data",
+            description: "Extract and format data from inputs to build the final report.",
+            logic: "Ω•internal/compile_final_creation_report(input.validation_report_obj, input.actual_artifact_journal)",
+            outputs: ["final_report_data"] // This should match the output_schema structure
+        },
+        {
+            step_id: "return_report",
+            description: "Output the compiled final report.",
+            logic: "PASS_THROUGH step_outputs.compile_report_data.final_report_data → final_report",
+            outputs: ["final_report"]
+        }
+    ]
+}
+Σ operation_specification rule_creation_finalization reporting workflow_summary

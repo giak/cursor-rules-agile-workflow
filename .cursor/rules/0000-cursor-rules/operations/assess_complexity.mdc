@@ -1,0 +1,68 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Assess Complexity (Version 1.0.0)
+# Assesses the complexity of a rule request to inform workflow strategy.
+
+↹ operation•assess_complexity [p=1] {
+    id: "@op/0000-cursor-rules/assess_complexity",
+    version: "1.0.0",
+    description: "Assesses the complexity of a rule request based on its description, goal, context, and any specified constraints or examples. Outputs a complexity score, justification, and confidence level.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        rule_request: {
+            type: "object",
+            properties: {
+                goal: { type: "string", description: "Primary objective of the rule." },
+                context: { type: "string", description: "Contextual information for the rule's application." },
+                description_detail: { type: "string", description: "Detailed textual description of the desired rule logic and behavior." },
+                constraints: { type: "array", items: { type: "string" }, optional: true, description: "Specific constraints or non-goals." },
+                examples: { type: "array", items: { type: "string" }, optional: true, description: "Examples of input/output or behavior." }
+            },
+            required: ["goal", "description_detail"]
+        }
+    },
+
+    output_schema: {
+        assessment_data: {
+            type: "object",
+            properties: {
+                complexity_score: { type: "enum", values: ["low", "medium", "high", "very_high"], description: "Categorical complexity score." },
+                justification: { type: "string", description: "Textual justification for the assigned score." },
+                confidence: { type: "float", min: 0.0, max: 1.0, description: "Confidence in the assessment (0.0 to 1.0)." },
+                potential_ambiguities: { type: "array", items: { type: "string" }, optional: true, description: "List of detected ambiguities or areas needing clarification." }
+            },
+            required: ["complexity_score", "justification", "confidence"]
+        }
+    },
+
+    dependencies: [
+        "@kb/0000-cursor-rules/specs/assess_complexity",
+        "@llm_contract/0000-cursor-rules/complexity_assessor"
+    ],
+
+    steps: [
+        {
+            step_id: "prepare_assessment_prompt",
+            description: "Prepare input for the LLM based on rule_request and assessment criteria from the spec KB.",
+            logic: "Ω•internal/prepare_complexity_prompt(input.rule_request, @kb/0000-cursor-rules/specs/assess_complexity.mdc)",
+            outputs: ["llm_prompt_data"]
+        },
+        {
+            step_id: "delegate_to_llm",
+            description: "Call the LLM contract to perform the complexity assessment.",
+            logic: "LLM•call/@llm_contracts/0000-cursor-rules/complexity_assessor(step_outputs.prepare_assessment_prompt.llm_prompt_data)",
+            outputs: ["llm_raw_assessment"]
+        },
+        {
+            step_id: "parse_and_format_output",
+            description: "Parse the LLM's raw output and format it according to the output_schema.",
+            logic: "Ω•internal/format_assessment_output(step_outputs.delegate_to_llm.llm_raw_assessment)",
+            outputs: ["assessment_data"]
+        }
+    ]
+}
+Σ operation_specification assess_complexity_simulation

@@ -1,0 +1,60 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Operation: Request Clarification (Version 1.0.0)
+# Engages the user to seek clarification when confidence is low or ambiguities are detected.
+
+↹ operation•request_clarification [p=1] {
+    id: "@op/0000-cursor-rules/request_clarification",
+    version: "1.0.0",
+    description: "Presents ambiguities or low-confidence assessments to the user and requests clarification. Uses an LLM contract to interpret the feedback.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        justification_text: { type: "string", description: "Text explaining why clarification is needed (e.g., from complexity assessment)." },
+        confidence_text: { type: "string", optional: true, description: "Text related to confidence level, if applicable." },
+        initial_strategy_or_understanding: { type: "object", description: "The current understanding or strategy that needs clarification." },
+        prompt_for_user: { type: "string", description: "The specific question or prompt to display to the user." }
+    },
+
+    output_schema: {
+        user_feedback_interpretation: {
+            type: "object",
+            description: "The result of interpreting the user's feedback.",
+            properties: { // Mirrors output of the interpret_clarification_feedback LLM contract
+                adjusted_strategy: { type: "object", optional: true },
+                feedback_summary: { type: "string" },
+                outstanding_questions: { type: "array", items: {type: "string"}, optional: true }
+            }
+        }
+    },
+
+    dependencies: [
+        "@llm_contract/0000-cursor-rules/interpret_clarification_feedback"
+    ],
+
+    steps: [
+        {
+            step_id: "present_to_user_and_get_feedback",
+            description: "Display the prompt and current understanding to the user and capture their textual response.",
+            logic: "Ψ.dialog•request_user_input_with_context(prompt: input.prompt_for_user, context_data: input.initial_strategy_or_understanding, justification: input.justification_text)",
+            outputs: ["user_raw_feedback_text"]
+        },
+        {
+            step_id: "interpret_user_feedback",
+            description: "Use an LLM contract to interpret the user's raw feedback.",
+            logic: "LLM•call/@llm_contract/0000-cursor-rules/interpret_clarification_feedback(input_data={original_understanding: input.initial_strategy_or_understanding, user_feedback_text: step_outputs.present_to_user_and_get_feedback.user_raw_feedback_text})",
+            outputs: ["interpretation_result"] // This should match the contract's output_schema
+        },
+        {
+            step_id: "format_output",
+            description: "Format the interpreted feedback according to the operation's output_schema.",
+            logic: "Ω•internal/map_to_output(step_outputs.interpret_user_feedback.interpretation_result) → user_feedback_interpretation",
+            // Ensure this mapping produces the 'adjusted_strategy', 'feedback_summary', etc.
+            outputs: ["user_feedback_interpretation"]
+        }
+    ]
+}
+Σ operation_specification user_interaction clarification_dialogue feedback_processing

@@ -1,0 +1,43 @@
+# semantic_language_v1.0.0.yaml
+# Defines core semantic keywords, operators, and structural conventions 
+# for the Apex .mdc syntax, used by the meta-rule ecosystem.
+# This KB is crucial for LLMs to understand and generate valid Apex components.
+version: "1.0.0"
+description: "Defines the vocabulary and grammar for Apex .mdc files, including block types, operators, and section conventions."
+# Example keywords (illustrative, to be expanded):
+# keywords:
+#   - token: "↹"
+#     type: "BlockDefinition"
+#     purpose: "Defines a primary logical block (e.g., rule, operation, workflow, kb_article)."
+#   - token: "⊕"
+#     type: "CompositionOperator"
+#     purpose: "Indicates composition, aggregation, or direct inclusion of elements or properties."
+#   - token: "Σ"
+#     type: "ContextualSignature"
+#     purpose: "Provides a semantic signature or summary tag for a block or the entire file."
+#   - token: "|" # Within property definitions
+#     type: "ConditionalSeparator / PriorityMarker"
+#     purpose: "Separates conditions or marks priority for a property."
+#   - token: "@" # Prefix for IDs
+#     type: "IdentifierReferencePrefix"
+#     purpose: "Prefixes references to other Apex components (rules, KBs, operations, etc.)."
+# sections_conventions:
+#   - name: "id"
+#     description: "Unique identifier for the component, following the @category/domain/name_version pattern."
+#   - name: "version"
+#     description: "Semantic version of the component (e.g., 1.0.0)."
+#   - name: "description"
+#     description: "Human-readable description of the component's purpose."
+#   - name: "author"
+#     description: "Author or system that generated/maintains the component."
+#   - name: "dependencies"
+#     description: "List of other Apex component IDs this component relies on."
+#   - name: "input_schema" # For operations/workflows
+#     description: "Defines the expected input data structure."
+#   - name: "output_schema" # For operations/workflows
+#     description: "Defines the structure of the data output by the component."
+#   - name: "steps" # For operations
+#     description: "Sequence of actions or logic units within an operation."
+#   - name: "orchestration_logic" # For workflows
+#     description: "Sequence of operation calls and conditional logic defining the workflow."
+status: "placeholder_definition_simulated" 

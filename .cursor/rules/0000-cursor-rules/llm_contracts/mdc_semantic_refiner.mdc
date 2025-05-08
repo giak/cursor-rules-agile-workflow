@@ -1,0 +1,78 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# LLM Contract: MDC Semantic Refiner (Version 1.0.0)
+# Refines a potentially flawed .mdc rule file content.
+
+↹ llm_contract•mdc_semantic_refiner [p=1] {
+    id: "@llm_contract/0000-cursor-rules/mdc_semantic_refiner",
+    version: "1.0.0",
+    description: "Refines and corrects a given .mdc rule file content based on identified issues or a general quality check. Aims to produce valid and high-quality semantic .mdc.",
+    author: "ApexSystemSimulation",
+
+    input_schema: {
+        input_data: {
+            type: "object",
+            properties: {
+                rule_request: { type: "object", description: "Original rule request for context (goal, description, etc.)." },
+                initial_mdc_content: { type: "string", description: "The initial (potentially flawed) .mdc content to be refined." },
+                identified_issues: { type: "string", optional: true, description: "A description of known issues (e.g., 'empty or malformed', 'missing output_schema', 'steps are illogical'). If not provided, a general quality refinement is expected." }
+            },
+            required: ["rule_request", "initial_mdc_content"]
+        }
+    },
+
+    output_schema: {
+        refinement_result: {
+            type: "object",
+            properties: {
+                refined_mdc_content: { type: "string", description: "The refined and corrected .mdc content." },
+                refinement_status: { type: "enum", values: ["Success", "ImprovedWithCaveats", "RefinementFailed"], description: "Status of the refinement process." },
+                issues_addressed: { type: "array", items: {type: "string"}, optional: true, description: "List of issues that were specifically addressed."}
+            },
+            required: ["refined_mdc_content", "refinement_status"]
+        }
+    },
+
+    prompt_source: {
+        type: "inline",
+        content: """
+        You are an expert in Apex .mdc rule syntax and quality.
+        You are given an initial .mdc rule content that may be flawed, along with the original rule request and optionally a list of identified issues.
+
+        Original Rule Request:
+        Goal: {{input_data.rule_request.goal}}
+        Description: {{input_data.rule_request.description_detail}}
+        Context: {{input_data.rule_request.context}}
+
+        Initial .mdc Content to Refine:
+        ```mdc
+        {{input_data.initial_mdc_content}}
+        ```
+
+        {{#if input_data.identified_issues}}
+        Identified Issues:
+        {{input_data.identified_issues}}
+        {{else}}
+        No specific issues were pre-identified. Perform a general quality check and refinement.
+        {{/if}}
+
+        Please:
+        1. Carefully review the initial .mdc content in light of the rule request and any identified issues.
+        2. Correct any syntactical errors, logical flaws, missing sections, or inconsistencies with the Apex .mdc semantic conventions.
+        3. Ensure all required sections (id, version, description, input_schema, output_schema, steps, dependencies) are present and well-defined.
+        4. Ensure schemas are complete and logical for the rule's purpose.
+        5. Ensure steps describe a clear and executable logic flow.
+        6. If specific issues were provided, focus on addressing them. Otherwise, improve overall quality.
+        
+        Output the fully refined .mdc content. Your entire response will be treated as the refined .mdc file content.
+        If you make significant changes or cannot resolve certain issues, briefly note them in comments within the .mdc if appropriate, or ensure the calling system can infer this from the output quality.
+        """
+        // Note: As with kb_content_generator, for actual use, output would need to be structured 
+        // if status/issues_addressed need to be returned by LLM separately from content.
+    },
+    model_parameters: { temperature: 0.2 } 
+}
+Σ llm_contract_specification mdc_semantic_refiner_simulation

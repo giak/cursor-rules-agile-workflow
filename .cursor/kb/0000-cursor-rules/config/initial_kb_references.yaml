@@ -1,0 +1,39 @@
+# Initial Knowledge Base References and Configurations
+# This file serves as a placeholder for bootstrapping the meta-rule.
+# It can be populated with references to other KBs, parameters, or
+# initial settings required by the Apex framework's meta-rule operations.
+
+# Example structure (can be adapted as needed):
+# initial_kb_paths:
+#   - "@kb/some_category/some_kb_v1.0.0.md"
+#
+# global_parameters:
+#   default_author: "ApexSystem"
+#   strict_mode: true
+
+# For now, keeping it minimal:
+status: "placeholder_definition_simulated"
+version: "1.0.0"
+
+# Provides a list of initial or commonly referenced Knowledge Base (KB) artifacts
+# that might be used by various operations within the meta-rule workflow,
+# particularly for seeding new rule ecosystems or providing base templates.
+description: "Configuration listing common/default KB references for the rule creation process."
+references:
+  # Example: Default prompt for generating examples for a new rule
+  - id: "@kb/shared/prompts/default_example_generator_prompt"
+    purpose: "Default prompt to guide LLM in generating usage examples for a new rule."
+    type: "prompt_kb"
+    status: "to_be_created_or_verified" # Indicates this itself might need creation if not present
+
+  # Example: Standard documentation template structure
+  - id: "@kb/shared/templates/documentation/standard_readme_structure"
+    purpose: "Provides a standard structural template for new rule documentation (README.md)."
+    type: "template_kb"
+    status: "to_be_created_or_verified"
+
+  # Example: Semantic language guide (already created, but could be listed here for explicitness)
+  - id: "@kb/0000-cursor-rules/knowledge/semantic_language"
+    purpose: "Core semantic language definition for Apex .mdc syntax."
+    type: "knowledge_source_kb"
+    status: "existing" # Assumed created or verified 
